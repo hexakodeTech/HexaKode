@@ -21,7 +21,7 @@ export default function AboutPage() {
         <AboutHero />
         <CompanyStory />
         <CoreValues />
-        <TeamSection />
+        {/* <TeamSection /> */}
         <TrustMetrics />
         <FinalCTA />
       </main>

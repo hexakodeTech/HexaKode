@@ -82,12 +82,12 @@ export const TRUST_POINTS: TrustPoint[] = [
 export const TRUST_METRICS: TrustMetric[] = [
   {
     id: "tm1",
-    value: "2",
+    value: "3",
     label: "Projects Delivered",
   },
   {
     id: "tm2",
-    value: "1",
+    value: "2",
     label: "Trusted Client",
   },
   {
