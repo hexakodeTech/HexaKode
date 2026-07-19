@@ -8,18 +8,21 @@ import { Menu, X } from "lucide-react";
 import PrimaryButton from "../ui/PrimaryButton";
 import Brand from "../common/Brand";
 import { cn } from "../../lib/utils";
+import { useDemoModal } from "../common/DemoModal";
 
 const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
+  { label: "Book a Free Consultation", href: "#", onClick: true },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { openDemoModal } = useDemoModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,6 +64,17 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex gap-8 items-center">
           {NAV_LINKS.map((link) => {
+            if (link.onClick) {
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => openDemoModal({ source: "Navigation", inquiryType: "Technical Discovery Call" })}
+                  className="font-body-md transition-colors duration-300 hover:text-primary text-on-surface-variant cursor-pointer bg-transparent border-none outline-none p-0"
+                >
+                  {link.label}
+                </button>
+              );
+            }
             const isActive = pathname === link.href;
             return (
               <Link
@@ -111,6 +125,20 @@ export default function Navbar() {
       >
         <nav className="flex flex-col gap-4">
           {NAV_LINKS.map((link) => {
+            if (link.onClick) {
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => {
+                    setIsOpen(false);
+                    openDemoModal({ source: "Mobile Navigation", inquiryType: "Technical Discovery Call" });
+                  }}
+                  className="font-body-md py-1 self-start transition-colors duration-300 hover:text-primary text-on-surface-variant cursor-pointer bg-transparent border-none outline-none p-0 text-left"
+                >
+                  {link.label}
+                </button>
+              );
+            }
             const isActive = pathname === link.href;
             return (
               <Link

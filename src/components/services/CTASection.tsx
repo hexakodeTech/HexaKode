@@ -24,7 +24,7 @@ export default function CTASection({
   description = "Join 3 enterprise partners who trust HexaKode for their mission-critical engineering needs. Get a custom technical estimate in 48 hours.",
   primaryBtnText = "Start Your Project",
   primaryBtnHref = "/contact#contact-form",
-  secondaryBtnText = "BOOK A TECHNICAL DISCOVERY CALL",
+  secondaryBtnText = "BOOK A FREE CONSULTATION",
   className,
 }: CTASectionProps) {
   const { openDemoModal } = useDemoModal();

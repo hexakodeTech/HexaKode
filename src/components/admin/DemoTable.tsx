@@ -121,14 +121,14 @@ export default function DemoTable() {
       toast.error(res.error || "Failed to update status in database.");
       setDemos(prevDemos);
     } else {
-      toast.success(`Demo request status updated to ${status}.`);
+      toast.success(`Consultation status updated to ${status}.`);
       loadData();
     }
   };
 
   // Delete request
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this demo request? This action cannot be undone.")) {
+    if (!confirm("Are you sure you want to delete this consultation request? This action cannot be undone.")) {
       return;
     }
 
@@ -137,10 +137,10 @@ export default function DemoTable() {
 
     const res = await deleteDemoRequestAction(id);
     if (!res.success) {
-      toast.error(res.error || "Failed to delete demo request from database.");
+      toast.error(res.error || "Failed to delete consultation request from database.");
       setDemos(prevDemos);
     } else {
-      toast.success("Demo request deleted successfully.");
+      toast.success("Consultation request deleted successfully.");
       loadData();
     }
   };
@@ -211,28 +211,28 @@ export default function DemoTable() {
       {/* Dynamic Statistics Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatsCard
-          title="Total Requests"
+          title="Total Consultations"
           value={isLoading ? "..." : stats.total}
-          subtext="All scheduled walkthroughs"
+          subtext="All scheduled consultations"
           icon={Inbox}
           trend={{ value: "Live sync", type: "positive" }}
         />
         <StatsCard
-          title="New Requests"
+          title="New Consultations"
           value={isLoading ? "..." : stats.newRequests}
           subtext="Unprocessed submissions"
           icon={AlertCircle}
           trend={{ value: stats.newRequests > 0 ? "Action needed" : "Clean", type: stats.newRequests > 0 ? "negative" : "positive" }}
         />
         <StatsCard
-          title="Scheduled Demos"
+          title="Scheduled Consultations"
           value={isLoading ? "..." : stats.scheduledRequests}
-          subtext="Meetings scheduled"
+          subtext="Consultations scheduled"
           icon={Calendar}
           trend={{ value: "Active pipeline", type: "positive" }}
         />
         <StatsCard
-          title="Completed Demos"
+          title="Completed Consultations"
           value={isLoading ? "..." : stats.completedRequests}
           subtext="Successful pitches"
           icon={CheckCircle}
@@ -243,14 +243,14 @@ export default function DemoTable() {
       {/* Main Table Card */}
       <div className="relative">
         <DataTable
-          title="Demo Requests Dashboard"
-          subtitle="Manage scheduled platform walkthroughs, client sales meetings, and real-time requests"
+          title="Free Consultations Dashboard"
+          subtitle="Manage scheduled free consultations, client scoping calls, and real-time requests"
           searchValue={search}
           onSearchChange={(val) => {
             setSearch(val);
             setCurrentPage(1);
           }}
-          searchPlaceholder="Search demo requests..."
+          searchPlaceholder="Search consultations..."
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
@@ -314,7 +314,7 @@ export default function DemoTable() {
               <td colSpan={7} className="text-center py-16">
                 <div className="flex flex-col items-center justify-center gap-3 text-on-surface-variant/50">
                   <Calendar className="w-12 h-12 stroke-[1.25]" />
-                  <span className="text-sm font-medium">No demo requests found</span>
+                  <span className="text-sm font-medium">No consultations found</span>
                   <p className="text-xs max-w-xs leading-relaxed text-on-surface-variant/60">
                     Submit requests through the public form or update your search and status filters.
                   </p>
@@ -377,7 +377,7 @@ export default function DemoTable() {
                     <button
                       onClick={() => handleDelete(d.id)}
                       className="p-1 rounded text-on-surface-variant hover:bg-surface-container hover:text-error transition-all cursor-pointer"
-                      title="Delete Demo Request"
+                      title="Delete Consultation Request"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -396,7 +396,7 @@ export default function DemoTable() {
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3 mb-4">
               <div>
                 <h3 className="font-headline-sm text-sm font-semibold text-primary">
-                  Demo Request Details
+                  Consultation Details
                 </h3>
                 <span className="font-label-mono text-[9px] text-on-surface-variant/60 uppercase">
                   ID: {activeDemo.id}

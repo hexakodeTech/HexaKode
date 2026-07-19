@@ -53,8 +53,8 @@ export default function CTASection() {
               <PrimaryButton href="/contact#contact-form" variant="blue" className="btn-gradient-hover">
                 Start Your Project
               </PrimaryButton>
-              <SecondaryButton onClick={() => openDemoModal({ source: "Home Page", inquiryType: "Schedule a Demo" })} variant="dark">
-                Schedule a Demo
+              <SecondaryButton onClick={() => openDemoModal({ source: "Home Page Footer CTA", inquiryType: "Technical Discovery Call" })} variant="dark">
+                Book a Free Consultation
               </SecondaryButton>
             </motion.div>
           </div>

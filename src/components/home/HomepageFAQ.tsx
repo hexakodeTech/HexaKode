@@ -1,0 +1,156 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import Section from "../common/Section";
+import Container from "../common/Container";
+import SectionHeading from "../common/SectionHeading";
+import { fadeUp, staggerContainer } from "@/lib/motion";
+
+const FAQ_ITEMS = [
+  {
+    question: "What services does HexaKode provide?",
+    answer: "We design and develop custom websites, mobile applications, business management systems, enterprise software, UI/UX solutions, and cloud-based digital products tailored to your business needs.",
+  },
+  {
+    question: "How long does it take to complete a project?",
+    answer: "Project timelines depend on complexity. Small business websites are typically completed within 2–4 weeks, while larger web applications and mobile apps may take several weeks to a few months.",
+  },
+  {
+    question: "Do you develop mobile applications for Android and iOS?",
+    answer: "Yes. We build high-performance cross-platform mobile applications using Flutter, enabling a single codebase for both Android and iOS while maintaining a native-like experience.",
+  },
+  {
+    question: "Can you redesign or improve my existing website?",
+    answer: "Absolutely. We modernize outdated websites with improved design, better performance, enhanced security, and SEO best practices while preserving your existing business content where possible.",
+  },
+  {
+    question: "Will my website be SEO-friendly?",
+    answer: "Yes. Every website we develop follows modern technical SEO practices, including semantic HTML, structured metadata, optimized performance, responsive design, and clean URLs to improve search visibility.",
+  },
+  {
+    question: "Do you provide ongoing maintenance and support?",
+    answer: "Yes. We offer post-launch maintenance, security updates, performance monitoring, bug fixes, and feature enhancements to keep your digital products running smoothly.",
+  },
+  {
+    question: "How much does a website or mobile app cost?",
+    answer: "Every project is unique. Pricing depends on the scope, features, and business requirements. Contact us for a free consultation and a customized quotation.",
+  },
+  {
+    question: "How do I get started with HexaKode?",
+    answer: "Simply book a free consultation or contact us through our website. We'll discuss your goals, understand your requirements, and recommend the best solution for your business.",
+  },
+];
+
+export default function HomepageFAQ() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
+
+  const toggleAccordion = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  // Generate structured FAQ JSON-LD data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer,
+      },
+    })),
+  };
+
+  return (
+    <Section id="faq" variant="muted" spacing="large" className="border-b border-outline-variant/30">
+      {/* JSON-LD Schema structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      {/* Subtle absolute glowing decorative graphic */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(13,196,234,0.04)_0%,transparent_70%)] pointer-events-none filter blur-2xl z-0" />
+
+      <Container className="relative z-10">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col"
+        >
+          <motion.div variants={fadeUp}>
+            <SectionHeading
+              badge="FAQs"
+              title="Frequently Asked Questions"
+              subtitle="Find answers to some of the most common questions about our services, development process, pricing, and support."
+              align="center"
+              theme="light"
+            />
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="max-w-3xl mx-auto w-full mt-4 space-y-4"
+          >
+            {FAQ_ITEMS.map((item, idx) => {
+              const isOpen = activeIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-xl border border-outline-variant/30 bg-white/70 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-secondary/35 shadow-sm"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion(idx)}
+                    id={`faq-btn-${idx}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-content-${idx}`}
+                    className="w-full flex justify-between items-center px-6 py-5 text-left font-headline-sm text-[16px] md:text-[18px] font-semibold text-navy-dark hover:text-primary transition-colors cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:bg-secondary/5 rounded-t-xl"
+                  >
+                    <span>{item.question}</span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ease-in-out ${
+                        isOpen ? "rotate-180 text-secondary" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={`faq-content-${idx}`}
+                        role="region"
+                        aria-labelledby={`faq-btn-${idx}`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{
+                          height: "auto",
+                          opacity: 1,
+                          transition: { height: { duration: 0.35, ease: "easeOut" }, opacity: { duration: 0.25 } }
+                        }}
+                        exit={{
+                          height: 0,
+                          opacity: 0,
+                          transition: { height: { duration: 0.3, ease: "easeIn" }, opacity: { duration: 0.2 } }
+                        }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-6 pt-1 text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/10 bg-slate-50/20">
+                          {item.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </motion.div>
+        </motion.div>
+      </Container>
+    </Section>
+  );
+}

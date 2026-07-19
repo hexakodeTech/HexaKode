@@ -6,10 +6,13 @@ import Section from "../common/Section";
 import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
 import ServiceCard from "../common/ServiceCard";
+import SecondaryButton from "../common/SecondaryButton";
+import { useDemoModal } from "../common/DemoModal";
 import { SERVICES } from "../../constants/home";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 export default function ServicesSection() {
+  const { openDemoModal } = useDemoModal();
   return (
     <Section id="services" variant="white" spacing="large">
       {/* Background soft glowing elements */}
@@ -41,6 +44,15 @@ export default function ServicesSection() {
                 <ServiceCard service={service} />
               </motion.div>
             ))}
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="flex justify-center mt-12"
+          >
+            <SecondaryButton onClick={() => openDemoModal({ source: "Homepage Services Section", inquiryType: "Technical Discovery Call" })} variant="light">
+              Book a Free Consultation
+            </SecondaryButton>
           </motion.div>
         </motion.div>
       </Container>
