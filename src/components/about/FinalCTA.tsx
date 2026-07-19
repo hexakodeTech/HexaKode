@@ -1,10 +1,11 @@
-"use client";
+  "use client";
 
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import Section from "../ui/Section";
 import PrimaryButton from "../ui/PrimaryButton";
 import SecondaryButton from "../ui/SecondaryButton";
+import { useDemoModal } from "../common/DemoModal";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -20,6 +21,7 @@ const staggerContainer: Variants = {
 };
 
 export default function FinalCTA() {
+  const { openDemoModal } = useDemoModal();
   return (
     <Section variant="white" className="py-40 text-center relative overflow-hidden">
       <motion.div
@@ -37,7 +39,7 @@ export default function FinalCTA() {
         </motion.p>
         <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-6 justify-center">
           <PrimaryButton size="lg" href="/contact#contact-form">Join Our Journey</PrimaryButton>
-          <SecondaryButton size="lg" href="/contact#contact-form">Schedule a Workshop</SecondaryButton>
+          <SecondaryButton onClick={() => openDemoModal({ source: "About Page", inquiryType: "Technical Discovery Call" })} size="lg">Book a Free Consultation</SecondaryButton>
         </motion.div>
       </motion.div>
 

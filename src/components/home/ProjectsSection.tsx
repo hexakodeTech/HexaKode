@@ -8,6 +8,8 @@ import Section from "../common/Section";
 import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
 import ProjectCard from "../common/ProjectCard";
+import SecondaryButton from "../common/SecondaryButton";
+import { useDemoModal } from "../common/DemoModal";
 import { Project } from "../../types/home";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
@@ -16,6 +18,7 @@ interface ProjectsSectionProps {
 }
 
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
+  const { openDemoModal } = useDemoModal();
   return (
     <Section id="portfolio" variant="muted" spacing="large">
       <Container>
@@ -71,6 +74,15 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               ))}
             </motion.div>
           )}
+
+          <motion.div
+            variants={fadeUp}
+            className="flex justify-center mt-12"
+          >
+            <SecondaryButton onClick={() => openDemoModal({ source: "Homepage Portfolio Section", inquiryType: "Technical Discovery Call" })} variant="light">
+              Book a Free Consultation
+            </SecondaryButton>
+          </motion.div>
         </motion.div>
       </Container>
     </Section>

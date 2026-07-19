@@ -7,7 +7,7 @@ import FAQSection from "../../components/contact/FAQSection";
 
 export const metadata = {
   title: "Contact Us | HexaKode Engineering",
-  description: "Ready to engineer excellence? Contact HexaKode to scope your project, hire a dedicated development team, or schedule a technical discovery call.",
+  description: "Ready to engineer excellence? Contact HexaKode to scope your project, hire a dedicated development team, or schedule a free consultation.",
 };
 
 export default function ContactPage() {

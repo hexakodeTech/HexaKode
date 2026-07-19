@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Container from "../ui/Container";
 import PrimaryButton from "../ui/PrimaryButton";
+import { useDemoModal } from "../common/DemoModal";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 export default function PortfolioCTA() {
+  const { openDemoModal } = useDemoModal();
   return (
     <section className="py-24 bg-primary-container text-on-primary-container border-t border-outline-variant/10 overflow-hidden">
       <Container>
@@ -29,7 +31,7 @@ export default function PortfolioCTA() {
           </motion.div>
 
           {/* Right Action Button */}
-          <motion.div variants={fadeUp} className="shrink-0 w-full sm:w-auto">
+          <motion.div variants={fadeUp} className="shrink-0 w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4">
             <PrimaryButton
               href="/contact#contact-form"
               variant="secondary" // Under primary-container, variant secondary yields sky blue background
@@ -38,6 +40,12 @@ export default function PortfolioCTA() {
             >
               Get Started <ArrowRight className="w-5 h-5" />
             </PrimaryButton>
+            <button
+              onClick={() => openDemoModal({ source: "Portfolio Page CTA", inquiryType: "Technical Discovery Call" })}
+              className="w-full sm:w-auto font-bold rounded-lg flex items-center justify-center gap-2 px-8 py-4 border border-white/20 text-white hover:bg-white/10 transition-all duration-300 cursor-pointer bg-transparent"
+            >
+              Book a Free Consultation
+            </button>
           </motion.div>
         </motion.div>
       </Container>

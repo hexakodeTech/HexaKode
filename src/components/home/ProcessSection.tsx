@@ -6,10 +6,13 @@ import Section from "../common/Section";
 import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
 import ProcessCard from "../common/ProcessCard";
+import SecondaryButton from "../common/SecondaryButton";
+import { useDemoModal } from "../common/DemoModal";
 import { PROCESS_STEPS } from "../../constants/home";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 export default function ProcessSection() {
+  const { openDemoModal } = useDemoModal();
   return (
     <Section id="process" variant="white" spacing="large">
       {/* Background soft glowing elements */}
@@ -44,6 +47,15 @@ export default function ProcessSection() {
                 <ProcessCard step={step} index={index} />
               </motion.div>
             ))}
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="flex justify-center mt-12"
+          >
+            <SecondaryButton onClick={() => openDemoModal({ source: "Homepage Process Section", inquiryType: "Technical Discovery Call" })} variant="light">
+              Book a Free Consultation
+            </SecondaryButton>
           </motion.div>
         </motion.div>
       </Container>

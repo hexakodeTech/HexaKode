@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 import Container from "../common/Container";
 import PrimaryButton from "../common/PrimaryButton";
 import SecondaryButton from "../common/SecondaryButton";
+import { useDemoModal } from "../common/DemoModal";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 export default function HeroSection() {
+  const { openDemoModal } = useDemoModal();
   return (
     <section className="relative min-h-screen flex items-center pt-28 pb-16 md:py-32 overflow-hidden bg-white">
       {/* Background soft glowing elements */}
@@ -53,6 +55,9 @@ export default function HeroSection() {
             <PrimaryButton href="/contact#contact-form" variant="dark" showArrow className="btn-gradient-hover">
               Start Your Project
             </PrimaryButton>
+            <SecondaryButton onClick={() => openDemoModal({ source: "Hero CTA", inquiryType: "Technical Discovery Call" })} variant="light">
+              Book a Free Consultation
+            </SecondaryButton>
             <SecondaryButton href="#portfolio" variant="light">
               View Portfolio
             </SecondaryButton>
