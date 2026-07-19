@@ -161,13 +161,15 @@ export function DemoModalProvider({ children }: { children: React.ReactNode }) {
                       <div className="flex-none pt-8 px-8 pb-4 md:pt-10 md:px-10 md:pb-6 text-left pr-12 md:pr-14">
                         <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 bg-white/5 text-secondary border border-white/10">
                           <Calendar className="w-3.5 h-3.5 text-secondary" />
-                          {modalOptions.inquiryType || "Schedule a Demo"}
+                          {modalOptions.inquiryType === "Technical Discovery Call" ? "Free Consultation" : (modalOptions.inquiryType || "Schedule a Demo")}
                         </span>
                         <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                          {modalOptions.inquiryType ? "Book a Session" : "Experience HexaKode"}
+                          {modalOptions.inquiryType === "Technical Discovery Call" ? "Book a Free Consultation" : (modalOptions.inquiryType ? "Book a Session" : "Experience HexaKode")}
                         </h3>
                         <p className="text-slate-400 text-sm md:text-base mt-2">
-                          {modalOptions.inquiryType 
+                          {modalOptions.inquiryType === "Technical Discovery Call"
+                            ? "Fill out the details below, and our team will get in touch to schedule your free consultation."
+                            : modalOptions.inquiryType 
                             ? "Fill out the details below, and our team will get in touch to schedule your technical discovery call."
                             : "Fill out the details below, and our team will get in touch to schedule a personalized walkthrough."}
                         </p>
@@ -228,7 +230,7 @@ export function DemoModalProvider({ children }: { children: React.ReactNode }) {
                           disabled={isLoading}
                           className="w-full font-headline-sm py-4 shadow-md bg-secondary text-white hover:brightness-110"
                         >
-                          {isLoading ? "Submitting..." : modalOptions.inquiryType ? "Confirm Call" : "Schedule My Demo"}
+                          {isLoading ? "Submitting..." : modalOptions.inquiryType === "Technical Discovery Call" ? "Confirm Consultation" : modalOptions.inquiryType ? "Confirm Call" : "Schedule My Demo"}
                         </PrimaryButton>
                       </div>
                     </form>
@@ -261,7 +263,7 @@ export function DemoModalProvider({ children }: { children: React.ReactNode }) {
                     </h3>
                     <p className="font-body-lg text-slate-400 max-w-sm mb-8 leading-relaxed">
                       {modalOptions.inquiryType === "Technical Discovery Call"
-                        ? "Thank you for booking a session. An engineering representative from HexaKode will reach out to confirm your technical discovery call shortly."
+                        ? "Thank you for booking a session. An engineering representative from HexaKode will reach out to confirm your free consultation shortly."
                         : "Thank you for scheduling a demo. An engineering representative from HexaKode will reach out to confirm your scheduled walkthrough shortly."}
                     </p>
                     <PrimaryButton

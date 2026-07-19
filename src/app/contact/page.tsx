@@ -4,10 +4,11 @@ import Footer from "../../components/layout/Footer";
 import ContactHero from "../../components/contact/ContactHero";
 import ContactGridSection from "../../components/contact/ContactGridSection";
 import FAQSection from "../../components/contact/FAQSection";
+import GoogleReviewCTA from "../../components/common/GoogleReviewCTA";
 
 export const metadata = {
   title: "Contact Us | HexaKode Engineering",
-  description: "Ready to engineer excellence? Contact HexaKode to scope your project, hire a dedicated development team, or schedule a technical discovery call.",
+  description: "Ready to engineer excellence? Contact HexaKode to scope your project, hire a dedicated development team, or schedule a free consultation.",
 };
 
 export default function ContactPage() {
@@ -25,6 +26,11 @@ export default function ContactPage() {
 
         {/* FAQ Section */}
         <FAQSection />
+
+        {/* Google Reviews Card */}
+        <div className="py-12 md:py-16 border-t border-outline-variant/10 bg-slate-50/20">
+          <GoogleReviewCTA variant="card" />
+        </div>
       </main>
 
       <Footer />

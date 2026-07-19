@@ -4,8 +4,11 @@ import HeroSection from "@/components/home/HeroSection";
 import TechnologiesSection from "@/components/home/TechnologiesSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
+import WhyChooseHexaKode from "@/components/home/WhyChooseHexaKode";
+import HomepageFAQ from "@/components/home/HomepageFAQ";
 import ProcessSection from "@/components/home/ProcessSection";
 import CTASection from "@/components/home/CTASection";
+import GoogleReviewCTA from "@/components/common/GoogleReviewCTA";
 import Footer from "@/components/layout/Footer";
 import { getPublishedProjects } from "@/modules/portfolio/services/portfolio.service";
 import { mapDbCategoryToPublic } from "@/modules/portfolio/types/portfolio";
@@ -44,8 +47,11 @@ export default async function Home() {
         <TechnologiesSection />
         <ServicesSection />
         <ProjectsSection projects={mappedProjects} />
+        <WhyChooseHexaKode />
+        <HomepageFAQ />
         <ProcessSection />
         <CTASection />
+        <GoogleReviewCTA variant="section" />
       </main>
       <Footer />
     </>
