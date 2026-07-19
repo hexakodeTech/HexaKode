@@ -4,6 +4,7 @@ import HeroSection from "@/components/home/HeroSection";
 import TechnologiesSection from "@/components/home/TechnologiesSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
+import WhyChooseHexaKode from "@/components/home/WhyChooseHexaKode";
 import ProcessSection from "@/components/home/ProcessSection";
 import CTASection from "@/components/home/CTASection";
 import Footer from "@/components/layout/Footer";
@@ -44,6 +45,7 @@ export default async function Home() {
         <TechnologiesSection />
         <ServicesSection />
         <ProjectsSection projects={mappedProjects} />
+        <WhyChooseHexaKode />
         <ProcessSection />
         <CTASection />
       </main>
