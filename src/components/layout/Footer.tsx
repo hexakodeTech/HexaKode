@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SOCIAL_LINKS } from "@/constants/contact";
 import Brand from "../common/Brand";
+import GoogleReviewCTA from "../common/GoogleReviewCTA";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -174,6 +175,7 @@ export default function Footer() {
             <p className="font-body-sm text-body-sm text-on-primary-container/50">
               &copy; {currentYear} HexaKode Engineering. All rights reserved.
             </p>
+            <GoogleReviewCTA variant="link" />
           </div>
         </div>
 
@@ -369,7 +371,8 @@ export default function Footer() {
           <div className="w-full border-t border-outline-variant/10 my-4" />
 
           {/* SECTION 6 — COPYRIGHT */}
-          <div className="flex flex-col items-center text-center pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
+          <div className="flex flex-col items-center text-center pb-[calc(2rem+env(safe-area-inset-bottom,0px))] gap-3">
+            <GoogleReviewCTA variant="link" />
             <p className="font-body-sm text-body-sm text-on-primary-container/50 leading-relaxed">
               &copy; {currentYear} HexaKode Engineering.<br />All Rights Reserved.
             </p>

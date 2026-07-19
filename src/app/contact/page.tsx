@@ -4,6 +4,7 @@ import Footer from "../../components/layout/Footer";
 import ContactHero from "../../components/contact/ContactHero";
 import ContactGridSection from "../../components/contact/ContactGridSection";
 import FAQSection from "../../components/contact/FAQSection";
+import GoogleReviewCTA from "../../components/common/GoogleReviewCTA";
 
 export const metadata = {
   title: "Contact Us | HexaKode Engineering",
@@ -25,6 +26,11 @@ export default function ContactPage() {
 
         {/* FAQ Section */}
         <FAQSection />
+
+        {/* Google Reviews Card */}
+        <div className="py-12 md:py-16 border-t border-outline-variant/10 bg-slate-50/20">
+          <GoogleReviewCTA variant="card" />
+        </div>
       </main>
 
       <Footer />
