@@ -5,6 +5,7 @@ import TechnologiesSection from "@/components/home/TechnologiesSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import WhyChooseHexaKode from "@/components/home/WhyChooseHexaKode";
+import HomepageFAQ from "@/components/home/HomepageFAQ";
 import ProcessSection from "@/components/home/ProcessSection";
 import CTASection from "@/components/home/CTASection";
 import Footer from "@/components/layout/Footer";
@@ -46,6 +47,7 @@ export default async function Home() {
         <ServicesSection />
         <ProjectsSection projects={mappedProjects} />
         <WhyChooseHexaKode />
+        <HomepageFAQ />
         <ProcessSection />
         <CTASection />
       </main>
