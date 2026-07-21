@@ -28,7 +28,7 @@ export const SERVICES: Service[] = [
     description: "High-performance, accessible, and scalable web applications built with modern frameworks.",
     tags: ["SaaS Platforms", "E-commerce Engines"],
     highlighted: false,
-    href: "#services",
+    href: "/services/web-development",
     iconName: "Monitor",
   },
   {
@@ -37,7 +37,7 @@ export const SERVICES: Service[] = [
     description: "Native and cross-platform mobile experiences that engage users and drive retention.",
     tags: ["iOS & Android", "React Native"],
     highlighted: false,
-    href: "#services",
+    href: "/services/mobile-app-development",
     iconName: "Smartphone",
   },
   {
@@ -46,7 +46,7 @@ export const SERVICES: Service[] = [
     description: "User-centric design focused on conversion and intuitive information architecture.",
     tags: ["Visual Systems", "Prototyping"],
     highlighted: false,
-    href: "#services",
+    href: "/services/ui-ux-design",
     iconName: "Palette",
   },
   {
@@ -55,7 +55,7 @@ export const SERVICES: Service[] = [
     description: "Tailored enterprise solutions that automate workflows and solve complex business challenges.",
     tags: ["SaaS Platforms", "Cloud Integrations"],
     highlighted: true,
-    href: "#services",
+    href: "/contact#contact-form",
     iconName: "Code2",
   },
 ];

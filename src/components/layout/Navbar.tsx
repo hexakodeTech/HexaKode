@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe, Smartphone, Palette, ChevronDown } from "lucide-react";
 import PrimaryButton from "../ui/PrimaryButton";
 import Brand from "../common/Brand";
 import { cn } from "../../lib/utils";
@@ -18,11 +18,94 @@ const NAV_LINKS = [
   { label: "Book a Free Consultation", href: "#", onClick: true },
 ];
 
+const SERVICE_DROPDOWN_ITEMS = [
+  {
+    label: "Website Development",
+    href: "/services/web-development",
+    description: "Custom websites, business websites & web applications",
+    icon: Globe,
+  },
+  {
+    label: "Mobile App Development",
+    href: "/services/mobile-app-development",
+    description: "Android, iOS & Flutter applications",
+    icon: Smartphone,
+  },
+  {
+    label: "UI/UX Design",
+    href: "/services/ui-ux-design",
+    description: "User interface, user experience & product design",
+    icon: Palette,
+  },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileSubmenuOpen, setIsMobileSubmenuOpen] = useState(false);
   const pathname = usePathname();
   const { openDemoModal } = useDemoModal();
+
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 150);
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    if (dropdownRef.current?.contains(e.relatedTarget as Node)) {
+      return;
+    }
+    timeoutRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 150);
+  };
+
+  const handleItemBlur = (e: React.FocusEvent) => {
+    if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+      timeoutRef.current = setTimeout(() => {
+        setIsDropdownOpen(false);
+      }, 150);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!isDropdownOpen) return;
+    
+    const panel = dropdownRef.current?.querySelector('[role="menu"]');
+    const focusableElements = panel?.querySelectorAll('a');
+    if (!focusableElements || focusableElements.length === 0) return;
+    
+    const items = Array.from(focusableElements) as HTMLAnchorElement[];
+    const activeIndex = items.indexOf(document.activeElement as HTMLAnchorElement);
+    
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const nextIndex = (activeIndex + 1) % items.length;
+      items[nextIndex].focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prevIndex = (activeIndex - 1 + items.length) % items.length;
+      items[prevIndex].focus();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setIsDropdownOpen(false);
+      const triggerLink = dropdownRef.current?.querySelector('a');
+      (triggerLink as HTMLElement)?.focus();
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,8 +116,30 @@ export default function Navbar() {
       }
     };
 
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsDropdownOpen(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -69,12 +174,79 @@ export default function Navbar() {
                 <button
                   key={link.label}
                   onClick={() => openDemoModal({ source: "Navigation", inquiryType: "Technical Discovery Call" })}
-                  className="font-body-md transition-colors duration-300 hover:text-primary text-on-surface-variant cursor-pointer bg-transparent border-none outline-none p-0"
+                  className="font-body-md transition-colors duration-300 hover:text-primary text-on-surface-variant cursor-pointer bg-transparent border-none outline-none p-0 text-left"
                 >
                   {link.label}
                 </button>
               );
             }
+
+            if (link.label === "Services") {
+              return (
+                <div
+                  key={link.label}
+                  ref={dropdownRef}
+                  className="relative py-2 group/dropdown"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onKeyDown={handleKeyDown}
+                >
+                  <Link
+                    href={link.href}
+                    onFocus={handleMouseEnter}
+                    onBlur={handleBlur}
+                    aria-haspopup="menu"
+                    aria-expanded={isDropdownOpen}
+                    className={cn(
+                      "font-body-md transition-colors duration-300 hover:text-primary flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-primary/20 rounded px-1.5 py-0.5 outline-none select-none",
+                      pathname.startsWith("/services")
+                        ? "text-primary font-semibold border-b border-secondary"
+                        : "text-on-surface-variant"
+                    )}
+                  >
+                    <span>{link.label}</span>
+                    <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", isDropdownOpen ? "rotate-180 text-primary" : "text-on-surface-variant")} />
+                  </Link>
+
+                  {/* Dropdown Panel */}
+                  <div
+                    role="menu"
+                    aria-label="Services Submenu"
+                    className={cn(
+                      "absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 bg-white rounded-2xl border border-outline-variant/30 shadow-premium p-4 flex flex-col gap-1 transition-all duration-200 origin-top z-50",
+                      isDropdownOpen ? "opacity-100 scale-100 visible pointer-events-auto" : "opacity-0 scale-95 invisible pointer-events-none"
+                    )}
+                  >
+                    {SERVICE_DROPDOWN_ITEMS.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          role="menuitem"
+                          onBlur={handleItemBlur}
+                          className="flex gap-4 p-3.5 rounded-xl hover:bg-slate-50 transition-colors duration-200 text-left group focus-visible:ring-2 focus-visible:ring-primary/20 outline-none"
+                          prefetch={true}
+                        >
+                          <div className="w-10 h-10 rounded-lg bg-secondary-container/30 text-primary flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110">
+                            <Icon className="w-5 h-5 text-secondary" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-navy-dark text-sm group-hover:text-primary transition-colors">
+                              {item.label}
+                            </h4>
+                            <p className="text-slate-400 text-xs mt-1 leading-relaxed">
+                              {item.description}
+                            </p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+
             const isActive = pathname === link.href;
             return (
               <Link
@@ -83,7 +255,7 @@ export default function Navbar() {
                 className={cn(
                   "font-body-md transition-colors duration-300 hover:text-primary",
                   isActive
-                    ? "text-primary font-semibold border-b-2 border-secondary"
+                    ? "text-primary font-semibold border-b border-secondary"
                     : "text-on-surface-variant"
                 )}
               >
@@ -139,6 +311,60 @@ export default function Navbar() {
                 </button>
               );
             }
+
+            if (link.label === "Services") {
+              return (
+                <div key={link.label} className="w-full flex flex-col">
+                  <div className="flex items-center justify-between w-full py-1">
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "font-body-md transition-colors duration-300 hover:text-primary",
+                        pathname.startsWith("/services") ? "text-primary font-semibold" : "text-on-surface-variant"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                    <button
+                      onClick={() => setIsMobileSubmenuOpen(!isMobileSubmenuOpen)}
+                      className="p-2 -mr-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+                      aria-label="Toggle services submenu"
+                    >
+                      <ChevronDown className={cn("w-5 h-5 transition-transform duration-200", isMobileSubmenuOpen ? "rotate-180" : "")} />
+                    </button>
+                  </div>
+                  
+                  {/* Mobile Submenu Items */}
+                  <div
+                    className={cn(
+                      "flex flex-col gap-3 pl-4 border-l border-slate-100 overflow-hidden transition-all duration-300 origin-top mt-2",
+                      isMobileSubmenuOpen ? "max-h-[300px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none mt-0"
+                    )}
+                  >
+                    {SERVICE_DROPDOWN_ITEMS.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={() => {
+                            setIsOpen(false);
+                            setIsMobileSubmenuOpen(false);
+                          }}
+                          className="flex items-center gap-3 py-2 text-sm text-on-surface-variant hover:text-primary transition-colors"
+                          prefetch={true}
+                        >
+                          <Icon className="w-4 h-4 text-secondary shrink-0" />
+                          <span>{item.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+
             const isActive = pathname === link.href;
             return (
               <Link

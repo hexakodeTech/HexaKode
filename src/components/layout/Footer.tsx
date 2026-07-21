@@ -14,8 +14,8 @@ export default function Footer() {
     <footer className="bg-primary-container text-on-primary-container relative w-full border-t border-outline-variant/10">
       {/* Desktop/Tablet Footer (768px and above) */}
       <div className="hidden md:block">
-        {/* 4-Column Grid: Brand 50% | Company 25% | Legal 25% */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        {/* 5-Column Grid: Brand 40% | Services 20% | Company 20% | Legal 20% */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-gutter py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           
           {/* Branding & Socials — 50% of footer width */}
           <div className="flex flex-col items-start md:col-span-2">
@@ -115,7 +115,31 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Company Links — 25% width */}
+            {/* Services Links — 20% width */}
+            <div>
+              <h5 className="font-label-mono text-label-mono text-white mb-6 uppercase tracking-wider">
+                Services
+              </h5>
+              <ul className="space-y-4 font-body-sm text-body-sm">
+                <li>
+                  <Link href="/services/web-development" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    Website Development
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services/mobile-app-development" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    Mobile App Development
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services/ui-ux-design" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    UI/UX Design
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company Links — 20% width */}
             <div>
               <h5 className="font-label-mono text-label-mono text-white mb-6 uppercase tracking-wider">
                 Company
@@ -322,7 +346,34 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links → Legal: 24px spacing */}
+          {/* Quick Links → Services: 24px spacing */}
+          <div className="w-full border-t border-outline-variant/10 my-3" />
+
+          {/* SECTION 3.5 — SERVICES */}
+          <div className="flex flex-col items-center">
+            <h5 className="font-label-mono text-label-mono text-white mb-4 uppercase tracking-wider">
+              Services
+            </h5>
+            <ul className="flex flex-col items-center space-y-4 font-body-sm text-body-sm">
+              <li>
+                <Link href="/services/web-development" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  Website Development
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/mobile-app-development" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  Mobile App Development
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/ui-ux-design" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  UI/UX Design
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Services → Legal: 24px spacing */}
           <div className="w-full border-t border-outline-variant/10 my-3" />
 
           {/* SECTION 4 — LEGAL */}
