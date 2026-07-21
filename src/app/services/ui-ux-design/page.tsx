@@ -319,7 +319,7 @@ export default async function UiUxDesignPage() {
   return (
     <ServiceLandingPageTemplate
       badge="UI/UX DESIGN KERALA"
-      h1="Bespoke UI UX Design Company in Kerala"
+      h1="UI UX Design"
       heroDescription="Design products that people love. We combine deep user research, wireframing, and interactive prototyping to build beautiful, intuitive, and accessible digital interfaces that drive business conversions and engagement."
       serviceName="UI/UX Design"
       serviceUrl="/services/ui-ux-design"

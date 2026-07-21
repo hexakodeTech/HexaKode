@@ -160,6 +160,7 @@ export default function ServiceLandingPageTemplate({
 
   const serviceQueryParam = SERVICE_PARAM_MAP[serviceUrl] || "";
   const contactHref = serviceQueryParam ? `/contact?service=${serviceQueryParam}` : "/contact";
+  const hasPortfolio = projects && projects.length > 0;
 
   // JSON-LD Structured Data
   const serviceSchema = {
@@ -291,12 +292,14 @@ export default function ServiceLandingPageTemplate({
                   >
                     Book a Free Consultation
                   </button>
-                  <a
-                    href="#portfolio"
-                    className="inline-flex items-center justify-center font-label-mono text-label-mono rounded px-8 py-4 border border-outline-variant/40 text-navy-dark hover:bg-slate-50 transition-all duration-300 text-base font-semibold cursor-pointer"
-                  >
-                    View Our Work
-                  </a>
+                  {hasPortfolio && (
+                    <a
+                      href="#portfolio"
+                      className="inline-flex items-center justify-center font-label-mono text-label-mono rounded px-8 py-4 border border-outline-variant/40 text-navy-dark hover:bg-slate-50 transition-all duration-300 text-base font-semibold cursor-pointer"
+                    >
+                      View Our Work
+                    </a>
+                  )}
                 </div>
                 {/* Trust Indicators */}
                 <div className="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center gap-6">
@@ -901,7 +904,7 @@ export default function ServiceLandingPageTemplate({
         </Section>
 
         {/* PORTFOLIO GRID SECTION (Automatically Filtered) */}
-        {projects.length > 0 && (
+        {hasPortfolio && (
           <Section id="portfolio" variant="muted" spacing="large">
             <Container>
               <motion.div
