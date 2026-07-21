@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search") || undefined;
     const category = searchParams.get("category") || undefined;
     const tag = searchParams.get("tag") || undefined;
-    const status = (searchParams.get("status") as BlogStatus) || undefined;
+    const rawStatus = searchParams.get("status");
+    const status = (!rawStatus || rawStatus.toLowerCase() === "all") ? undefined : (rawStatus as BlogStatus);
     const featured = searchParams.get("featured") === "true" ? true : undefined;
     const sort = (searchParams.get("sort") as "newest" | "oldest") || "newest";
     const page = parseInt(searchParams.get("page") || "1", 10);
