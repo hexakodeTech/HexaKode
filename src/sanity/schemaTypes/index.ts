@@ -6,6 +6,9 @@ import { portfolio } from "./portfolio";
 import { testimonial } from "./testimonial";
 import { navigation } from "./navigation";
 import { footer } from "./footer";
+import { blog } from "./blog";
+import { blogCategory } from "./blogCategory";
+import { blogTag } from "./blogTag";
 
 export const schemaTypes = [
   seo,
@@ -16,4 +19,7 @@ export const schemaTypes = [
   testimonial,
   navigation,
   footer,
+  blog,
+  blogCategory,
+  blogTag,
 ];

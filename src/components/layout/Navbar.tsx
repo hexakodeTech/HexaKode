@@ -13,6 +13,7 @@ import { useDemoModal } from "../common/DemoModal";
 const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
+  { label: "Blog", href: "/blog" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
   { label: "Book a Free Consultation", href: "#", onClick: true },
