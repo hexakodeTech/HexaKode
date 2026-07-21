@@ -42,19 +42,35 @@ export interface TocHeading {
 
 /**
  * Extract H2/H3 headings from HTML for Table of Contents.
- * Headings must have an id attribute (set by Tiptap).
+ * Parses headings with or without explicit id attributes, generating clean fallback ids when needed.
  */
 export function extractTableOfContents(htmlContent: string): TocHeading[] {
+  if (!htmlContent) return [];
   const headings: TocHeading[] = [];
-  const regex = /<h([23])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h\1>/gi;
+  const regex = /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi;
   let match;
+  let index = 0;
+
   while ((match = regex.exec(htmlContent)) !== null) {
     const level = parseInt(match[1], 10);
-    const id = match[2];
-    const text = match[3].replace(/<[^>]*>/g, "").trim();
-    if (id && text) {
-      headings.push({ id, level, text });
+    const attrs = match[2];
+    const rawText = match[3];
+    const text = rawText.replace(/<[^>]*>/g, "").trim();
+    if (!text) continue;
+
+    const idMatch = attrs.match(/id="([^"]*)"/i);
+    let id = idMatch ? idMatch[1] : "";
+    if (!id) {
+      id =
+        text
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-") || `heading-${index}`;
     }
+
+    headings.push({ id, level, text });
+    index++;
   }
   return headings;
 }
