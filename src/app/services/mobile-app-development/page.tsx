@@ -206,6 +206,10 @@ const TECHNOLOGIES = [
     reason: "Google's Flutter framework and Dart programming language allow us to construct cross-platform applications with native performance, fluid UI systems, and compile times that speed up launch cycles.",
   },
   {
+    name: "React Native",
+    reason: "Build high-performance cross-platform mobile applications for Android and iOS using React Native. We create scalable, maintainable apps with a native user experience while sharing a single codebase to reduce development time and cost.",
+  },
+  {
     name: "Firebase Suite",
     reason: "Firebase handles real-time authentication, serverless database sync, instant cloud messaging (push notifications), and analytics tracking, enabling rapid mobile development.",
   },
@@ -319,8 +323,8 @@ export default async function MobileAppDevelopmentPage() {
   return (
     <ServiceLandingPageTemplate
       badge="MOBILE APP DEVELOPMENT KERALA"
-      h1="Flutter Mobile App Development Company in Kerala"
-      heroDescription="High-performance, cross-platform Android and iOS applications built with Flutter. We develop feature-rich mobile apps that stream live data, operate offline, and deliver native-like user experiences for startups and enterprises."
+      h1="Mobile App Development"
+      heroDescription="High-performance, cross-platform Android and iOS applications built with Flutter and React Native. We develop feature-rich mobile apps that stream live data, operate offline, and deliver native-like user experiences for startups and enterprises."
       serviceName="Mobile App Development"
       serviceUrl="/services/mobile-app-development"
       metaDescription="Seeking a Mobile App Development Company in Kerala? HexaKode designs high-performance iOS and Android applications using Flutter and clean architecture."

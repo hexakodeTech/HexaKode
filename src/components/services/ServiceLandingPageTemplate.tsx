@@ -49,6 +49,8 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 export interface Technology {
   name: string;
   reason: string;
+  highlights?: string[];
+  whyWeUse?: string;
 }
 
 export interface FAQItem {
@@ -779,14 +781,30 @@ export default function ServiceLandingPageTemplate({
               >
                 {technologies.map((tech, idx) => (
                   <motion.div key={idx} variants={fadeUp} className="h-full">
-                    <div className="p-8 h-full bg-slate-50/50 rounded-2xl border border-slate-100/80 flex flex-col justify-start">
+                    <div className="p-8 h-full bg-slate-50/50 rounded-2xl border border-slate-100/80 flex flex-col justify-start hover:shadow-premium transition-all duration-300">
                       <h4 className="text-xl font-bold text-navy-dark mb-3 tracking-tight flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-secondary" />
                         {tech.name}
                       </h4>
-                      <p className="text-slate-500 text-sm leading-relaxed">
+                      <p className="text-slate-500 text-sm leading-relaxed mb-4">
                         {tech.reason}
                       </p>
+                      
+                      {tech.highlights && tech.highlights.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
+                          {tech.highlights.map((h, hIdx) => (
+                            <span key={hIdx} className="text-[10px] font-semibold bg-primary/5 text-primary border border-primary/10 rounded-full px-2.5 py-0.5">
+                              {h}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {tech.whyWeUse && (
+                        <div className="mt-2 pt-3 border-t border-slate-100 text-xs text-slate-500 italic leading-relaxed">
+                          {tech.whyWeUse}
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 ))}
