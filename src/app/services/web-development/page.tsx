@@ -73,33 +73,131 @@ const WHY_CHOOSE_POINTS = [
 
 const PROCESS_STEPS = [
   {
-    title: "Discovery & Strategy",
-    desc: "We sit down with you to outline your business goals, identify target customer personas, audit competitors, and establish functional specifications.",
+    title: "Discovery",
+    iconName: "search",
+    duration: "1–2 Days",
+    summary: "Understanding your business goals and market landscape.",
+    bullets: [
+      "Identify core business goals",
+      "Profile target customer audience",
+      "Audit competitor websites & features",
+      "Clarify specific technical integrations"
+    ],
+    deliverables: [
+      "Requirement Analysis Document",
+      "Project Scope Definition",
+      "Site Architecture Map"
+    ],
+    businessValue: "Eliminates scope creep and aligns technical specifications with actual business goals."
   },
   {
-    title: "Architecture & Wireframes",
-    desc: "Our engineering team designs the logical sitemap, constructs user-friendly navigation flows, and plans database models and API integrations.",
+    title: "Planning",
+    iconName: "clipboard-list",
+    duration: "2–3 Days",
+    summary: "Creating a concrete roadmap and technical blueprint.",
+    bullets: [
+      "Determine database schema & API layers",
+      "Select third-party integrations & CMS",
+      "Establish milestones & sprint schedules",
+      "Prepare staging environment architecture"
+    ],
+    deliverables: [
+      "Technical Architecture Diagram",
+      "Milestone Timeline & Schedule",
+      "Work Breakdown Structure"
+    ],
+    businessValue: "Guarantees resource availability and provides transparency on project delivery schedules."
   },
   {
-    title: "Custom UI/UX Design",
-    desc: "We draft premium, bespoke interface screens in Figma based on your brand colors. We construct clickable high-fidelity prototypes for your review.",
+    title: "UI/UX Design",
+    iconName: "palette",
+    duration: "1 Week",
+    summary: "Crafting modern, custom, and conversion-focused screens.",
+    bullets: [
+      "Sketch layout wireframes & flows",
+      "Create bespoke design system tokens",
+      "Design high-fidelity desktop & mobile UI",
+      "Build interactive Figma prototypes"
+    ],
+    deliverables: [
+      "Figma Design File Access",
+      "Interactive User Prototypes",
+      "Component Design System"
+    ],
+    businessValue: "Establishes a premium brand aesthetic and optimizes visual elements for higher user conversion rates."
   },
   {
-    title: "Clean React/Next.js Dev",
-    desc: "We write clean, modular, and typed React components using TypeScript and Tailwind CSS. We ensure components are highly reusable and accessible.",
+    title: "Development",
+    iconName: "code",
+    duration: "2–3 Weeks",
+    summary: "Coding clean, fast, and structured Next.js code.",
+    bullets: [
+      "Configure semantic Next.js frontend pages",
+      "Write type-safe TypeScript code blocks",
+      "Integrate headless CMS database schema",
+      "Build responsive Tailwind CSS layouts"
+    ],
+    deliverables: [
+      "Staging Deployment Access",
+      "Version-Controlled Git Repo",
+      "Configured Headless CMS Interface"
+    ],
+    businessValue: "Delivers a fast, highly secure, and editable site that scales without server management."
   },
   {
-    title: "Headless CMS Configuration",
-    desc: "We implement headless schemas, enabling your team to edit text, publish case studies, and upload media without running deploy scripts.",
+    title: "Testing",
+    iconName: "test-tube",
+    duration: "3–4 Days",
+    summary: "Validating performance, security, and responsiveness.",
+    bullets: [
+      "Run Lighthouse & Core Web Vitals checks",
+      "Test responsiveness on mobile & desktop",
+      "Perform security & data leak audits",
+      "Validate third-party API payloads"
+    ],
+    deliverables: [
+      "Performance Score Reports",
+      "Cross-Browser Audit Sheets",
+      "QA Verification Checklist"
+    ],
+    businessValue: "Ensures error-free operation and top-tier speed scores to improve Google Search rankings."
   },
   {
-    title: "Core Web Vitals Testing",
-    desc: "We run page audits, check mobile responsiveness, test cross-browser compatibility, optimize media, and secure zero-layout shifts.",
+    title: "Deployment",
+    iconName: "rocket",
+    duration: "1 Day",
+    summary: "Launching to production on serverless edge CDNs.",
+    bullets: [
+      "Link custom domain with Vercel/AWS CDN",
+      "Generate public sitemap & robots file",
+      "Configure SSL certificates & DNS routing",
+      "Inject structured schema metadata"
+    ],
+    deliverables: [
+      "Live Production Website URL",
+      "Registered Sitemap Index",
+      "Google Analytics Dashboard Setup"
+    ],
+    businessValue: "Launches your website globally on CDN servers, ensuring near-instant page load speeds."
   },
   {
-    title: "Deployment & Support",
-    desc: "We deploy the production bundle to global serverless edge servers. We remain on hand for continuous performance optimization and support.",
-  },
+    title: "Support",
+    iconName: "wrench",
+    duration: "Ongoing",
+    summary: "Providing proactive monitoring and performance updates.",
+    bullets: [
+      "Monitor uptime & API health checks",
+      "Configure periodic security updates",
+      "Deliver custom feature enhancements",
+      "Optimize loading speeds as content grows"
+    ],
+    deliverables: [
+      "Monthly Maintenance Reports",
+      "Dedicated Slack Channels Support",
+      "Proactive Bug Hotfixes"
+    ],
+    businessValue: "Protects your investment by keeping the platform secure, optimized, and adapted to user needs."
+  }
 ];
 
 const TECHNOLOGIES = [

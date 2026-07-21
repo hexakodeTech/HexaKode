@@ -73,33 +73,131 @@ const WHY_CHOOSE_POINTS = [
 
 const PROCESS_STEPS = [
   {
-    title: "Discovery & User Flow",
-    desc: "We collaborate with your stakeholders to outline mobile features, map detailed navigation screens, and define system architecture limits.",
+    title: "Discovery",
+    iconName: "search",
+    duration: "1–2 Days",
+    summary: "Analyzing mobile application specifications and user journeys.",
+    bullets: [
+      "Map primary user journeys & screen layouts",
+      "Identify Android & iOS OS compatibility needs",
+      "Audit competitor app designs & structures",
+      "Define native hardware sensor integrations"
+    ],
+    deliverables: [
+      "Functional Requirements Document",
+      "Mobile Feature Specifications List",
+      "User Persona Audit Cards"
+    ],
+    businessValue: "Ensures the mobile app targets the right platform features and minimizes feature bloat."
   },
   {
-    title: "Figma UI/UX Mockups",
-    desc: "We create bespoke screen interfaces following human-interface guidelines for iOS and material design standards for Android platforms.",
+    title: "Planning",
+    iconName: "clipboard-list",
+    duration: "3 Days",
+    summary: "Setting up Flutter architecture and database layers.",
+    bullets: [
+      "Outline state management patterns (Bloc/Riverpod)",
+      "Design local relational SQLite schemas",
+      "Structure secure backend API endpoints",
+      "Establish background push notification pipelines"
+    ],
+    deliverables: [
+      "API Specification Roadmap",
+      "State Management Architecture Diagram",
+      "Database Entity Relation Map"
+    ],
+    businessValue: "Guarantees a clean, scalable mobile codebase that works offline and syncs in real-time."
   },
   {
-    title: "State Management Plan",
-    desc: "We plan complex logic controllers and state frameworks (using Bloc or Riverpod) to prevent application logic leaks or memory crashes.",
+    title: "UI/UX Design",
+    iconName: "palette",
+    duration: "1–2 Weeks",
+    summary: "Creating modern, intuitive, and native-feeling interfaces.",
+    bullets: [
+      "Wireframe primary screen layouts & transitions",
+      "Design high-fidelity Figma screens (iOS & Android)",
+      "Configure dark & light mode style assets",
+      "Create fluid screen transition animations"
+    ],
+    deliverables: [
+      "Figma Mobile UI Design File",
+      "Interactive Clickable Prototypes",
+      "Exportable UI Assets & Visual Tokens"
+    ],
+    businessValue: "Ensures standard mobile tap targets and highly intuitive gestures for maximum user retention."
   },
   {
-    title: "Flutter & Dart Coding",
-    desc: "Our engineers build clean, reusable Dart widgets, hook up database APIs, and integrate secure native mobile hardware functions.",
+    title: "Development",
+    iconName: "code",
+    duration: "3–4 Weeks",
+    summary: "Coding clean, fast, and structured cross-platform Flutter code.",
+    bullets: [
+      "Write modular Dart codes & widgets",
+      "Integrate camera, GPS, and Bluetooth sensor APIs",
+      "Configure local caching & offline state sync",
+      "Connect push notifications & payment APIs"
+    ],
+    deliverables: [
+      "Alpha/Beta APK and TestFlight builds",
+      "Version-Controlled Git Repository",
+      "Connected Backend Admin Workspace"
+    ],
+    businessValue: "Deploys a single shared codebase for both Android & iOS, cutting development costs in half."
   },
   {
-    title: "Third-Party Integrations",
-    desc: "We configure location services, push notification profiles, payment gateways, and Bluetooth APIs under secure architecture layers.",
+    title: "Testing",
+    iconName: "test-tube",
+    duration: "4–5 Days",
+    summary: "Validating cross-device compatibility and performance.",
+    bullets: [
+      "Test on multiple physical mobile screen sizes",
+      "Check offline mode & database triggers",
+      "Audit memory allocations & battery drain",
+      "Validate secure login token authentication"
+    ],
+    deliverables: [
+      "Performance and Framerate logs",
+      "Security Pen-Testing Reports",
+      "QA Device Testing Matrix Review"
+    ],
+    businessValue: "Eliminates crashes and performance lag before submit, protecting app store ratings."
   },
   {
-    title: "Multi-Device Testing",
-    desc: "We run apps on real iOS and Android models to ensure battery efficiency, layout consistency, and responsiveness under low bandwidth.",
+    title: "Deployment",
+    iconName: "rocket",
+    duration: "2–3 Days",
+    summary: "Submitting the apps to Apple App Store and Google Play.",
+    bullets: [
+      "Build production APK, AAB, and IPA files",
+      "Configure App Store listings & visual metadata",
+      "Link privacy policies & compliance docs",
+      "Submit for Apple & Google App Store reviews"
+    ],
+    deliverables: [
+      "Live App Store Publication URLs",
+      "Play Store Developer Dashboard Setup",
+      "Configured Analytics & Crash reports"
+    ],
+    businessValue: "Manages store submission policies and achieves publication with minimal delay."
   },
   {
-    title: "App Store Submission",
-    desc: "We manage submissions to the Google Play Store and Apple App Store, handling compliance requirements to ensure smooth approval.",
-  },
+    title: "Support",
+    iconName: "wrench",
+    duration: "Ongoing",
+    summary: "Monitoring crash logs and shipping hotfixes.",
+    bullets: [
+      "Monitor Crashlytics logs & dashboards",
+      "Implement OS compatibility updates (iOS & Android)",
+      "Deploy new app store feature releases",
+      "Configure regular backend database backups"
+    ],
+    deliverables: [
+      "Monthly Usage & Crash Reports",
+      "Priority App Store Hotfixes",
+      "API Performance Auditing"
+    ],
+    businessValue: "Keeps your app stable and compatible across Android & iOS versions."
+  }
 ];
 
 const TECHNOLOGIES = [

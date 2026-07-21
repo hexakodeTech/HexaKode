@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Star, ArrowRight, ShieldCheck, CheckCircle, HelpCircle, Globe, Gauge, TrendingDown, ShieldAlert, Smartphone, Activity, Layers, Users, Compass, ShoppingCart, LayoutGrid, EyeOff } from "lucide-react";
+import { ChevronDown, ArrowRight, CheckCircle, Globe, Gauge, TrendingDown, ShieldAlert, Smartphone, Activity, Layers, Users, Compass, ShoppingCart, LayoutGrid, EyeOff, Search, ClipboardList, Palette, Code, TestTube, Rocket, Wrench } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Section from "../common/Section";
@@ -11,6 +11,8 @@ import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
 import Card from "../ui/Card";
 import ProjectCard from "../common/ProjectCard";
+import PrimaryButton from "../common/PrimaryButton";
+import { cn } from "@/lib/utils";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactDetailsCard from "@/components/contact/ContactDetailsCard";
 import { useDemoModal } from "../common/DemoModal";
@@ -36,6 +38,13 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   "shopping-cart": ShoppingCart,
   "layout-grid": LayoutGrid,
   "eye-off": EyeOff,
+  search: Search,
+  "clipboard-list": ClipboardList,
+  palette: Palette,
+  code: Code,
+  "test-tube": TestTube,
+  rocket: Rocket,
+  wrench: Wrench,
 };
 
 export interface Technology {
@@ -46,6 +55,16 @@ export interface Technology {
 export interface FAQItem {
   question: string;
   answer: string;
+}
+
+export interface ProcessStep {
+  title: string;
+  iconName: string;
+  duration: string;
+  summary: string;
+  bullets: string[];
+  deliverables: string[];
+  businessValue: string;
 }
 
 export interface ServiceLandingPageTemplateProps {
@@ -59,7 +78,7 @@ export interface ServiceLandingPageTemplateProps {
   challenges: Challenge[];
   whyChooseDesc: string;
   whyChoosePoints: { title: string; desc: string }[];
-  processSteps: { title: string; desc: string }[];
+  processSteps: ProcessStep[];
   technologies: Technology[];
   benefits: { title: string; desc: string }[];
   faqs: FAQItem[];
@@ -115,6 +134,7 @@ export default function ServiceLandingPageTemplate({
 }: ServiceLandingPageTemplateProps) {
   const { openDemoModal } = useDemoModal();
   const [activeFaqIndex, setActiveFaqIndex] = useState<number | null>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const toggleFaq = (index: number) => {
     setActiveFaqIndex(activeFaqIndex === index ? null : index);
@@ -394,7 +414,7 @@ export default function ServiceLandingPageTemplate({
         </Section>
 
         {/* DEVELOPMENT PROCESS */}
-        <Section id="process" variant="muted" spacing="large">
+        <Section id="process" variant="muted" spacing="large" className="border-t border-outline-variant/10">
           <Container>
             <motion.div
               variants={staggerContainer}
@@ -412,26 +432,317 @@ export default function ServiceLandingPageTemplate({
                 />
               </motion.div>
 
-              <motion.div
-                variants={staggerContainer}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-6 mt-4 relative"
-              >
-                {processSteps.map((step, index) => (
-                  <motion.div key={index} variants={fadeUp} className="h-full relative">
-                    <div className="bg-white rounded-2xl p-6 border border-slate-100/80 flex flex-col items-center text-center h-full hover-lift">
-                      <div className="w-8 h-8 rounded-full bg-navy-dark text-white flex items-center justify-center font-bold text-xs mb-4 shadow-sm">
-                        {index + 1}
+              {/* Desktop Timeline Layout */}
+              <div className="hidden md:block w-full mt-8">
+                {/* Horizontal Progress Tracker */}
+                <div
+                  role="tablist"
+                  aria-label="Engineering process steps"
+                  className="relative flex justify-between items-center w-full max-w-4xl mx-auto mb-20 outline-none"
+                  onKeyDown={(e) => {
+                    let nextIndex = activeIndex;
+                    if (e.key === "ArrowRight") {
+                      e.preventDefault();
+                      nextIndex = (activeIndex + 1) % processSteps.length;
+                    } else if (e.key === "ArrowLeft") {
+                      e.preventDefault();
+                      nextIndex = (activeIndex - 1 + processSteps.length) % processSteps.length;
+                    } else {
+                      return;
+                    }
+                    setActiveIndex(nextIndex);
+                    const buttons = e.currentTarget.querySelectorAll("button");
+                    (buttons[nextIndex] as HTMLElement)?.focus();
+                  }}
+                >
+                  {/* Connector Bar Background */}
+                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-1/2 z-0" />
+                  
+                  {/* Connector Bar Active Progress */}
+                  <div
+                    className="absolute top-1/2 left-0 h-0.5 bg-primary -translate-y-1/2 z-0 transition-all duration-300 ease-out"
+                    style={{
+                      width: `${(activeIndex / (processSteps.length - 1)) * 100}%`,
+                    }}
+                  />
+                  
+                  {/* Step Buttons */}
+                  {processSteps.map((step, idx) => {
+                    const StepIcon = ICON_MAP[step.iconName] || Globe;
+                    const isActive = activeIndex === idx;
+                    const isCompleted = idx < activeIndex;
+                    
+                    return (
+                      <button
+                        key={idx}
+                        role="tab"
+                        id={`process-tab-${idx}`}
+                        aria-selected={isActive}
+                        aria-controls={`process-panel-${idx}`}
+                        onClick={() => setActiveIndex(idx)}
+                        className="relative z-10 flex flex-col items-center group cursor-pointer focus:outline-none"
+                      >
+                        <div
+                          className={cn(
+                            "w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary/20",
+                            isActive
+                              ? "bg-primary border-primary text-white shadow-premium scale-110"
+                              : isCompleted
+                              ? "bg-white border-primary text-primary"
+                              : "bg-white border-slate-200 text-slate-400 group-hover:border-slate-400 group-hover:text-slate-600"
+                          )}
+                        >
+                          <StepIcon className="w-5 h-5" />
+                        </div>
+                        
+                        <div className="absolute top-14 text-center w-32 left-1/2 -translate-x-1/2">
+                          <span
+                            className={cn(
+                              "text-xs font-semibold block transition-colors duration-200",
+                              isActive ? "text-primary font-bold" : "text-slate-500"
+                            )}
+                          >
+                            {step.title}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Content Panel */}
+                <div className="relative min-h-[350px] w-full">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIndex}
+                      id={`process-panel-${activeIndex}`}
+                      role="tabpanel"
+                      aria-labelledby={`process-tab-${activeIndex}`}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="bg-white rounded-2xl p-8 md:p-10 border border-slate-100 shadow-premium max-w-4xl mx-auto w-full text-left"
+                    >
+                      {/* Header Row */}
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-6 mb-6">
+                        <div className="flex items-center gap-4">
+                          <span className="text-4xl md:text-5xl font-extrabold text-slate-200 select-none">
+                            {String(activeIndex + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <h3 className="text-2xl font-bold text-navy-dark">
+                              {processSteps[activeIndex].title}
+                            </h3>
+                            <p className="text-slate-500 text-sm mt-0.5 font-medium">
+                              {processSteps[activeIndex].summary}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Estimated Duration Badge */}
+                        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-secondary-container text-primary border border-secondary-container/50">
+                          <span>⏱</span>
+                          <span>{processSteps[activeIndex].duration}</span>
+                        </span>
                       </div>
-                      <h3 className="text-sm font-bold text-navy-dark mb-2 tracking-tight">
-                        {step.title}
-                      </h3>
-                      <p className="text-slate-500 text-xs leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+
+                      {/* Grid of details */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Left Column: Key Activities */}
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-400 tracking-wider uppercase mb-4">
+                            Key Activities
+                          </h4>
+                          <ul className="space-y-3">
+                            {processSteps[activeIndex].bullets.map((bullet, idx) => (
+                              <li key={idx} className="flex items-start gap-2.5 text-slate-600 text-sm">
+                                <span className="text-secondary font-bold select-none mt-0.5">✔</span>
+                                <span>{bullet}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Right Column: Deliverables & Business Value */}
+                        <div className="flex flex-col justify-between gap-6">
+                          <div>
+                            <h4 className="text-xs font-bold text-slate-400 tracking-wider uppercase mb-4">
+                              Deliverables
+                            </h4>
+                            <div className="flex flex-wrap gap-2.5">
+                              {processSteps[activeIndex].deliverables.map((item, idx) => (
+                                <span
+                                  key={idx}
+                                  className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100/50 text-slate-700 font-semibold"
+                                >
+                                  <span className="text-emerald-500 font-bold">✔</span>
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Business Value Box */}
+                          <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                            <h5 className="text-[10px] font-bold text-primary tracking-wider uppercase mb-1">
+                              Why this matters
+                            </h5>
+                            <p className="text-slate-600 text-sm font-medium leading-relaxed">
+                              {processSteps[activeIndex].businessValue}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Mobile Timeline Layout (Vertical Accordion) */}
+              <div className="block md:hidden w-full mt-6">
+                <div className="flex flex-col gap-4 max-w-md mx-auto w-full">
+                  {processSteps.map((step, idx) => {
+                    const StepIcon = ICON_MAP[step.iconName] || Globe;
+                    const isOpen = activeIndex === idx;
+                    
+                    return (
+                      <div
+                        key={idx}
+                        className={cn(
+                          "rounded-2xl border transition-all duration-300 bg-white overflow-hidden",
+                          isOpen
+                            ? "border-primary shadow-premium"
+                            : "border-slate-100 shadow-sm hover:border-slate-200"
+                        )}
+                      >
+                        {/* Accordion Header */}
+                        <button
+                          type="button"
+                          onClick={() => setActiveIndex(isOpen ? -1 : idx)}
+                          className="w-full flex justify-between items-center p-5 text-left outline-none cursor-pointer"
+                          aria-expanded={isOpen}
+                          aria-controls={`step-accordion-content-${idx}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={cn(
+                                "w-10 h-10 rounded-full flex items-center justify-center border font-bold text-xs shrink-0 transition-colors",
+                                isOpen
+                                  ? "bg-primary border-primary text-white"
+                                  : "bg-slate-50 border-slate-200 text-slate-500"
+                              )}
+                            >
+                              <StepIcon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 block tracking-wider uppercase">
+                                Step {idx + 1}
+                              </span>
+                              <h4 className="font-bold text-navy-dark text-base">
+                                {step.title}
+                              </h4>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] font-semibold px-2 py-0.5 rounded bg-secondary-container text-primary border border-secondary-container/40 shrink-0">
+                              {step.duration}
+                            </span>
+                            <ChevronDown
+                              className={cn(
+                                "w-4 h-4 text-slate-400 shrink-0 transition-transform duration-300",
+                                isOpen ? "rotate-180 text-primary" : ""
+                              )}
+                            />
+                          </div>
+                        </button>
+
+                        {/* Accordion Content */}
+                        <AnimatePresence initial={false}>
+                          {isOpen && (
+                            <motion.div
+                              id={`step-accordion-content-${idx}`}
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{
+                                height: "auto",
+                                opacity: 1,
+                                transition: { height: { duration: 0.25, ease: "easeOut" }, opacity: { duration: 0.2 } },
+                              }}
+                              exit={{
+                                height: 0,
+                                opacity: 0,
+                                transition: { height: { duration: 0.2, ease: "easeIn" }, opacity: { duration: 0.15 } },
+                              }}
+                              className="overflow-hidden border-t border-slate-100"
+                            >
+                              <div className="p-5 text-left bg-slate-50/40">
+                                <p className="text-slate-500 text-sm font-medium leading-relaxed mb-4">
+                                  {step.summary}
+                                </p>
+                                
+                                {/* Activities */}
+                                <h5 className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-2">
+                                  Key Activities
+                                </h5>
+                                <ul className="space-y-2 mb-4">
+                                  {step.bullets.map((bullet, bIdx) => (
+                                    <li key={bIdx} className="flex items-start gap-2 text-slate-600 text-xs">
+                                      <span className="text-secondary font-bold">✔</span>
+                                      <span>{bullet}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                {/* Deliverables */}
+                                <h5 className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-2">
+                                  Deliverables
+                                </h5>
+                                <div className="flex flex-wrap gap-1.5 mb-4">
+                                  {step.deliverables.map((item, dIdx) => (
+                                    <span
+                                      key={dIdx}
+                                      className="inline-flex items-center gap-1.5 text-[10px] px-2 py-1 rounded bg-white border border-slate-100 text-slate-700 font-semibold"
+                                    >
+                                      <span className="text-emerald-500 font-bold">✔</span>
+                                      {item}
+                                    </span>
+                                  ))}
+                                </div>
+
+                                {/* Business Value */}
+                                <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
+                                  <h5 className="text-[9px] font-bold text-primary tracking-wider uppercase mb-1">
+                                    Why this matters
+                                  </h5>
+                                  <p className="text-slate-600 text-xs font-medium leading-relaxed">
+                                    {step.businessValue}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Bottom CTA Block */}
+              <div className="flex flex-col items-center justify-center text-center mt-16 bg-slate-50/50 rounded-3xl p-8 md:p-10 border border-slate-100/60 max-w-2xl mx-auto relative overflow-hidden w-full">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full filter blur-xl pointer-events-none" />
+                <h4 className="font-bold text-navy-dark text-lg md:text-xl mb-4 tracking-tight">
+                  Ready to start your project?
+                </h4>
+                <PrimaryButton
+                  href="#contact"
+                  onClick={() => openDemoModal({ source: "Engineering Process CTA", inquiryType: "Technical Discovery Call" })}
+                >
+                  Start Your Project
+                </PrimaryButton>
+              </div>
+
             </motion.div>
           </Container>
         </Section>

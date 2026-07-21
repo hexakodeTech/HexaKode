@@ -73,33 +73,131 @@ const WHY_CHOOSE_POINTS = [
 
 const PROCESS_STEPS = [
   {
-    title: "Research & Discovery",
-    desc: "We review business targets, interview core stakeholders, audit direct competitors, and establish UX goal criteria.",
+    title: "Research",
+    iconName: "search",
+    duration: "2–3 Days",
+    summary: "Conducting user research and competitor analysis.",
+    bullets: [
+      "Conduct user interviews & surveys",
+      "Map user empathy & behavior models",
+      "Audit competitor UI/UX layouts & friction points",
+      "Identify core accessibility & feature requirements"
+    ],
+    deliverables: [
+      "User Research Report",
+      "User Persona Profile Cards",
+      "Competitor UX Audit Sheet"
+    ],
+    businessValue: "Aligns design strategy with actual user needs, preventing expensive redesigns."
   },
   {
-    title: "User Personas & Journeys",
-    desc: "We define typical user personas and map user journey steps to identify friction points and optimize task pathways.",
+    title: "Structure",
+    iconName: "clipboard-list",
+    duration: "2–3 Days",
+    summary: "Defining user flows and logical sitemaps.",
+    bullets: [
+      "Outline sitemap navigation blocks",
+      "Map step-by-step user task flows",
+      "Design card sorting workshops",
+      "Plan logic and structural layouts"
+    ],
+    deliverables: [
+      "Information Architecture Sitemap",
+      "User Flow Diagrams",
+      "Content Hierarchy Maps"
+    ],
+    businessValue: "Ensures users can navigate intuitively and find information with minimal effort."
   },
   {
-    title: "Information Architecture",
-    desc: "We organize product data, map structural sitemaps, and structure navigation trees to ensure intuitive readability.",
+    title: "Wireframes",
+    iconName: "palette",
+    duration: "3–4 Days",
+    summary: "Creating low-fidelity layout wireframes.",
+    bullets: [
+      "Sketch digital screen wireframes",
+      "Verify content structure & visual density",
+      "Test primary action placements & zones",
+      "Iterate layouts based on usability feedback"
+    ],
+    deliverables: [
+      "Low-Fidelity Figma Wireframes",
+      "Clickable Structural Wireframes",
+      "Usability Feedback Checklist"
+    ],
+    businessValue: "Validates layout structural concepts quickly before investing time in high-fidelity visuals."
   },
   {
-    title: "Wireframing (Lofi/Hifi)",
-    desc: "We construct lofi structural sketches and hifi black-and-white layouts to focus on spacing, content, and logic.",
+    title: "Design System",
+    iconName: "code",
+    duration: "3 Days",
+    summary: "Establishing branding components and typography.",
+    bullets: [
+      "Define color palettes & typography grids",
+      "Design button states & form input states",
+      "Configure responsive spacing systems",
+      "Build reusable component asset libraries"
+    ],
+    deliverables: [
+      "Reusable UI Kit Library",
+      "Branding Style Guidelines",
+      "Figma Variables Workspace"
+    ],
+    businessValue: "Guarantees a consistent brand experience across pages and speeds up future engineering."
   },
   {
-    title: "Bespoke Visual UI Design",
-    desc: "We apply style choices, custom color themes, premium typography scales, and visual elements to establish visual hierarchy.",
+    title: "High-Fidelity",
+    iconName: "test-tube",
+    duration: "1 Week",
+    summary: "Designing complete, beautiful, and modern screens.",
+    bullets: [
+      "Apply style guides to wireframe layouts",
+      "Source high-quality media & icons",
+      "Configure dark & light display modes",
+      "Ensure color contrast accessibility (WCAG)"
+    ],
+    deliverables: [
+      "High-Fidelity Figma Screens",
+      "Production-Ready Visual Assets",
+      "Design Specification Documents"
+    ],
+    businessValue: "Attracts users with premium visual aesthetics and drives higher conversions."
   },
   {
-    title: "Interactive Prototyping",
-    desc: "We link screens into fully interactive, clickable web/mobile prototypes in Figma to replicate real product behaviors.",
+    title: "Prototypes",
+    iconName: "rocket",
+    duration: "3 Days",
+    summary: "Building interactive, high-fidelity user flows.",
+    bullets: [
+      "Link screens with click/hover navigation flows",
+      "Animate micro-interactions & gestures",
+      "Prepare prototype files for usability tests",
+      "Run validation checks on real screens"
+    ],
+    deliverables: [
+      "Interactive Figma Prototypes",
+      "Interaction Spec Documents",
+      "Video Walkthrough Demos"
+    ],
+    businessValue: "Simulates the final application, allowing you to test usability with real users."
   },
   {
-    title: "Testing & Handover",
-    desc: "We conduct usability sessions with real users, iterate based on feedback, and hand off tokenized Figma spec libraries.",
-  },
+    title: "Handoff",
+    iconName: "wrench",
+    duration: "1–2 Days",
+    summary: "Preparing assets and specifications for development.",
+    bullets: [
+      "Document hover, focus, and error states",
+      "Export images, SVGs, and animations",
+      "Run developer walk-through sessions",
+      "Validate initial coding matches mockup"
+    ],
+    deliverables: [
+      "Figma Handoff Workspace",
+      "Exported Assets ZIP Package",
+      "Component Specs Documentation"
+    ],
+    businessValue: "Streamlines translation from Figma mockup to code, reducing developer bugs."
+  }
 ];
 
 const TECHNOLOGIES = [
