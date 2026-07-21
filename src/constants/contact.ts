@@ -1,12 +1,11 @@
 import { FAQItem, ContactDetail, SocialLink } from "../types/contact";
 
 export const PROJECT_TYPES = [
-  { value: "web_dev", label: "Web Development" },
-  { value: "mobile_dev", label: "Mobile App Development" },
-  { value: "ui_ux", label: "UI/UX Design" },
-  { value: "custom_software", label: "Custom Software" },
-  { value: "api_integration", label: "API Integration" },
-  { value: "cloud_solutions", label: "Cloud Solutions" },
+  { value: "website-development", label: "Website Development" },
+  { value: "mobile-app-development", label: "Mobile App Development" },
+  { value: "ui-ux-design", label: "UI/UX Design" },
+  { value: "ecommerce-development", label: "E-commerce Development" },
+  { value: "custom-software-development", label: "Custom Software Development" },
   { value: "other", label: "Other" },
 ];
 

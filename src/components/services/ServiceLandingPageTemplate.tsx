@@ -13,11 +13,10 @@ import Card from "../ui/Card";
 import ProjectCard from "../common/ProjectCard";
 import PrimaryButton from "../common/PrimaryButton";
 import { cn } from "@/lib/utils";
-import ContactForm from "@/components/contact/ContactForm";
-import ContactDetailsCard from "@/components/contact/ContactDetailsCard";
 import { useDemoModal } from "../common/DemoModal";
 import { MOCK_TESTIMONIALS } from "@/mock-data/testimonials";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import CTASection from "./CTASection";
 
 export interface Challenge {
   title: string;
@@ -105,6 +104,12 @@ const SERVICE_INFOS = {
   },
 };
 
+const SERVICE_PARAM_MAP: Record<string, string> = {
+  "/services/web-development": "website-development",
+  "/services/mobile-app-development": "mobile-app-development",
+  "/services/ui-ux-design": "ui-ux-design",
+};
+
 const INDUSTRIES = [
   { name: "Manufacturing", icon: "🏭", desc: "Automating factory floors and supply chains." },
   { name: "Healthcare", icon: "🏥", desc: "Compliant applications and patient portals." },
@@ -150,6 +155,9 @@ export default function ServiceLandingPageTemplate({
       url,
       ...info,
     }));
+
+  const serviceQueryParam = SERVICE_PARAM_MAP[serviceUrl] || "";
+  const contactHref = serviceQueryParam ? `/contact?service=${serviceQueryParam}` : "/contact";
 
   // JSON-LD Structured Data
   const serviceSchema = {
@@ -736,8 +744,7 @@ export default function ServiceLandingPageTemplate({
                   Ready to start your project?
                 </h4>
                 <PrimaryButton
-                  href="#contact"
-                  onClick={() => openDemoModal({ source: "Engineering Process CTA", inquiryType: "Technical Discovery Call" })}
+                  href={contactHref}
                 >
                   Start Your Project
                 </PrimaryButton>
@@ -1070,40 +1077,15 @@ export default function ServiceLandingPageTemplate({
           </Container>
         </Section>
 
-        {/* CONTACT SECTION */}
-        <section
-          id="contact"
-          className="transition-colors duration-1000 relative overflow-hidden w-full pb-20 pt-16 bg-white text-on-background border-t border-outline-variant/20"
-        >
-          <div className="absolute top-1/4 right-0 w-80 h-80 bg-secondary/5 rounded-full filter blur-[100px] pointer-events-none" />
-          <Container>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-8">
-              {/* Form Area (Left) */}
-              <div className="lg:col-span-8 bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl border border-outline-variant/30 p-6 md:p-10 shadow-premium">
-                <ContactForm isDark={false} />
-              </div>
-              
-              {/* Details & Info Sidebar (Right) */}
-              <div className="lg:col-span-4 space-y-8 w-full">
-                <ContactDetailsCard isDark={false} />
-                <div className="p-8 rounded-xl border border-outline-variant/10 glass-card bg-slate-50/40 text-on-background">
-                  <h3 className="font-headline-sm text-headline-sm mb-4 text-primary font-bold">
-                    Let's Connect
-                  </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                    Our team responds to all scoping and consultation requests within 24-48 business hours. Let's design something incredible together.
-                  </p>
-                  <button
-                    onClick={() => openDemoModal({ source: `${serviceName} Contact section`, inquiryType: "Technical Discovery Call" })}
-                    className="w-full inline-flex items-center justify-center font-label-mono text-label-mono rounded px-6 py-3 bg-secondary text-white hover:brightness-110 hover:shadow-lg transition-all duration-300 text-sm font-semibold cursor-pointer"
-                  >
-                    ⭐ Book Consultation
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
+        {/* COMPACT CTA SECTION LINKING TO CENTRAL CONTACT PAGE */}
+        <CTASection
+          title="Ready to Build Your Next Project?"
+          description="Transform your ideas into a fast, scalable, SEO-friendly digital product."
+          primaryBtnText="Start Your Project"
+          primaryBtnHref={contactHref}
+          secondaryBtnText="Book a Free Consultation"
+          className="border-t border-outline-variant/20"
+        />
 
       </main>
 

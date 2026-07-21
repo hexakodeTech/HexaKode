@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +17,7 @@ import { submitEnquiryAction } from "@/lib/enquiries/actions";
 import { useReferralVerification } from "@/lib/hooks/useReferralVerification";
 import { Loader2 } from "lucide-react";
 import { trackGenerateLead } from "@/lib/analytics";
+import { useSearchParams } from "next/navigation";
 
 // ── Form schema ─────────────────────────────────────────────────────────
 const contactSchema = z.object({
@@ -78,6 +79,21 @@ export default function ContactForm({ isDark = false }: { isDark?: boolean }) {
 
   // Whether the form is in a busy state (overlay visible or submitting).
   const isBusy = showOverlay || isSubmittingRef.current;
+
+  // ── Service Query Param Handler ──────────────────────────────────────
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const serviceParam = searchParams?.get("service");
+    if (serviceParam) {
+      const matchedType = PROJECT_TYPES.find(
+        (t) => t.value === serviceParam
+      );
+      if (matchedType) {
+        setValue("projectType", matchedType.value);
+      }
+    }
+  }, [searchParams, setValue]);
 
   // ── Referral input handlers ─────────────────────────────────────────
   // onChange: sanitize input, sync with react-hook-form, delegate to hook.
