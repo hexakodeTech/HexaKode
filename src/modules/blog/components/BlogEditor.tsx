@@ -98,7 +98,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "prose prose-slate max-w-none focus:outline-none min-h-[400px] p-6 overflow-y-auto text-on-surface",
+          "prose max-w-none focus:outline-none min-h-[400px] p-6 overflow-y-auto text-on-surface",
       },
     },
   });
