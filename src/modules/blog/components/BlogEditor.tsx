@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, useEditorState, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Image as ImageExtension } from "@tiptap/extension-image";
 import { Link as LinkExtension } from "@tiptap/extension-link";
@@ -12,6 +12,7 @@ import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { Placeholder } from "@tiptap/extension-placeholder";
+import CharacterCount from "@tiptap/extension-character-count";
 import {
   Bold,
   Italic,
@@ -31,6 +32,8 @@ import {
   Undo,
   Redo,
   Sparkles,
+  Minus,
+  AlignLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -40,7 +43,25 @@ interface BlogEditorProps {
 }
 
 export default function BlogEditor({ content, onChange }: BlogEditorProps) {
+  /**
+   * Tiptap v3 Breaking Change Fix:
+   *
+   * In Tiptap v3, `shouldRerenderOnTransaction` defaults to FALSE.
+   * Without this, toolbar button clicks execute commands on the editor's
+   * ProseMirror state, but React never re-renders the toolbar — so:
+   *   1. `isActive()` reads always return stale data (buttons appear non-functional)
+   *   2. The editor loses the focused selection context between renders
+   *   3. Commands appear to silently fail
+   *
+   * Fix: Set `shouldRerenderOnTransaction: true` for legacy v2-compatible behavior,
+   * OR (preferred v3 pattern) use `useEditorState` for reactive toolbar state.
+   * We do both here for maximum compatibility.
+   *
+   * Also: `immediatelyRender: false` prevents Next.js SSR hydration mismatch.
+   */
   const editor = useEditor({
+    immediatelyRender: false,
+    shouldRerenderOnTransaction: true,
     extensions: [
       StarterKit.configure({
         heading: {
@@ -50,7 +71,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       Underline,
       Highlight.configure({ multicolor: true }),
       ImageExtension.configure({
-        inline: true,
+        inline: false,
         allowBase64: false,
       }),
       LinkExtension.configure({
@@ -68,6 +89,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       Placeholder.configure({
         placeholder: "Write your article content here...",
       }),
+      CharacterCount,
     ],
     content: content,
     onUpdate: ({ editor }) => {
@@ -78,6 +100,39 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
         class:
           "prose prose-slate max-w-none focus:outline-none min-h-[400px] p-6 overflow-y-auto text-on-surface",
       },
+    },
+  });
+
+  /**
+   * useEditorState — Tiptap v3 reactive state subscription.
+   * This correctly subscribes to editor transactions for toolbar active-state
+   * updates without relying on React re-renders from shouldRerenderOnTransaction.
+   */
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => {
+      if (!ctx.editor) return null;
+      return {
+        isBold: ctx.editor.isActive("bold"),
+        isItalic: ctx.editor.isActive("italic"),
+        isUnderline: ctx.editor.isActive("underline"),
+        isStrike: ctx.editor.isActive("strike"),
+        isH1: ctx.editor.isActive("heading", { level: 1 }),
+        isH2: ctx.editor.isActive("heading", { level: 2 }),
+        isH3: ctx.editor.isActive("heading", { level: 3 }),
+        isH4: ctx.editor.isActive("heading", { level: 4 }),
+        isBulletList: ctx.editor.isActive("bulletList"),
+        isOrderedList: ctx.editor.isActive("orderedList"),
+        isBlockquote: ctx.editor.isActive("blockquote"),
+        isCodeBlock: ctx.editor.isActive("codeBlock"),
+        isCode: ctx.editor.isActive("code"),
+        isLink: ctx.editor.isActive("link"),
+        isTable: ctx.editor.isActive("table"),
+        canUndo: ctx.editor.can().undo(),
+        canRedo: ctx.editor.can().redo(),
+        wordCount: ctx.editor.storage.characterCount?.words?.() ?? 0,
+        charCount: ctx.editor.storage.characterCount?.characters?.() ?? 0,
+      };
     },
   });
 
@@ -128,6 +183,9 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       } catch {
         toast.error("Upload failed", { id: loadingToast });
       }
+
+      // Reset input so same file can be uploaded again
+      e.target.value = "";
     },
     [editor]
   );
@@ -137,6 +195,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
   }, [editor]);
 
+  // Do not render toolbar until editor is ready
   if (!editor) return null;
 
   const MenuButton = ({
@@ -154,10 +213,17 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
   }) => (
     <button
       type="button"
-      onClick={onClick}
+      onMouseDown={(e) => {
+        // Prevent blur before the command fires — critical for focus-dependent
+        // commands like toggleBold() which need the editor to be focused.
+        e.preventDefault();
+        onClick();
+      }}
       disabled={disabled}
       title={title}
-      className={`p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 ${
+      aria-label={title}
+      aria-pressed={isActive}
+      className={`p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
         isActive ? "bg-secondary/15 text-secondary hover:bg-secondary/20" : "text-on-surface-variant/80"
       }`}
     >
@@ -165,149 +231,199 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     </button>
   );
 
+  const Divider = () => <div className="w-px h-6 bg-outline-variant/30 mx-1 shrink-0" />;
+
   return (
     <div className="border border-outline-variant/30 rounded-xl overflow-hidden bg-surface-container-lowest focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/15 transition-all">
-      {/* Editor Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 bg-surface-container-low/40 border-b border-outline-variant/20">
+      {/* ── Editor Toolbar ─────────────────────────────────── */}
+      <div
+        className="flex flex-wrap items-center gap-1 p-2 bg-surface-container-low/40 border-b border-outline-variant/20"
+        onMouseDown={(e) => e.preventDefault()} // Prevent entire toolbar from blurring editor
+      >
+        {/* Text Formatting */}
         <MenuButton
           onClick={() => editor.chain().focus().toggleBold().run()}
-          isActive={editor.isActive("bold")}
+          isActive={editorState?.isBold ?? false}
           title="Bold (Ctrl+B)"
         >
           <Bold className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          isActive={editor.isActive("italic")}
+          isActive={editorState?.isItalic ?? false}
           title="Italic (Ctrl+I)"
         >
           <Italic className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          isActive={editor.isActive("underline")}
+          isActive={editorState?.isUnderline ?? false}
           title="Underline (Ctrl+U)"
         >
           <UnderlineIcon className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          isActive={editor.isActive("strike")}
+          isActive={editorState?.isStrike ?? false}
           title="Strikethrough"
         >
           <Strikethrough className="w-4 h-4" />
         </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          isActive={editorState?.isCode ?? false}
+          title="Inline Code"
+        >
+          <Code className="w-4 h-4" />
+        </MenuButton>
 
-        <div className="w-px h-6 bg-outline-variant/30 mx-1" />
+        <Divider />
 
+        {/* Headings */}
         <MenuButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          isActive={editor.isActive("heading", { level: 1 })}
+          isActive={editorState?.isH1 ?? false}
           title="Heading 1"
         >
           <Heading1 className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          isActive={editor.isActive("heading", { level: 2 })}
+          isActive={editorState?.isH2 ?? false}
           title="Heading 2"
         >
           <Heading2 className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          isActive={editor.isActive("heading", { level: 3 })}
+          isActive={editorState?.isH3 ?? false}
           title="Heading 3"
         >
           <Heading3 className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-          isActive={editor.isActive("heading", { level: 4 })}
+          isActive={editorState?.isH4 ?? false}
           title="Heading 4"
         >
           <Heading4 className="w-4 h-4" />
         </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          isActive={false}
+          title="Paragraph"
+        >
+          <AlignLeft className="w-4 h-4" />
+        </MenuButton>
 
-        <div className="w-px h-6 bg-outline-variant/30 mx-1" />
+        <Divider />
 
+        {/* Lists & Structure */}
         <MenuButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          isActive={editor.isActive("bulletList")}
+          isActive={editorState?.isBulletList ?? false}
           title="Bullet List"
         >
           <List className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          isActive={editor.isActive("orderedList")}
+          isActive={editorState?.isOrderedList ?? false}
           title="Numbered List"
         >
           <ListOrdered className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          isActive={editor.isActive("blockquote")}
+          isActive={editorState?.isBlockquote ?? false}
           title="Blockquote"
         >
           <Quote className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          isActive={editor.isActive("codeBlock")}
+          isActive={editorState?.isCodeBlock ?? false}
           title="Code Block"
         >
-          <Code className="w-4 h-4" />
+          <span className="font-mono text-[10px] font-bold px-0.5">{`</>`}</span>
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          title="Horizontal Rule"
+        >
+          <Minus className="w-4 h-4" />
         </MenuButton>
 
-        <div className="w-px h-6 bg-outline-variant/30 mx-1" />
+        <Divider />
 
-        <MenuButton onClick={setLink} isActive={editor.isActive("link")} title="Insert Link">
+        {/* Media & Links */}
+        <MenuButton
+          onClick={setLink}
+          isActive={editorState?.isLink ?? false}
+          title="Insert / Edit Link"
+        >
           <LinkIcon className="w-4 h-4" />
         </MenuButton>
-        <MenuButton onClick={addTable} isActive={editor.isActive("table")} title="Insert Table">
+        <MenuButton
+          onClick={addImage}
+          title="Insert Image by URL"
+        >
+          <ImageIcon className="w-4 h-4" />
+        </MenuButton>
+        <MenuButton
+          onClick={addTable}
+          isActive={editorState?.isTable ?? false}
+          title="Insert Table"
+        >
           <TableIcon className="w-4 h-4" />
         </MenuButton>
 
-        {/* Media upload inside editor */}
-        <label className="p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80">
+        {/* File upload for images */}
+        <label
+          className="p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80 flex items-center"
+          title="Upload Image"
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <input
             type="file"
             accept="image/*"
             onChange={handleFileUpload}
             className="hidden"
           />
-          <ImageIcon className="w-4 h-4" />
+          <span className="text-[10px] font-bold">IMG↑</span>
         </label>
 
-        <div className="w-px h-6 bg-outline-variant/30 mx-1" />
+        <Divider />
 
+        {/* History */}
         <MenuButton
           onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-          title="Undo"
+          disabled={!(editorState?.canUndo ?? false)}
+          title="Undo (Ctrl+Z)"
         >
           <Undo className="w-4 h-4" />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-          title="Redo"
+          disabled={!(editorState?.canRedo ?? false)}
+          title="Redo (Ctrl+Shift+Z)"
         >
           <Redo className="w-4 h-4" />
         </MenuButton>
       </div>
 
-      {/* Editor Content Area */}
+      {/* ── Editor Content Area ─────────────────────────────── */}
       <EditorContent editor={editor} />
 
-      {/* Footer bar */}
+      {/* ── Footer Status Bar ──────────────────────────────── */}
       <div className="flex justify-between items-center px-4 py-2 bg-surface-container-low/20 border-t border-outline-variant/10 text-[10px] text-on-surface-variant/50 font-mono">
         <span className="flex items-center gap-1 text-secondary/80">
           <Sparkles className="w-3 h-3" /> Rich Text Powered
         </span>
         <span>
-          {editor.storage.characterCount ? `${editor.storage.characterCount.words()} words` : ""}
+          {(editorState?.wordCount ?? 0) > 0
+            ? `${editorState?.wordCount} words · ${editorState?.charCount} chars`
+            : "Start writing..."}
         </span>
       </div>
     </div>

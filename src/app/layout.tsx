@@ -1,23 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Zen_Dots, Kalam, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
 // ─── Font configuration ──────────────────────────────────────────────────────
-//
-// ALL fonts use preload:false because none are applied at the document level.
-// The <body> uses Tailwind's `font-sans` which resolves to the system stack
-// (no --font-family-sans is defined in @theme). Custom fonts only activate
-// via utility classes (.font-body-sm, .font-body-md, .brand-logo, etc.)
-// on individual elements. Eagerly preloading them causes the browser warning
-// "preloaded but not used within a few seconds" because no above-the-fold
-// CSS rule correlates to the preloaded file within the browser's timing window.
-//
-// With preload:false, Next.js still injects @font-face + CSS variable definitions
-// and display:swap ensures text remains visible on the system font until each
-// custom font file finishes loading.
-
 const zenDots = Zen_Dots({
   variable: "--font-zen-dots",
   weight: "400",
@@ -72,6 +59,12 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 import { DemoModalProvider } from "@/components/common/DemoModal";
