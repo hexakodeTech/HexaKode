@@ -494,12 +494,6 @@ export default function ServicesHero() {
               Explore Services{" "}
               <ArrowDown className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1" />
             </PrimaryButton>
-            <SecondaryButton
-              href="#technologies"
-              size="lg"
-            >
-              Technical Stack
-            </SecondaryButton>
           </motion.div>
         </motion.div>
       </Container>

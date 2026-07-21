@@ -7,39 +7,100 @@ import Section from "../common/Section";
 import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import Link from "next/link";
 
 const FAQ_ITEMS = [
   {
     question: "What services does HexaKode provide?",
-    answer: "We design and develop custom websites, mobile applications, business management systems, enterprise software, UI/UX solutions, and cloud-based digital products tailored to your business needs.",
+    answerText: "We design and develop custom websites, mobile applications, business management systems, enterprise software, UI/UX solutions, and cloud-based digital products tailored to your business needs.",
+    answer: (
+      <span>
+        We design and develop custom{" "}
+        <Link href="/services/web-development" className="text-secondary font-semibold hover:underline" prefetch={true}>
+          websites
+        </Link>
+        , high-performance{" "}
+        <Link href="/services/mobile-app-development" className="text-secondary font-semibold hover:underline" prefetch={true}>
+          mobile applications
+        </Link>
+        , business management systems, enterprise software, custom{" "}
+        <Link href="/services/ui-ux-design" className="text-secondary font-semibold hover:underline" prefetch={true}>
+          UI/UX solutions
+        </Link>
+        , and cloud-based digital products tailored to your business needs.
+      </span>
+    ),
   },
   {
     question: "How long does it take to complete a project?",
-    answer: "Project timelines depend on complexity. Small business websites are typically completed within 2–4 weeks, while larger web applications and mobile apps may take several weeks to a few months.",
+    answerText: "Project timelines depend on complexity. Small business websites are typically completed within 2–4 weeks, while larger web applications and mobile apps may take several weeks to a few months.",
+    answer: (
+      <span>
+        Project timelines depend on complexity. Small business websites are typically completed within 2–4 weeks, while larger web applications and mobile apps may take several weeks to a few months.
+      </span>
+    ),
   },
   {
     question: "Do you develop mobile applications for Android and iOS?",
-    answer: "Yes. We build high-performance cross-platform mobile applications using Flutter, enabling a single codebase for both Android and iOS while maintaining a native-like experience.",
+    answerText: "Yes. We build high-performance cross-platform mobile applications using Flutter, enabling a single codebase for both Android and iOS while maintaining a native-like experience.",
+    answer: (
+      <span>
+        Yes. We build high-performance cross-platform{" "}
+        <Link href="/services/mobile-app-development" className="text-secondary font-semibold hover:underline" prefetch={true}>
+          mobile applications
+        </Link>{" "}
+        using Flutter, enabling a single codebase for both Android and iOS while maintaining a native-like experience.
+      </span>
+    ),
   },
   {
     question: "Can you redesign or improve my existing website?",
-    answer: "Absolutely. We modernize outdated websites with improved design, better performance, enhanced security, and SEO best practices while preserving your existing business content where possible.",
+    answerText: "Absolutely. We modernize outdated websites with improved design, better performance, enhanced security, and SEO best practices while preserving your existing business content where possible.",
+    answer: (
+      <span>
+        Absolutely. We modernize outdated websites with improved design, better performance, enhanced security, and SEO best practices while preserving your existing business content where possible.
+      </span>
+    ),
   },
   {
     question: "Will my website be SEO-friendly?",
-    answer: "Yes. Every website we develop follows modern technical SEO practices, including semantic HTML, structured metadata, optimized performance, responsive design, and clean URLs to improve search visibility.",
+    answerText: "Yes. Every website we develop follows modern technical SEO practices, including semantic HTML, structured metadata, optimized performance, responsive design, and clean URLs to improve search visibility.",
+    answer: (
+      <span>
+        Yes. Every{" "}
+        <Link href="/services/web-development" className="text-secondary font-semibold hover:underline" prefetch={true}>
+          website we develop
+        </Link>{" "}
+        follows modern technical SEO practices, including semantic HTML, structured metadata, optimized performance, responsive design, and clean URLs to improve search visibility.
+      </span>
+    ),
   },
   {
     question: "Do you provide ongoing maintenance and support?",
-    answer: "Yes. We offer post-launch maintenance, security updates, performance monitoring, bug fixes, and feature enhancements to keep your digital products running smoothly.",
+    answerText: "Yes. We offer post-launch maintenance, security updates, performance monitoring, bug fixes, and feature enhancements to keep your digital products running smoothly.",
+    answer: (
+      <span>
+        Yes. We offer post-launch maintenance, security updates, performance monitoring, bug fixes, and feature enhancements to keep your digital products running smoothly.
+      </span>
+    ),
   },
   {
     question: "How much does a website or mobile app cost?",
-    answer: "Every project is unique. Pricing depends on the scope, features, and business requirements. Contact us for a free consultation and a customized quotation.",
+    answerText: "Every project is unique. Pricing depends on the scope, features, and business requirements. Contact us for a free consultation and a customized quotation.",
+    answer: (
+      <span>
+        Every project is unique. Pricing depends on the scope, features, and business requirements. Contact us for a free consultation and a customized quotation.
+      </span>
+    ),
   },
   {
     question: "How do I get started with HexaKode?",
-    answer: "Simply book a free consultation or contact us through our website. We'll discuss your goals, understand your requirements, and recommend the best solution for your business.",
+    answerText: "Simply book a free consultation or contact us through our website. We'll discuss your goals, understand your requirements, and recommend the best solution for your business.",
+    answer: (
+      <span>
+        Simply book a free consultation or contact us through our website. We'll discuss your goals, understand your requirements, and recommend the best solution for your business.
+      </span>
+    ),
   },
 ];
 
@@ -59,7 +120,7 @@ export default function HomepageFAQ() {
       "name": item.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": item.answer,
+        "text": item.answerText,
       },
     })),
   };

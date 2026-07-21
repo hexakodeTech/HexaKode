@@ -26,43 +26,43 @@ interface CompetencyData {
 
 const COMPETENCIES_DATA: CompetencyData[] = [
   {
-    id: "web-engineering",
-    title: "Web Engineering",
-    description:
-      "We build robust, scalable web applications using modern frameworks that prioritize speed, SEO, and maintainability. Our frontend and backend architectures are decoupled for maximum flexibility.",
-    icon: Monitor,
-    tags: ["NEXT.JS", "TYPESCRIPT", "PYTHON"],
-    href: "#web-service",
-    imageSrc:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB6NzGYXdHHJOX6c-0Ta6wB4k8Y2PRyUaoyzoawDZJn0W1d1lnwroM_Nbpkmv-DLo4LnfQzHq3m51wv4rGUFSDeMD1YgdVuNfHxtTe2ABUeKlVlbmRZX-J5lxxy296k9CwJiZ3WRwZ01UAR3ZFeCGiJI91gXUj-_GH7oOF2zJ52RfDUKqq9cuEWBzJjDIF1PiGz0ps0pbHAd6R-lQabKCOc6SjBrc0n6yMWiIktohJe9F1BNmUjSPxcTEzZxK08NHbyrSgSIOaZ6ae6",
-    imageAlt: "A high-contrast, professional overhead shot of a clean developer workspace.",
-    featured: false,
-  },
-  {
-    id: "mobile-apps",
-    title: "Mobile Apps",
-    description:
-      "Native and cross-platform mobile experiences that feel seamless. We focus on low latency and fluid animations.",
-    icon: Smartphone,
-    tags: ["FLUTTER", "React Native"],
-    href: "#mobile-service",
-    imageSrc: "/service-mobile.png",
-    imageAlt: "A clean developer workspace with a smartphone and tablet showcasing a modern mobile application dashboard.",
-    featured: false,
-  },
-  {
-    id: "ui-ux",
-    title: "UI/UX Design",
-    description:
-      "Scientific approach to interface design. We create systems that balance aesthetics with conversion-focused usability.",
-    icon: Palette,
-    tags: ["Figma", "Google Stitch"],
-    href: "#ui-service",
-    imageSrc: "/service-design.png",
-    imageAlt: "A creative designer workspace with wireframe templates on an iPad, color palettes, and sketches.",
-    featured: false,
-  },
-];
+     id: "web-engineering",
+     title: "Web Engineering",
+     description:
+       "We build robust, scalable web applications using modern frameworks that prioritize speed, SEO, and maintainability. Our frontend and backend architectures are decoupled for maximum flexibility.",
+     icon: Monitor,
+     tags: ["NEXT.JS", "TYPESCRIPT", "PYTHON"],
+     href: "/services/web-development",
+     imageSrc:
+       "https://lh3.googleusercontent.com/aida-public/AB6AXuB2YxLvd3x5jPAxgZFL6XMO5u3FKnZOqm3Sw5jiYFwt6C_1rbby046caqliXpWGTpjLpPwnIvaeaOmdE4lDZVyZ_sdZvktvMtR48G9PDwq9PdT4z5dmEyDZmvTGdtk0tGLYG3aND_F-CKnXlxCnvDioVyszWJ-5hrLBoAQmefvVnmK51ys89hcKnm770jq6SVjM3Pg-onRL9YM_DO5PLioIGZ3Onw3JrHAYxnPC4ePN8pVa9SN1k4ErAvN0hneQVUTOK8JkgL9fql8e",
+     imageAlt: "A high-contrast, professional overhead shot of a clean developer workspace.",
+     featured: false,
+   },
+   {
+     id: "mobile-apps",
+     title: "Mobile Apps",
+     description:
+       "Native and cross-platform mobile experiences that feel seamless. We focus on low latency and fluid animations.",
+     icon: Smartphone,
+     tags: ["FLUTTER", "React Native"],
+     href: "/services/mobile-app-development",
+     imageSrc: "/service-mobile.png",
+     imageAlt: "A clean developer workspace with a smartphone and tablet showcasing a modern mobile application dashboard.",
+     featured: false,
+   },
+   {
+     id: "ui-ux",
+     title: "UI/UX Design",
+     description:
+       "Scientific approach to interface design. We create systems that balance aesthetics with conversion-focused usability.",
+     icon: Palette,
+     tags: ["Figma", "Google Stitch"],
+     href: "/services/ui-ux-design",
+     imageSrc: "/service-design.png",
+     imageAlt: "A creative designer workspace with wireframe templates on an iPad, color palettes, and sketches.",
+     featured: false,
+   },
+ ];
 
 export default function CompetenciesSection() {
   return (
