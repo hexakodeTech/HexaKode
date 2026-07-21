@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/sanity.image";
 
 interface AuthorCardProps {
   author: {
@@ -10,8 +9,8 @@ interface AuthorCardProps {
 }
 
 export default function AuthorCard({ author }: AuthorCardProps) {
-  const avatarUrl = author.avatar
-    ? urlFor(author.avatar).width(120).height(120).url()
+  const avatarUrl = typeof author.avatar === "string" && author.avatar
+    ? author.avatar
     : "https://lh3.googleusercontent.com/aida-public/AB6AXuB5_VqrmGo0Yyz2eCzbJ2FcbcrPZN_jWkAN6euuVQzxrMkBQ2CfDpOjYWVe3aq_AIEswpv2MS4XO9VgfvgOFIYMSC9rIm3SjEQNwjrtmhhJmp1ft5nzoPat2z9QwmJwgn0zJZJsMIPoV_gQAD4p0NGbbo0TUaWEuuKEfg6nSP7dh7vq5hNBrqxnYyEYRa9qzr-Tg45hOyEIhgvax0BWxfDDB6uswBvAKj-sJbsOilWcd1wIOkM4PBdSVCjBDaXsnpVcMmsk_TKfO8Xk";
 
   return (

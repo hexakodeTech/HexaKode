@@ -12,16 +12,14 @@ export default function Footer() {
   const [recentPosts, setRecentPosts] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    import("@/lib/queries/blog").then(({ getBlogs }) => {
-      getBlogs({ limit: 3 })
-        .then((data) => {
-          if (data && data.posts) {
-            setRecentPosts(data.posts);
-          }
-        })
-        .catch((err) => console.error("Error executing getBlogs in Footer:", err));
-    }).catch(err => console.error("Error loading blog queries in Footer:", err));
+    fetch("/api/blog?limit=3&status=PUBLISHED")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.posts) setRecentPosts(data.posts);
+      })
+      .catch(() => {});
   }, []);
+
 
   return (
     <footer className="bg-primary-container text-on-primary-container relative w-full border-t border-outline-variant/10">
@@ -194,7 +192,7 @@ export default function Footer() {
               <ul className="space-y-4 font-body-sm text-body-sm text-left">
                 {recentPosts.length > 0 ? (
                   recentPosts.map((post) => (
-                    <li key={post._id}>
+                    <li key={post.id || post._id}>
                       <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block line-clamp-2">
                         {post.title}
                       </Link>
@@ -427,7 +425,7 @@ export default function Footer() {
             <ul className="flex flex-col items-center space-y-4 font-body-sm text-body-sm text-center px-4 w-full">
               {recentPosts.length > 0 ? (
                 recentPosts.map((post) => (
-                  <li key={post._id} className="w-full truncate max-w-xs">
+                  <li key={post.id || post._id} className="w-full truncate max-w-xs">
                     <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block truncate">
                       {post.title}
                     </Link>

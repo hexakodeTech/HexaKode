@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { HeadingItem } from "@/utils/blog";
+import { TocHeading as HeadingItem } from "@/modules/blog/utils/helpers";
 import { cn } from "@/lib/utils";
 
 interface TableOfContentsProps {

@@ -356,3 +356,90 @@ model Feature {
 
   @@map("portfolio_features")
 }
+
+// ─────────────────────────────────────────────
+// Content Management System (CMS)
+// ─────────────────────────────────────────────
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+}
+
+/// Blog category taxonomy.
+model BlogCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  blogs Blog[]
+
+  @@index([slug])
+  @@map("blog_categories")
+}
+
+/// Blog tag taxonomy.
+model BlogTag {
+  id        String       @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String       @unique
+  createdAt DateTime     @default(now())
+
+  blogs BlogToTag[]
+
+  @@index([slug])
+  @@map("blog_tags")
+}
+
+/// Blog post content managed through the native CMS.
+model Blog {
+  id             String      @id @default(uuid()) @db.Uuid
+  title          String
+  slug           String      @unique
+  excerpt        String?
+  content        String      @default("") // HTML from Tiptap
+  featuredImage  String      @default("")
+  authorName     String      @default("HexaKode Team")
+  authorAvatar   String      @default("")
+  status         BlogStatus  @default(DRAFT)
+  featured       Boolean     @default(false)
+  categoryId     String?     @db.Uuid
+  publishedAt    DateTime?
+  readingTime    Int         @default(0) // minutes
+  views          Int         @default(0)
+
+  // SEO
+  seoTitle       String      @default("")
+  metaDescription String     @default("")
+  focusKeyword   String      @default("")
+  canonicalUrl   String      @default("")
+  ogImage        String      @default("")
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  category BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags     BlogToTag[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([featured])
+  @@index([categoryId])
+  @@index([publishedAt])
+  @@map("blogs")
+}
+
+/// Explicit many-to-many join between blogs and tags.
+model BlogToTag {
+  blogId String @db.Uuid
+  tagId  String @db.Uuid
+
+  blog Blog    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  tag  BlogTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([blogId, tagId])
+  @@map("blog_to_tags")
+}
