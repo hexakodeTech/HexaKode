@@ -25,6 +25,31 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "media.licdn.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.licdn.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "fmgpntelhwanasrtvhoj.supabase.co",
         pathname: "/storage/v1/object/public/portfolio-assets/**",
       },
@@ -36,7 +61,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/portfolio-assets/**",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },
@@ -76,7 +105,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://lh3.googleusercontent.com https://*.supabase.co https://*.google-analytics.com https://*.g.doubleclick.net https://*.clarity.ms https://clarity.ms https://c.bing.com; media-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://*.clarity.ms wss://*.clarity.ms; font-src 'self' https://fonts.gstatic.com; frame-ancestors 'none'; object-src 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://*.clarity.ms wss://*.clarity.ms; font-src 'self' https://fonts.gstatic.com; frame-ancestors 'none'; object-src 'none';",
           },
         ],
       },
@@ -85,5 +114,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-// Trigger next.js dev reload to update prisma client metadata
