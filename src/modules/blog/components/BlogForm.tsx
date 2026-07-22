@@ -599,9 +599,9 @@ export default function BlogForm({ initialData }: BlogFormProps) {
 
       {/* ── Main Split View Container ───────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* ── Left Editor Column (50% / col-span-6) ──────────────────────── */}
+        {/* ── Left Editor Column (~45% / col-span-5) ──────────────────────── */}
         <div
-          className={`lg:col-span-6 space-y-6 min-w-0 ${
+          className={`lg:col-span-5 space-y-6 ${
             mobileMode === "editor" ? "block" : "hidden lg:block"
           }`}
         >
@@ -692,28 +692,14 @@ export default function BlogForm({ initialData }: BlogFormProps) {
                 </div>
               </div>
 
-              {/* Excerpt / Meta Description */}
+              {/* Excerpt */}
               <div className="space-y-1.5">
-                <div className="flex justify-between items-center">
-                  <label className="text-xs font-semibold text-primary">Short Excerpt (Meta Description)</label>
-                  <span
-                    className={`text-[10px] font-semibold ${
-                      excerpt.length > 160 ? "text-rose-500 font-bold" : "text-on-surface-variant/60"
-                    }`}
-                  >
-                    Target: 120-160 chars · {excerpt.length} chars
-                    {excerpt.length > 160 && " ⚠️ (Exceeds 160 limit)"}
-                  </span>
-                </div>
+                <label className="text-xs font-semibold text-primary">Short Excerpt</label>
                 <textarea
                   value={excerpt}
                   onChange={(e) => setExcerpt(e.target.value)}
-                  placeholder="Provide a quick summary (meta description / excerpt) for article header, search results, and social cards..."
-                  className={`w-full bg-surface-container-lowest border rounded-xl px-4 py-2.5 text-xs text-on-surface focus:outline-none focus:ring-2 transition-all min-h-[75px] ${
-                    excerpt.length > 160
-                      ? "border-rose-300 focus:border-rose-500 focus:ring-rose-500/15"
-                      : "border-outline-variant/30 focus:border-secondary focus:ring-secondary/15"
-                  }`}
+                  placeholder="Provide a quick summary (excerpt) for search results and cards..."
+                  className="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 text-xs text-on-surface focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all min-h-[75px]"
                 />
               </div>
 
@@ -956,9 +942,9 @@ export default function BlogForm({ initialData }: BlogFormProps) {
           )}
         </div>
 
-        {/* ── Right Live Preview Column (50% / col-span-6) ──────────────── */}
+        {/* ── Right Live Preview Column (~55% / col-span-7) ──────────────── */}
         <div
-          className={`lg:col-span-6 sticky top-4 h-[calc(100vh-2rem)] min-w-0 ${
+          className={`lg:col-span-7 sticky top-4 h-[calc(100vh-2rem)] ${
             mobileMode === "preview" ? "block" : "hidden lg:block"
           }`}
         >

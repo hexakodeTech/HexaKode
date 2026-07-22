@@ -43,9 +43,6 @@ interface BlogEditorProps {
 }
 
 export default function BlogEditor({ content, onChange }: BlogEditorProps) {
-  /**
-   * Tiptap v3 Configuration
-   */
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: true,
@@ -85,14 +82,11 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "prose max-w-none focus:outline-none min-h-[400px] p-6 overflow-y-auto text-on-surface",
+          "prose max-w-none focus:outline-none min-h-[500px] p-6 text-on-surface leading-relaxed",
       },
     },
   });
 
-  /**
-   * useEditorState — Tiptap v3 reactive state subscription.
-   */
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -179,12 +173,6 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
   }, [editor]);
 
-  const handleToolbarWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (e.deltaY !== 0) {
-      e.currentTarget.scrollLeft += e.deltaY;
-    }
-  };
-
   if (!editor) return null;
 
   const MenuButton = ({
@@ -210,7 +198,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       title={title}
       aria-label={title}
       aria-pressed={isActive}
-      className={`p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0 ${
+      className={`p-2 rounded-lg hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0 ${
         isActive ? "bg-secondary/15 text-secondary hover:bg-secondary/20 font-bold" : "text-on-surface-variant/80"
       }`}
     >
@@ -218,186 +206,185 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     </button>
   );
 
-  const Divider = () => <div className="w-px h-6 bg-outline-variant/30 mx-1 shrink-0" />;
-
   return (
-    <div className="relative border border-outline-variant/30 rounded-xl bg-surface-container-lowest focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/15 transition-all w-full min-w-0 max-w-full">
-      {/* ── Sticky Rich Text Editor Toolbar ──────────────────────────────── */}
+    <div className="relative border border-outline-variant/30 rounded-xl bg-surface-container-lowest focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/15 transition-all">
+      {/* ── Sticky & Responsive Flex-Wrapping Toolbar ───────────────────── */}
       <div
         onMouseDown={(e) => e.preventDefault()}
-        onWheel={handleToolbarWheel}
-        className="sticky top-0 z-30 flex flex-nowrap items-center gap-1 p-2 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20 shadow-xs rounded-t-xl overflow-x-auto w-full min-w-0 select-none touch-pan-x shrink-0 scrollbar-none"
+        className="sticky top-0 z-30 flex flex-wrap items-center gap-2 p-2.5 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20 shadow-xs rounded-t-xl select-none"
       >
-        {/* Text Formatting */}
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          isActive={editorState?.isBold ?? false}
-          title="Bold (Ctrl+B)"
-        >
-          <Bold className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          isActive={editorState?.isItalic ?? false}
-          title="Italic (Ctrl+I)"
-        >
-          <Italic className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          isActive={editorState?.isUnderline ?? false}
-          title="Underline (Ctrl+U)"
-        >
-          <UnderlineIcon className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          isActive={editorState?.isStrike ?? false}
-          title="Strikethrough"
-        >
-          <Strikethrough className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          isActive={editorState?.isCode ?? false}
-          title="Inline Code"
-        >
-          <Code className="w-4 h-4" />
-        </MenuButton>
+        {/* Group 1: Formatting */}
+        <div className="flex items-center gap-0.5 bg-surface-container-low/40 p-1 rounded-xl border border-outline-variant/20">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            isActive={editorState?.isBold ?? false}
+            title="Bold (Ctrl+B)"
+          >
+            <Bold className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            isActive={editorState?.isItalic ?? false}
+            title="Italic (Ctrl+I)"
+          >
+            <Italic className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            isActive={editorState?.isUnderline ?? false}
+            title="Underline (Ctrl+U)"
+          >
+            <UnderlineIcon className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            isActive={editorState?.isStrike ?? false}
+            title="Strikethrough"
+          >
+            <Strikethrough className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            isActive={editorState?.isCode ?? false}
+            title="Inline Code"
+          >
+            <Code className="w-4 h-4" />
+          </MenuButton>
+        </div>
 
-        <Divider />
+        {/* Group 2: Headings */}
+        <div className="flex items-center gap-0.5 bg-surface-container-low/40 p-1 rounded-xl border border-outline-variant/20">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            isActive={editorState?.isH1 ?? false}
+            title="Heading 1"
+          >
+            <Heading1 className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            isActive={editorState?.isH2 ?? false}
+            title="Heading 2"
+          >
+            <Heading2 className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            isActive={editorState?.isH3 ?? false}
+            title="Heading 3"
+          >
+            <Heading3 className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+            isActive={editorState?.isH4 ?? false}
+            title="Heading 4"
+          >
+            <Heading4 className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().setParagraph().run()}
+            isActive={false}
+            title="Paragraph"
+          >
+            <AlignLeft className="w-4 h-4" />
+          </MenuButton>
+        </div>
 
-        {/* Headings */}
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          isActive={editorState?.isH1 ?? false}
-          title="Heading 1"
-        >
-          <Heading1 className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          isActive={editorState?.isH2 ?? false}
-          title="Heading 2"
-        >
-          <Heading2 className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          isActive={editorState?.isH3 ?? false}
-          title="Heading 3"
-        >
-          <Heading3 className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-          isActive={editorState?.isH4 ?? false}
-          title="Heading 4"
-        >
-          <Heading4 className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          isActive={false}
-          title="Paragraph"
-        >
-          <AlignLeft className="w-4 h-4" />
-        </MenuButton>
+        {/* Group 3: Lists & Structure */}
+        <div className="flex items-center gap-0.5 bg-surface-container-low/40 p-1 rounded-xl border border-outline-variant/20">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            isActive={editorState?.isBulletList ?? false}
+            title="Bullet List"
+          >
+            <List className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            isActive={editorState?.isOrderedList ?? false}
+            title="Numbered List"
+          >
+            <ListOrdered className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            isActive={editorState?.isBlockquote ?? false}
+            title="Blockquote"
+          >
+            <Quote className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            isActive={editorState?.isCodeBlock ?? false}
+            title="Code Block"
+          >
+            <span className="font-mono text-[10px] font-bold px-0.5">{`</>`}</span>
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            title="Horizontal Rule"
+          >
+            <Minus className="w-4 h-4" />
+          </MenuButton>
+        </div>
 
-        <Divider />
+        {/* Group 4: Insert / Media */}
+        <div className="flex items-center gap-0.5 bg-surface-container-low/40 p-1 rounded-xl border border-outline-variant/20">
+          <MenuButton
+            onClick={setLink}
+            isActive={editorState?.isLink ?? false}
+            title="Insert / Edit Link"
+          >
+            <LinkIcon className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={addImage}
+            title="Insert Image by URL"
+          >
+            <ImageIcon className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={addTable}
+            isActive={editorState?.isTable ?? false}
+            title="Insert Table"
+          >
+            <TableIcon className="w-4 h-4" />
+          </MenuButton>
 
-        {/* Lists & Structure */}
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          isActive={editorState?.isBulletList ?? false}
-          title="Bullet List"
-        >
-          <List className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          isActive={editorState?.isOrderedList ?? false}
-          title="Numbered List"
-        >
-          <ListOrdered className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          isActive={editorState?.isBlockquote ?? false}
-          title="Blockquote"
-        >
-          <Quote className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          isActive={editorState?.isCodeBlock ?? false}
-          title="Code Block"
-        >
-          <span className="font-mono text-[10px] font-bold px-0.5">{`</>`}</span>
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          title="Horizontal Rule"
-        >
-          <Minus className="w-4 h-4" />
-        </MenuButton>
+          {/* Image Upload */}
+          <label
+            className="p-2 rounded-lg hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80 flex items-center shrink-0"
+            title="Upload Image"
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <span className="text-[10px] font-bold">IMG↑</span>
+          </label>
+        </div>
 
-        <Divider />
-
-        {/* Media & Links */}
-        <MenuButton
-          onClick={setLink}
-          isActive={editorState?.isLink ?? false}
-          title="Insert / Edit Link"
-        >
-          <LinkIcon className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={addImage}
-          title="Insert Image by URL"
-        >
-          <ImageIcon className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={addTable}
-          isActive={editorState?.isTable ?? false}
-          title="Insert Table"
-        >
-          <TableIcon className="w-4 h-4" />
-        </MenuButton>
-
-        {/* File upload for images */}
-        <label
-          className="p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80 flex items-center shrink-0"
-          title="Upload Image"
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
-          <span className="text-[10px] font-bold">IMG↑</span>
-        </label>
-
-        <Divider />
-
-        {/* History */}
-        <MenuButton
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!(editorState?.canUndo ?? false)}
-          title="Undo (Ctrl+Z)"
-        >
-          <Undo className="w-4 h-4" />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!(editorState?.canRedo ?? false)}
-          title="Redo (Ctrl+Shift+Z)"
-        >
-          <Redo className="w-4 h-4" />
-        </MenuButton>
+        {/* Group 5: History */}
+        <div className="flex items-center gap-0.5 bg-surface-container-low/40 p-1 rounded-xl border border-outline-variant/20">
+          <MenuButton
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!(editorState?.canUndo ?? false)}
+            title="Undo (Ctrl+Z)"
+          >
+            <Undo className="w-4 h-4" />
+          </MenuButton>
+          <MenuButton
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!(editorState?.canRedo ?? false)}
+            title="Redo (Ctrl+Shift+Z)"
+          >
+            <Redo className="w-4 h-4" />
+          </MenuButton>
+        </div>
       </div>
 
       {/* ── Editor Content Area ─────────────────────────────── */}

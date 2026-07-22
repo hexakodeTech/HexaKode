@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AdminNewBlogPage() {
   return (
-    <AdminLayout>
+    <AdminLayout hideSidebar>
       <BlogForm />
       <Toaster position="bottom-right" theme="light" expand={false} richColors />
     </AdminLayout>

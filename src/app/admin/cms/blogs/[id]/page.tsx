@@ -35,7 +35,7 @@ export default async function AdminEditBlogPage(props: EditPageProps) {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout hideSidebar>
       <BlogForm initialData={blog} />
       <Toaster position="bottom-right" theme="light" expand={false} richColors />
     </AdminLayout>

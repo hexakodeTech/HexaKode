@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, Tag, User } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import Breadcrumb from "@/components/blog/Breadcrumb";
@@ -72,57 +72,14 @@ export default function BlogArticleView({
     post.publishedAt || post.createdAt || new Date()
   );
 
-  /**
-   * Fallback Meta Description / Excerpt:
-   * If post.excerpt is missing or empty, generate a preview snippet from first paragraph
-   * without modifying stored data.
-   */
-  const displayExcerpt = useMemo(() => {
-    if (post.excerpt && post.excerpt.trim() !== "") {
-      return post.excerpt.trim();
-    }
-    const plainText = (post.content || "")
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (!plainText) return "";
-    return plainText.length > 160 ? `${plainText.slice(0, 157)}...` : plainText;
-  }, [post.excerpt, post.content]);
-
-  /**
-   * Option A Content Split:
-   * Render first introductory paragraph(s) before cover image.
-   */
-  const contentParts = useMemo(() => {
-    const rawHtml = post.content || "";
-    if (!post.featuredImage) return { intro: "", body: rawHtml };
-
-    const pEndIndex = rawHtml.indexOf("</p>");
-    if (pEndIndex !== -1 && pEndIndex < 1200) {
-      const secondPEndIndex = rawHtml.indexOf("</p>", pEndIndex + 4);
-      const targetIndex =
-        secondPEndIndex !== -1 && secondPEndIndex < 1800
-          ? secondPEndIndex + 4
-          : pEndIndex + 4;
-
-      return {
-        intro: rawHtml.slice(0, targetIndex),
-        body: rawHtml.slice(targetIndex),
-      };
-    }
-
-    return { intro: "", body: rawHtml };
-  }, [post.content, post.featuredImage]);
-
   return (
     <div className="flex-1 flex flex-col w-full bg-background overflow-x-hidden">
-      {/* ── Content-First Hero Header ───────────────────────────────────── */}
+      {/* Article Header */}
       <Section
         variant="muted"
-        className="py-8 md:py-12 border-b border-outline-variant/10 text-left"
+        className="py-10 md:py-14 border-b border-outline-variant/10 text-left"
       >
         <Container className="max-w-4xl">
-          {/* 1. Breadcrumb */}
           <Breadcrumb
             items={[
               { label: "Blog", href: "/blog" },
@@ -130,110 +87,77 @@ export default function BlogArticleView({
             ]}
           />
 
-          {/* 2. Category • Publish Date • Reading Time */}
-          <div className="flex flex-wrap items-center gap-3 text-xs mt-4 mb-2">
+          <div className="flex flex-wrap items-center gap-3.5 mb-6 mt-4">
             {post.category?.name && (
-              <span className="px-3 py-1 rounded-lg bg-primary text-[11px] font-bold tracking-wider text-white uppercase shadow-xs">
+              <span className="px-3.5 py-1 rounded-lg bg-primary text-xs font-bold tracking-wider text-white uppercase shadow-sm">
                 {post.category.name}
               </span>
             )}
-            <span className="flex items-center gap-1.5 text-slate-500 font-medium">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
-              {displayDate}
-            </span>
-            {readingTime > 0 && (
-              <span className="flex items-center gap-1.5 text-slate-500 font-medium">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                {readingTime} min read
+            <div className="flex items-center gap-4 text-xs font-semibold text-slate-400">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4" />
+                {displayDate}
               </span>
-            )}
+              {readingTime > 0 && (
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4" />
+                  {readingTime} min read
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* 3. Blog Title */}
-          <h1 className="font-headline-xl text-display-sm md:text-display-md text-navy-dark font-extrabold tracking-tight leading-tight my-3">
+          <h1 className="font-headline-xl text-display-sm md:text-display-md text-navy-dark font-extrabold tracking-tight leading-tight mb-6">
             {displayTitle}
           </h1>
 
-          {/* 4. Meta Description (Short Excerpt) — Immediately below title */}
-          {displayExcerpt ? (
-            <p className="text-[18px] md:text-[20px] font-normal text-slate-600 leading-[1.7] max-w-[760px] my-4">
-              {displayExcerpt}
+          {post.excerpt && (
+            <p className="font-body-lg text-body-lg text-slate-500 leading-relaxed max-w-3xl">
+              {post.excerpt}
             </p>
-          ) : null}
-
-          {/* 5. Author Information & Share Buttons */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 mt-2 border-t border-slate-200/60">
-            <div className="flex items-center gap-3 text-xs">
-              <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                <User className="w-3.5 h-3.5 text-slate-400" />
-                Written by {post.authorName || "HexaKode Team"}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <ShareButtons url={pageUrl} title={displayTitle} />
-            </div>
-          </div>
+          )}
         </Container>
       </Section>
 
-      {/* ── Article Content Grid ────────────────────────────────────────── */}
-      <Section variant="white" spacing="medium" className="py-8 md:py-12 text-left">
+      {/* Article Content Grid */}
+      <Section variant="white" spacing="large" className="pt-10 pb-20 text-left">
         <Container className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Main Article Body Column */}
-          <div className="lg:col-span-8 flex flex-col gap-6">
-            {/* Mobile Collapsible Table of Contents */}
-            {headings.length > 0 && (
-              <div className="block lg:hidden">
-                <TableOfContents headings={headings} isMobile={true} />
-              </div>
-            )}
+          {/* Main Article Body */}
+          <div className="lg:col-span-8 flex flex-col gap-8">
+            {/* Featured Image */}
+            <div className="relative w-full aspect-[16/9] lg:aspect-[16/10] overflow-hidden rounded-2xl border border-slate-100/80 bg-slate-50 shadow-sm">
+              <Image
+                src={displayImage}
+                alt={displayTitle}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 800px"
+                className="object-cover"
+              />
+            </div>
 
-            {/* Introductory Text (Renders immediately above fold before cover image) */}
-            {contentParts.intro ? (
-              <HTMLRenderer html={contentParts.intro} />
-            ) : null}
+            {/* Rich Content Renderer */}
+            <div className="mt-2">
+              <HTMLRenderer html={post.content || "<p className='text-slate-400 italic'>No content written yet.</p>"} />
+            </div>
 
-            {/* 6. Featured Image (Positioned after introduction) */}
-            {post.featuredImage && (
-              <div className="relative w-full h-[260px] sm:h-[320px] md:h-[360px] overflow-hidden rounded-2xl border border-slate-100/80 bg-slate-50 shadow-xs my-2">
-                <Image
-                  src={displayImage}
-                  alt={displayTitle}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  className="object-cover"
-                />
-              </div>
-            )}
-
-            {/* 7. Main Article Body Content */}
-            <HTMLRenderer
-              html={
-                contentParts.body ||
-                post.content ||
-                "<p className='text-slate-400 italic'>No content written yet.</p>"
-              }
-            />
-
-            {/* Tags */}
+            {/* Article Tags */}
             {normalizedTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-slate-100">
+              <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-slate-100">
                 {normalizedTags.map((t) => (
                   <span
                     key={t.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 text-slate-600 border border-slate-100 text-xs font-semibold"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-50 text-slate-500 border border-slate-100 text-xs font-semibold"
                   >
-                    <Tag className="w-3.5 h-3.5 text-slate-400" />
+                    <Tag className="w-3.5 h-3.5" />
                     {t.name}
                   </span>
                 ))}
               </div>
             )}
 
-            {/* Author Card & Share Footer */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-8 border-t border-slate-100 items-center">
+            {/* Author Card & Share */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 pt-8 border-t border-slate-100 items-center">
               <AuthorCard
                 author={{
                   name: post.authorName || "HexaKode Team",
@@ -246,7 +170,7 @@ export default function BlogArticleView({
             </div>
           </div>
 
-          {/* Sticky Desktop Table of Contents Sidebar */}
+          {/* Sticky Sidebar / Table of Contents */}
           <div className="lg:col-span-4 flex flex-col gap-6 sticky top-28 self-start hidden lg:flex">
             {!isPreview && (
               <Link
