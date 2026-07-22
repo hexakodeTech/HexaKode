@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createBlogSchema } from "@/modules/blog/validation/schemas";
@@ -22,8 +22,9 @@ import {
   Edit3,
   Maximize2,
   CheckCircle2,
-  Clock,
   AlertCircle,
+  Save as SaveIcon,
+  Send,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,8 +43,9 @@ interface BlogFormProps {
 export default function BlogForm({ initialData }: BlogFormProps) {
   const router = useRouter();
   const isEdit = !!initialData;
+  const [currentPostId, setCurrentPostId] = useState<string | null>(initialData?.id || null);
 
-  // ── Form State ─────────────────────────────────────────────────────────────
+  // ── Form Input States ──────────────────────────────────────────────────────
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "");
@@ -73,13 +75,65 @@ export default function BlogForm({ initialData }: BlogFormProps) {
   const [activeTab, setActiveTab] = useState<"content" | "seo" | "author">("content");
   const [mobileMode, setMobileMode] = useState<"editor" | "preview">("editor");
   const [isFullScreenPreview, setIsFullScreenPreview] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isSlugAuto, setIsSlugAuto] = useState(!isEdit);
 
-  // Auto-save & unsaved state indicator
-  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "dirty">("saved");
-  const [lastSavedTime, setLastSavedTime] = useState<Date | null>(null);
+  // ── Save & Auto-Save State Machine ─────────────────────────────────────────
+  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "dirty" | "error">("saved");
+  const [saveButtonState, setSaveButtonState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [publishButtonState, setPublishButtonState] = useState<"idle" | "publishing" | "published" | "error">("idle");
+  const [lastSavedTime, setLastSavedTime] = useState<Date | null>(
+    initialData?.updatedAt ? new Date(initialData.updatedAt) : null
+  );
+
+  // Refs for race-condition-free saving and queuing
+  const isSavingRef = useRef(false);
+  const hasPendingChangesRef = useRef(false);
+  const lastEditTimestampRef = useRef<number>(Date.now());
+  const initialLoadRef = useRef(true);
+
+  // Create initial data snapshot string for dirty comparison
+  const buildDataSnapshot = useCallback(
+    () =>
+      JSON.stringify({
+        title,
+        slug,
+        excerpt,
+        content,
+        featuredImage,
+        authorName,
+        authorAvatar,
+        status,
+        featured,
+        categoryId,
+        selectedTagIds,
+        seoTitle,
+        metaDescription,
+        focusKeyword,
+        canonicalUrl,
+        ogImage,
+      }),
+    [
+      title,
+      slug,
+      excerpt,
+      content,
+      featuredImage,
+      authorName,
+      authorAvatar,
+      status,
+      featured,
+      categoryId,
+      selectedTagIds,
+      seoTitle,
+      metaDescription,
+      focusKeyword,
+      canonicalUrl,
+      ogImage,
+    ]
+  );
+
+  const lastSavedSnapshotRef = useRef<string>(buildDataSnapshot());
 
   // ── Load Taxonomies ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -105,41 +159,192 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     }
   }, [title, isSlugAuto, isEdit]);
 
-  // Mark form as dirty when inputs change
+  // ── Mark Form Dirty on User Edits ──────────────────────────────────────────
   useEffect(() => {
-    setSaveStatus("dirty");
-  }, [
-    title,
-    slug,
-    excerpt,
-    content,
-    featuredImage,
-    authorName,
-    authorAvatar,
-    status,
-    featured,
-    categoryId,
-    selectedTagIds,
-    seoTitle,
-    metaDescription,
-    focusKeyword,
-    canonicalUrl,
-    ogImage,
-  ]);
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+    const currentSnapshot = buildDataSnapshot();
+    if (currentSnapshot !== lastSavedSnapshotRef.current) {
+      setSaveStatus("dirty");
+      lastEditTimestampRef.current = Date.now();
+    }
+  }, [buildDataSnapshot]);
 
-  // ── Unsaved Changes Navigation Warning ─────────────────────────────────────
+  // ── Unsaved Changes Navigation Guard ───────────────────────────────────────
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (saveStatus === "dirty") {
         e.preventDefault();
-        e.returnValue = "";
+        e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+        return "You have unsaved changes. Are you sure you want to leave?";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [saveStatus]);
 
-  // ── File Upload Handler ───────────────────────────────────────────────────
+  // ── Core Save Execution Engine ─────────────────────────────────────────────
+  const executeSave = useCallback(
+    async (targetStatus?: BlogStatus, isAutoSave = false) => {
+      // 1. Prevent duplicate concurrent saves; queue if user keeps typing
+      if (isSavingRef.current) {
+        hasPendingChangesRef.current = true;
+        return;
+      }
+
+      const finalStatus = targetStatus || status;
+      const currentData = {
+        title,
+        slug,
+        excerpt,
+        content,
+        featuredImage,
+        authorName,
+        authorAvatar,
+        status: finalStatus,
+        featured,
+        categoryId: categoryId || null,
+        tagIds: selectedTagIds,
+        seoTitle: seoTitle || title,
+        metaDescription: metaDescription || excerpt,
+        focusKeyword,
+        canonicalUrl,
+        ogImage: ogImage || featuredImage,
+      };
+
+      const currentSnapshot = JSON.stringify(currentData);
+
+      // If nothing changed and not explicitly publishing, skip save
+      if (currentSnapshot === lastSavedSnapshotRef.current && !targetStatus) {
+        setSaveStatus("saved");
+        return;
+      }
+
+      // Form validation
+      const validation = createBlogSchema.safeParse(currentData);
+      if (!validation.success) {
+        if (!isAutoSave) {
+          const errorMsgs = validation.error.flatten().fieldErrors;
+          const firstError = Object.values(errorMsgs)[0]?.[0];
+          toast.error(firstError || "Form validation failed");
+        }
+        return;
+      }
+
+      // Set loading states
+      isSavingRef.current = true;
+      setSaveStatus("saving");
+
+      if (targetStatus === "PUBLISHED") {
+        setPublishButtonState("publishing");
+      } else {
+        setSaveButtonState("saving");
+      }
+
+      try {
+        const activeId = currentPostId;
+        const url = activeId ? `/api/blog/${activeId}` : "/api/blog";
+        const method = activeId ? "PATCH" : "POST";
+
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(currentData),
+        }).then((r) => r.json());
+
+        if (res.success && res.blog) {
+          const savedBlog = res.blog;
+
+          // If newly created post, update currentPostId and browser URL without page reload/redirect
+          if (!activeId && savedBlog.id) {
+            setCurrentPostId(savedBlog.id);
+            window.history.replaceState(null, "", `/admin/cms/blogs/${savedBlog.id}`);
+          }
+
+          if (targetStatus) {
+            setStatus(targetStatus);
+          }
+
+          lastSavedSnapshotRef.current = currentSnapshot;
+          setSaveStatus("saved");
+          const now = new Date();
+          setLastSavedTime(now);
+          lastEditTimestampRef.current = now.getTime();
+
+          if (targetStatus === "PUBLISHED") {
+            setPublishButtonState("published");
+            toast.success("Published Successfully ✓");
+            setTimeout(() => setPublishButtonState("idle"), 2500);
+          } else {
+            setSaveButtonState("saved");
+            if (!isAutoSave) toast.success("Saved Successfully ✓");
+            setTimeout(() => setSaveButtonState("idle"), 2000);
+          }
+        } else {
+          throw new Error(res.error || "Save failed");
+        }
+      } catch (err: any) {
+        setSaveStatus("error");
+        if (targetStatus === "PUBLISHED") {
+          setPublishButtonState("error");
+          setTimeout(() => setPublishButtonState("idle"), 3000);
+        } else {
+          setSaveButtonState("error");
+          setTimeout(() => setSaveButtonState("idle"), 3000);
+        }
+        if (!isAutoSave) {
+          toast.error(err?.message || "Save failed. Keep editing or retry.");
+        }
+      } finally {
+        isSavingRef.current = false;
+
+        // Execute queued save if user made edits while save was processing
+        if (hasPendingChangesRef.current) {
+          hasPendingChangesRef.current = false;
+          setTimeout(() => executeSave(undefined, true), 1000);
+        }
+      }
+    },
+    [
+      currentPostId,
+      title,
+      slug,
+      excerpt,
+      content,
+      featuredImage,
+      authorName,
+      authorAvatar,
+      status,
+      featured,
+      categoryId,
+      selectedTagIds,
+      seoTitle,
+      metaDescription,
+      focusKeyword,
+      canonicalUrl,
+      ogImage,
+    ]
+  );
+
+  // ── Auto Save Interval (Triggers after 60s of inactivity or dirty state) ──
+  useEffect(() => {
+    const autoSaveInterval = setInterval(() => {
+      const timeSinceLastEdit = Date.now() - lastEditTimestampRef.current;
+      if (
+        saveStatus === "dirty" &&
+        timeSinceLastEdit >= 60000 &&
+        !isSavingRef.current
+      ) {
+        executeSave(undefined, true);
+      }
+    }, 5000);
+
+    return () => clearInterval(autoSaveInterval);
+  }, [saveStatus, executeSave]);
+
+  // ── Image Upload Handler ──────────────────────────────────────────────────
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     target: "featured" | "og"
@@ -181,69 +386,6 @@ export default function BlogForm({ initialData }: BlogFormProps) {
       setSelectedTagIds(selectedTagIds.filter((t) => t !== id));
     } else {
       setSelectedTagIds([...selectedTagIds, id]);
-    }
-  };
-
-  // ── Save Handler ──────────────────────────────────────────────────────────
-  const handleSave = async (targetStatus?: BlogStatus) => {
-    const finalStatus = targetStatus || status;
-    const data = {
-      title,
-      slug,
-      excerpt,
-      content,
-      featuredImage,
-      authorName,
-      authorAvatar,
-      status: finalStatus,
-      featured,
-      categoryId: categoryId || null,
-      tagIds: selectedTagIds,
-      seoTitle: seoTitle || title,
-      metaDescription: metaDescription || excerpt,
-      focusKeyword,
-      canonicalUrl,
-      ogImage: ogImage || featuredImage,
-    };
-
-    const validation = createBlogSchema.safeParse(data);
-    if (!validation.success) {
-      const errorMsgs = validation.error.flatten().fieldErrors;
-      const firstError = Object.values(errorMsgs)[0]?.[0];
-      toast.error(firstError || "Form validation failed");
-      return;
-    }
-
-    setIsSaving(true);
-    setSaveStatus("saving");
-    const loadToast = toast.loading(isEdit ? "Updating post..." : "Creating post...");
-    try {
-      const url = isEdit ? `/api/blog/${initialData.id}` : "/api/blog";
-      const method = isEdit ? "PATCH" : "POST";
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }).then((r) => r.json());
-
-      if (res.success) {
-        setSaveStatus("saved");
-        setLastSavedTime(new Date());
-        toast.success(
-          isEdit ? "Insight updated successfully" : "Insight created successfully",
-          { id: loadToast }
-        );
-        router.push("/admin/cms/blogs");
-        router.refresh();
-      } else {
-        setSaveStatus("dirty");
-        toast.error(res.error || "Operation failed", { id: loadToast });
-      }
-    } catch {
-      setSaveStatus("dirty");
-      toast.error("Operation failed", { id: loadToast });
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -294,6 +436,12 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     ]
   );
 
+  // Format last saved display string
+  const lastSavedText = useMemo(() => {
+    if (!lastSavedTime) return "";
+    return `Last saved ${lastSavedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }, [lastSavedTime]);
+
   return (
     <div className="space-y-5 text-left w-full max-w-[1600px] mx-auto pb-12">
       {/* ── Top Action Header Bar ────────────────────────────────────────── */}
@@ -309,10 +457,11 @@ export default function BlogForm({ initialData }: BlogFormProps) {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-headline-md text-base font-bold text-primary">
-                {isEdit ? "Edit Insight Post" : "Draft New Insight"}
+                {currentPostId ? "Edit Insight Post" : "Draft New Insight"}
               </h1>
-              {/* Save Status Indicator */}
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-surface-container border border-outline-variant/20">
+
+              {/* ── Status Indicator Badge ─────────────────────────────── */}
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/20 select-none">
                 {saveStatus === "saving" ? (
                   <span className="text-amber-600 flex items-center gap-1">
                     <Loader2 className="w-3 h-3 animate-spin" /> Saving...
@@ -320,24 +469,33 @@ export default function BlogForm({ initialData }: BlogFormProps) {
                 ) : saveStatus === "saved" ? (
                   <span className="text-emerald-600 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                    {lastSavedTime ? `Saved ${lastSavedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : "Saved"}
+                    {lastSavedText || "Saved"}
                   </span>
+                ) : saveStatus === "error" ? (
+                  <button
+                    type="button"
+                    onClick={() => executeSave()}
+                    className="text-rose-600 flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <AlertCircle className="w-3 h-3 text-rose-500" /> Save Failed (Retry)
+                  </button>
                 ) : (
                   <span className="text-amber-600 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3 text-amber-500" /> Unsaved changes
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                    Unsaved Changes
                   </span>
                 )}
               </span>
             </div>
             <p className="text-[10px] text-on-surface-variant/60 mt-0.5">
-              {isEdit
+              {currentPostId
                 ? "Make modifications to live published content or edit draft parameters."
                 : "Begin drafting an industry insight or technical guide."}
             </p>
           </div>
         </div>
 
-        {/* Top Right Buttons */}
+        {/* Top Right Action Controls */}
         <div className="flex items-center gap-2.5">
           {/* Mobile Mode Switcher (< 1024px) */}
           <div className="flex lg:hidden items-center bg-surface-container p-1 rounded-xl border border-outline-variant/20">
@@ -377,26 +535,63 @@ export default function BlogForm({ initialData }: BlogFormProps) {
             <span className="hidden md:inline">Full Screen</span>
           </button>
 
+          {/* Manual Save Button */}
           <button
             type="button"
-            onClick={() => handleSave("DRAFT")}
-            disabled={isSaving}
-            className="px-4 py-2 border border-outline-variant/40 hover:bg-surface-container text-on-surface transition-all rounded-lg text-xs font-semibold cursor-pointer disabled:opacity-50"
+            onClick={() => executeSave()}
+            disabled={saveButtonState === "saving"}
+            className="min-w-[85px] px-4 py-2 border border-outline-variant/40 hover:bg-surface-container text-on-surface transition-all rounded-lg text-xs font-semibold cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
           >
-            Save Draft
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSave("PUBLISHED")}
-            disabled={isSaving}
-            className="px-4 py-2 bg-primary hover:bg-primary/95 text-white transition-all rounded-lg text-xs font-semibold shadow-premium cursor-pointer disabled:opacity-50"
-          >
-            {isSaving ? (
-              <span className="flex items-center gap-1">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving...
-              </span>
+            {saveButtonState === "saving" ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
+                <span>Saving...</span>
+              </>
+            ) : saveButtonState === "saved" ? (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="text-emerald-600 font-bold">Saved ✓</span>
+              </>
+            ) : saveButtonState === "error" ? (
+              <>
+                <AlertCircle className="w-3.5 h-3.5 text-rose-500" />
+                <span className="text-rose-600 font-bold">Failed</span>
+              </>
             ) : (
-              <span>Publish Live</span>
+              <>
+                <SaveIcon className="w-3.5 h-3.5 text-on-surface-variant/70" />
+                <span>Save</span>
+              </>
+            )}
+          </button>
+
+          {/* Publish Live Button */}
+          <button
+            type="button"
+            onClick={() => executeSave("PUBLISHED")}
+            disabled={publishButtonState === "publishing"}
+            className="min-w-[110px] px-4 py-2 bg-primary hover:bg-primary/95 text-white transition-all rounded-lg text-xs font-semibold shadow-premium cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
+          >
+            {publishButtonState === "publishing" ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Publishing...</span>
+              </>
+            ) : publishButtonState === "published" ? (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Published ✓</span>
+              </>
+            ) : publishButtonState === "error" ? (
+              <>
+                <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+                <span>Failed</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-3.5 h-3.5" />
+                <span>Publish Live</span>
+              </>
             )}
           </button>
         </div>
