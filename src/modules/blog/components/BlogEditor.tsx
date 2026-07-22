@@ -44,20 +44,7 @@ interface BlogEditorProps {
 
 export default function BlogEditor({ content, onChange }: BlogEditorProps) {
   /**
-   * Tiptap v3 Breaking Change Fix:
-   *
-   * In Tiptap v3, `shouldRerenderOnTransaction` defaults to FALSE.
-   * Without this, toolbar button clicks execute commands on the editor's
-   * ProseMirror state, but React never re-renders the toolbar — so:
-   *   1. `isActive()` reads always return stale data (buttons appear non-functional)
-   *   2. The editor loses the focused selection context between renders
-   *   3. Commands appear to silently fail
-   *
-   * Fix: Set `shouldRerenderOnTransaction: true` for legacy v2-compatible behavior,
-   * OR (preferred v3 pattern) use `useEditorState` for reactive toolbar state.
-   * We do both here for maximum compatibility.
-   *
-   * Also: `immediatelyRender: false` prevents Next.js SSR hydration mismatch.
+   * Tiptap v3 Configuration
    */
   const editor = useEditor({
     immediatelyRender: false,
@@ -105,8 +92,6 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
 
   /**
    * useEditorState — Tiptap v3 reactive state subscription.
-   * This correctly subscribes to editor transactions for toolbar active-state
-   * updates without relying on React re-renders from shouldRerenderOnTransaction.
    */
   const editorState = useEditorState({
     editor,
@@ -184,7 +169,6 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
         toast.error("Upload failed", { id: loadingToast });
       }
 
-      // Reset input so same file can be uploaded again
       e.target.value = "";
     },
     [editor]
@@ -195,7 +179,12 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
   }, [editor]);
 
-  // Do not render toolbar until editor is ready
+  const handleToolbarWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY !== 0) {
+      e.currentTarget.scrollLeft += e.deltaY;
+    }
+  };
+
   if (!editor) return null;
 
   const MenuButton = ({
@@ -214,8 +203,6 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     <button
       type="button"
       onMouseDown={(e) => {
-        // Prevent blur before the command fires — critical for focus-dependent
-        // commands like toggleBold() which need the editor to be focused.
         e.preventDefault();
         onClick();
       }}
@@ -223,8 +210,8 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       title={title}
       aria-label={title}
       aria-pressed={isActive}
-      className={`p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
-        isActive ? "bg-secondary/15 text-secondary hover:bg-secondary/20" : "text-on-surface-variant/80"
+      className={`p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0 ${
+        isActive ? "bg-secondary/15 text-secondary hover:bg-secondary/20 font-bold" : "text-on-surface-variant/80"
       }`}
     >
       {children}
@@ -234,11 +221,12 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
   const Divider = () => <div className="w-px h-6 bg-outline-variant/30 mx-1 shrink-0" />;
 
   return (
-    <div className="border border-outline-variant/30 rounded-xl overflow-hidden bg-surface-container-lowest focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/15 transition-all">
-      {/* ── Editor Toolbar ─────────────────────────────────── */}
+    <div className="relative border border-outline-variant/30 rounded-xl bg-surface-container-lowest focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/15 transition-all w-full min-w-0 max-w-full">
+      {/* ── Sticky Rich Text Editor Toolbar ──────────────────────────────── */}
       <div
-        className="flex flex-wrap items-center gap-1 p-2 bg-surface-container-low/40 border-b border-outline-variant/20"
-        onMouseDown={(e) => e.preventDefault()} // Prevent entire toolbar from blurring editor
+        onMouseDown={(e) => e.preventDefault()}
+        onWheel={handleToolbarWheel}
+        className="sticky top-0 z-30 flex flex-nowrap items-center gap-1 p-2 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20 shadow-xs rounded-t-xl overflow-x-auto w-full min-w-0 select-none touch-pan-x shrink-0 scrollbar-none"
       >
         {/* Text Formatting */}
         <MenuButton
@@ -380,7 +368,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
 
         {/* File upload for images */}
         <label
-          className="p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80 flex items-center"
+          className="p-2 rounded hover:bg-surface-container-high hover:text-primary transition-colors cursor-pointer text-on-surface-variant/80 flex items-center shrink-0"
           title="Upload Image"
           onMouseDown={(e) => e.preventDefault()}
         >
@@ -416,7 +404,7 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
       <EditorContent editor={editor} />
 
       {/* ── Footer Status Bar ──────────────────────────────── */}
-      <div className="flex justify-between items-center px-4 py-2 bg-surface-container-low/20 border-t border-outline-variant/10 text-[10px] text-on-surface-variant/50 font-mono">
+      <div className="flex justify-between items-center px-4 py-2 bg-surface-container-low/20 border-t border-outline-variant/10 text-[10px] text-on-surface-variant/50 font-mono rounded-b-xl">
         <span className="flex items-center gap-1 text-secondary/80">
           <Sparkles className="w-3 h-3" /> Rich Text Powered
         </span>
