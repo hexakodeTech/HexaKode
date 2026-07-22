@@ -51,6 +51,8 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
         heading: {
           levels: [1, 2, 3, 4],
         },
+        link: false,
+        underline: false,
       }),
       Underline,
       Highlight.configure({ multicolor: true }),
