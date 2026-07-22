@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bgGrad)" />
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.05">
+    <path d="M0 50H800 M0 100H800 M0 150H800 M0 200H800 M0 250H800 M0 300H800 M0 350H800 M0 400H800" stroke="#ffffff" stroke-width="1"/>
+    <path d="M100 0V450 M200 0V450 M300 0V450 M400 0V450 M500 0V450 M600 0V450 M700 0V450" stroke="#ffffff" stroke-width="1"/>
+  </g>
+  <!-- Abstract Decorative Shapes -->
+  <circle cx="400" cy="225" r="120" fill="url(#accentGrad)" opacity="0.15" />
+  <g transform="translate(350, 175)" opacity="0.8">
+    <rect width="100" height="80" rx="12" fill="none" stroke="url(#accentGrad)" stroke-width="4" />
+    <path d="M25 45L40 30L60 50L75 35L85 45" stroke="url(#accentGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="35" cy="28" r="5" fill="url(#accentGrad)" />
+  </g>
+  <text x="400" y="290" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" letter-spacing="1">HEXAKODE BLOG</text>
+</svg>

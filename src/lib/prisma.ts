@@ -1,5 +1,5 @@
-import dns from 'node:dns';
-dns.setDefaultResultOrder('ipv4first');
+// import dns from 'node:dns';
+// dns.setDefaultResultOrder('ipv4first');
 
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';

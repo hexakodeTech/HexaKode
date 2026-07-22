@@ -236,7 +236,11 @@ export default function AdminHeader({ onMenuToggle }: HeaderProps) {
   }, [showProfile]);
 
   // ── Dynamic page title from path ──
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const getPageTitle = () => {
+    if (!mounted) return null;
     const section = pathname.split("/").pop();
     if (!section || section === "admin") return "Overview";
     return section.charAt(0).toUpperCase() + section.slice(1);

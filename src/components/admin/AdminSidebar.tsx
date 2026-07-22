@@ -17,6 +17,10 @@ import {
   Building2,
   ChevronRight,
   LayoutGrid,
+  BookOpen,
+  Layers,
+  Tag,
+  Image,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -43,6 +47,10 @@ export default function AdminSidebar({ isOpen, onClose }: SidebarProps) {
 
   const cmsSubItems = [
     { name: "Portfolio", path: "/admin/cms/portfolio", icon: LayoutGrid },
+    { name: "Blogs", path: "/admin/cms/blogs", icon: BookOpen },
+    { name: "Categories", path: "/admin/cms/categories", icon: Layers },
+    { name: "Tags", path: "/admin/cms/tags", icon: Tag },
+    { name: "Media Library", path: "/admin/cms/media", icon: Image },
   ];
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);

@@ -14,6 +14,8 @@ import { getPublishedProjects } from "@/modules/portfolio/services/portfolio.ser
 import { mapDbCategoryToPublic } from "@/modules/portfolio/types/portfolio";
 import { Project } from "@/types/home";
 
+import LatestInsights from "@/components/home/LatestInsights";
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -50,6 +52,7 @@ export default async function Home() {
         <WhyChooseHexaKode />
         <HomepageFAQ />
         <ProcessSection />
+        <LatestInsights />
         <CTASection />
         <GoogleReviewCTA variant="section" />
       </main>

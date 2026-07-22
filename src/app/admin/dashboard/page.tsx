@@ -129,7 +129,7 @@ export default function DashboardPage() {
           <StatsCard
             title="CMS Engine Status"
             value="Active (Local)"
-            subtext="Sanity studio connected"
+            subtext="HexaKode native CMS"
             icon={Database}
             trend={{ value: "Online", type: "positive" }}
           />

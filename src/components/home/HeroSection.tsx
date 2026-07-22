@@ -58,8 +58,11 @@ export default function HeroSection() {
             <SecondaryButton onClick={() => openDemoModal({ source: "Hero CTA", inquiryType: "Technical Discovery Call" })} variant="light">
               Book a Free Consultation
             </SecondaryButton>
-            <SecondaryButton href="#portfolio" variant="light">
-              View Portfolio
+            <SecondaryButton href="/services" variant="light">
+              Explore Services
+            </SecondaryButton>
+            <SecondaryButton href="/services" variant="light">
+              View All Services
             </SecondaryButton>
           </motion.div>
         </motion.div>
