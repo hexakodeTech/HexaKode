@@ -9,13 +9,24 @@ import GoogleReviewCTA from "../common/GoogleReviewCTA";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [recentPosts, setRecentPosts] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    fetch("/api/blog?limit=3&status=PUBLISHED")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.posts) setRecentPosts(data.posts);
+      })
+      .catch(() => {});
+  }, []);
+
 
   return (
     <footer className="bg-primary-container text-on-primary-container relative w-full border-t border-outline-variant/10">
       {/* Desktop/Tablet Footer (768px and above) */}
       <div className="hidden md:block">
-        {/* 5-Column Grid: Brand 40% | Services 20% | Company 20% | Legal 20% */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-gutter py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        {/* 6-Column Grid: Brand 33% | Services 16% | Company 16% | Recent 16% | Legal 16% */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-gutter py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           
           {/* Branding & Socials — 50% of footer width */}
           <div className="flex flex-col items-start md:col-span-2">
@@ -139,12 +150,12 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Company Links — 20% width */}
+            {/* Company Links — 16% width */}
             <div>
               <h5 className="font-label-mono text-label-mono text-white mb-6 uppercase tracking-wider">
                 Company
               </h5>
-              <ul className="space-y-4 font-body-sm text-body-sm">
+              <ul className="space-y-4 font-body-sm text-body-sm text-left">
                 <li>
                   <Link href="/about" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
                     About Us
@@ -153,6 +164,11 @@ export default function Footer() {
                 <li>
                   <Link href="/portfolio" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
                     Portfolio
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    Blog
                   </Link>
                 </li>
                 <li>
@@ -165,6 +181,26 @@ export default function Footer() {
                     Contact
                   </Link>
                 </li>
+              </ul>
+            </div>
+
+            {/* Recent Posts — 16% width */}
+            <div>
+              <h5 className="font-label-mono text-label-mono text-white mb-6 uppercase tracking-wider">
+                Recent Posts
+              </h5>
+              <ul className="space-y-4 font-body-sm text-body-sm text-left">
+                {recentPosts.length > 0 ? (
+                  recentPosts.map((post) => (
+                    <li key={post.id || post._id}>
+                      <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block line-clamp-2">
+                        {post.title}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-on-primary-container/40 italic">Loading...</li>
+                )}
               </ul>
             </div>
 
@@ -343,6 +379,11 @@ export default function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -373,7 +414,30 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services → Legal: 24px spacing */}
+          {/* Services → Recent Posts: 24px spacing */}
+          <div className="w-full border-t border-outline-variant/10 my-3" />
+
+          {/* SECTION 3.6 — RECENT POSTS */}
+          <div className="flex flex-col items-center">
+            <h5 className="font-label-mono text-label-mono text-white mb-4 uppercase tracking-wider">
+              Recent Posts
+            </h5>
+            <ul className="flex flex-col items-center space-y-4 font-body-sm text-body-sm text-center px-4 w-full">
+              {recentPosts.length > 0 ? (
+                recentPosts.map((post) => (
+                  <li key={post.id || post._id} className="w-full truncate max-w-xs">
+                    <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block truncate">
+                      {post.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-on-primary-container/40 italic">Loading...</li>
+              )}
+            </ul>
+          </div>
+
+          {/* Recent Posts → Legal: 24px spacing */}
           <div className="w-full border-t border-outline-variant/10 my-3" />
 
           {/* SECTION 4 — LEGAL */}
