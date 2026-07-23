@@ -41,36 +41,53 @@ export interface TocHeading {
 }
 
 /**
- * Extract H2/H3 headings from HTML for Table of Contents.
- * Parses headings with or without explicit id attributes, generating clean fallback ids when needed.
+ * Generate a URL-safe slug from heading text.
+ */
+export function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/&amp;/g, "and")
+    .replace(/&[^;]+;/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Extract H2/H3/H4 headings from HTML for Table of Contents.
+ * Parses headings, generating clean unique ids from heading text with duplicate suffixing (-2, -3, etc.).
  */
 export function extractTableOfContents(htmlContent: string): TocHeading[] {
   if (!htmlContent) return [];
   const headings: TocHeading[] = [];
-  const regex = /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi;
+  const regex = /<h([234])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
   let match;
-  let index = 0;
+  const usedCounts = new Map<string, number>();
 
   while ((match = regex.exec(htmlContent)) !== null) {
     const level = parseInt(match[1], 10);
-    const attrs = match[2];
-    const rawText = match[3];
-    const text = rawText.replace(/<[^>]*>/g, "").trim();
+    const rawText = match[2];
+    const text = rawText
+      .replace(/<[^>]*>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, " ")
+      .trim();
+
     if (!text) continue;
 
-    const idMatch = attrs.match(/id="([^"]*)"/i);
-    let id = idMatch ? idMatch[1] : "";
-    if (!id) {
-      id =
-        text
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/-+/g, "-") || `heading-${index}`;
-    }
+    const baseSlug = slugifyHeading(text) || "heading";
+    const count = (usedCounts.get(baseSlug) || 0) + 1;
+    usedCounts.set(baseSlug, count);
+
+    const id = count === 1 ? baseSlug : `${baseSlug}-${count}`;
 
     headings.push({ id, level, text });
-    index++;
   }
   return headings;
 }
