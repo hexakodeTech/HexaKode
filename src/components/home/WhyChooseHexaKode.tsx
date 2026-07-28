@@ -21,6 +21,7 @@ import {
 import Section from "../common/Section";
 import Container from "../common/Container";
 import SectionHeading from "../common/SectionHeading";
+import TechnologyChip from "../common/TechnologyChip";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 // 1. Feature Cards Data (6 Cards)
@@ -448,17 +449,10 @@ export default function WhyChooseHexaKode() {
 
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-5xl">
                 {TECH_LOGOS.map((tech) => (
-                  <div
+                  <TechnologyChip
                     key={tech.name}
-                    className="flex items-center gap-3 px-5 py-3.5 min-h-[44px] bg-white rounded-xl border border-slate-200/70 shadow-2xs hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 transition-all duration-300 group cursor-default"
-                  >
-                    <div className="w-6 h-6 flex items-center justify-center shrink-0 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                      {tech.renderIcon()}
-                    </div>
-                    <span className="text-xs font-semibold tracking-[0.015em] text-slate-700 group-hover:text-slate-900 transition-colors duration-300">
-                      {tech.name}
-                    </span>
-                  </div>
+                    technology={tech}
+                  />
                 ))}
               </div>
             </div>
