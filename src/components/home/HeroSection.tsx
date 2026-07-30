@@ -22,7 +22,7 @@ export default function HeroSection() {
         <motion.div
           className="lg:col-span-7 flex flex-col items-start text-left max-w-2xl"
           variants={staggerContainer}
-          initial="hidden"
+          initial={false}
           animate="visible"
         >
           <motion.span
@@ -71,7 +71,7 @@ export default function HeroSection() {
         <motion.div
           className="lg:col-span-5 flex justify-center items-center relative select-none"
           variants={fadeUp}
-          initial="hidden"
+          initial={false}
           animate="visible"
         >
           {/* Concentric Ripple Background Animation */}
@@ -111,7 +111,7 @@ export default function HeroSection() {
             {/* The Stable Graphic Box */}
             <div className="relative w-full h-full rounded-xl overflow-hidden shadow-premium-hover">
               <Image
-                src="/hero-graphics.png"
+                src="/hero-graphics.webp"
                 alt="HexaKode Technological Precision abstract graphic"
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"

@@ -1,8 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import * as Icons from "lucide-react";
+import { Monitor, Smartphone, Palette, Code2, ArrowRight, HelpCircle } from "lucide-react";
 import { Service } from "../../types/home";
 import { cn } from "../../lib/utils";
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Monitor,
+  Smartphone,
+  Palette,
+  Code2,
+};
 
 interface ServiceCardProps {
   service: Service;
@@ -12,9 +19,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
   const { title, description, tags, highlighted, iconName, id, href } = service;
   
   // Dynamically resolve Lucide Icon
-  const IconComponent = (Icons[iconName as keyof typeof Icons] || Icons.HelpCircle) as React.ComponentType<{
-    className?: string;
-  }>;
+  const IconComponent = ICON_MAP[iconName] || HelpCircle;
 
   if (highlighted) {
     // Custom Software wide layout card (dark background, dashboard visual graphic on the right)
@@ -52,7 +57,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             </div>
             <span className="inline-flex items-center text-secondary hover:text-primary text-sm font-semibold transition-colors duration-200 group">
               Learn More
-              <Icons.ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
             </span>
           </div>
 
@@ -111,7 +116,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             </div>
             <span className="inline-flex items-center text-secondary hover:text-primary text-sm font-semibold transition-colors duration-200 group">
               Learn More
-              <Icons.ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
             </span>
           </div>
         </div>
@@ -151,7 +156,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
           </div>
           <span className="inline-flex items-center text-secondary hover:text-primary text-sm font-semibold transition-colors duration-200 group">
             Learn More
-            <Icons.ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+            <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
           </span>
         </div>
       </div>

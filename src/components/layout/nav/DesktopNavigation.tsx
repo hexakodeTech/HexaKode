@@ -137,7 +137,7 @@ export default function DesktopNavigation({ pathname }: DesktopNavigationProps) 
       <Link href="/" className="flex items-center gap-3 group select-none relative z-10 shrink-0">
         <div className="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105 shrink-0">
           <Image
-            src="/logo-icon.png"
+            src="/logo-icon.webp"
             alt="HexaKode Logo"
             fill
             sizes="36px"

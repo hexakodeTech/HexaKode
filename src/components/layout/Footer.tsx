@@ -36,7 +36,7 @@ export default function Footer() {
               {/* Column 1: Logo mark */}
               <div className="relative w-12 h-12 shrink-0 self-center">
                 <Image
-                  src="/logo-icon.png"
+                  src="/logo-icon.webp"
                   alt="HexaKode Logo"
                   fill
                   sizes="48px"
@@ -245,7 +245,7 @@ export default function Footer() {
           <div className="flex flex-col items-center text-center">
             <div className="relative w-12 h-12 mb-4">
               <Image
-                src="/logo-icon.png"
+                src="/logo-icon.webp"
                 alt="HexaKode Logo"
                 fill
                 sizes="48px"
