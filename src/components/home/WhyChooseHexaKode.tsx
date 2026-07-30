@@ -74,10 +74,13 @@ const FEATURES = [
 const METRICS = [
   {
     id: "projects",
-    targetNumber: 2,
+    targetNumber: 3,
     suffix: "+",
     label: "Completed Projects",
     subtext: "Delivered on time & on scope",
+    tags: [
+      "Revopz",
+    ],
     icon: CheckCircle2,
   },
   {
@@ -97,12 +100,13 @@ const METRICS = [
       "Tailwind CSS",
       "Node.js",
       "Sanity CMS",
+      "Prisma"
     ],
     icon: Layers,
   },
   {
     id: "industries",
-    targetNumber: 2,
+    targetNumber: 3,
     suffix: "+",
     label: "Industries Served",
     subtext: "Diverse market experience",
@@ -112,7 +116,8 @@ const METRICS = [
       // "Retail",
       // "Education",
       // "Government",
-      "Publishing"
+      "Publishing",
+      "Event"
     ],
     icon: Users,
   },
