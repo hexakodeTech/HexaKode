@@ -39,7 +39,6 @@ export default function MobileNavigation({ pathname }: MobileNavigationProps) {
             fill
             sizes="36px"
             className="object-contain"
-            priority
           />
         </div>
         <Brand variant="navbar" />

@@ -157,7 +157,7 @@ export default function MobileDrawer({ isOpen, onClose, pathname }: MobileDrawer
             {/* Scrollable Navigation Body */}
             <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-5" aria-label="Mobile Navigation Drawer">
               <div>
-                <div className="px-3 text.10px font-bold tracking-widest uppercase text-on-surface-variant/50 mb-2 select-none">
+                <div className="px-3 text-xs font-bold tracking-widest uppercase text-slate-500 mb-2 select-none">
                   Navigation
                 </div>
 

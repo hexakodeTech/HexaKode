@@ -232,7 +232,7 @@ export default function Footer() {
 
           {/* Bottom copyright bar */}
           <div className="px-margin-mobile md:px-margin-desktop py-8 border-t border-outline-variant/10 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="font-body-sm text-body-sm text-on-primary-container/50">
+            <p className="font-body-sm text-body-sm text-slate-400">
               &copy; {currentYear} HexaKode Engineering. All rights reserved.
             </p>
             <GoogleReviewCTA variant="link" />
@@ -488,7 +488,7 @@ export default function Footer() {
           {/* SECTION 6 — COPYRIGHT */}
           <div className="flex flex-col items-center text-center pb-[calc(2rem+env(safe-area-inset-bottom,0px))] gap-3">
             <GoogleReviewCTA variant="link" />
-            <p className="font-body-sm text-body-sm text-on-primary-container/50 leading-relaxed">
+            <p className="font-body-sm text-body-sm text-slate-400 leading-relaxed">
               &copy; {currentYear} HexaKode Engineering.<br />All Rights Reserved.
             </p>
           </div>

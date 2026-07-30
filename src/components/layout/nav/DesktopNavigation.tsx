@@ -142,7 +142,6 @@ export default function DesktopNavigation({ pathname }: DesktopNavigationProps) 
             fill
             sizes="36px"
             className="object-contain"
-            priority
           />
         </div>
         <Brand variant="navbar" />

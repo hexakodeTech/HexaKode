@@ -114,9 +114,10 @@ export default function HeroSection() {
                 src="/hero-graphics.webp"
                 alt="HexaKode Technological Precision abstract graphic"
                 fill
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) min(100vw - 2rem, 420px), 400px"
                 className="object-cover"
                 priority
+                fetchPriority="high"
               />
             </div>
           </div>
