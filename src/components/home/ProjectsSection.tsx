@@ -31,29 +31,33 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         >
           <motion.div
             variants={fadeUp}
-            className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 md:mb-16"
+            className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 md:mb-10 w-full"
           >
-            <SectionHeading
-              title="Featured Projects"
-              subtitle="A selection of our most impactful work across various industries."
-              align="left"
-              theme="light"
-              className="mb-0 max-w-2xl"
-            />
-            <Link
-              href="/portfolio"
-              className="inline-flex items-center text-sm font-semibold text-slate-800 nav-link-underline py-1 group shrink-0 self-start sm:self-auto"
-            >
-              View All Work
-              <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
+            <div className="flex-1 max-w-2xl">
+              <SectionHeading
+                title="Featured Projects"
+                subtitle="A selection of our most impactful work across various industries."
+                align="left"
+                theme="light"
+                className="mb-0 max-w-none"
+              />
+            </div>
+            <div className="shrink-0 self-start sm:self-auto pb-1">
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center text-sm font-semibold text-slate-800 nav-link-underline py-1 group"
+              >
+                View All Work
+                <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </motion.div>
 
           {projects.length === 0 ? (
             // Professional empty state matching the requirements
             <motion.div
               variants={fadeUp}
-              className="flex flex-col items-center justify-center py-16 px-4 text-center rounded-2xl bg-white border border-slate-100/80 shadow-sm max-w-xl mx-auto w-full mt-12"
+              className="flex flex-col items-center justify-center py-16 px-4 text-center rounded-2xl bg-white border border-slate-100/80 shadow-sm max-w-xl mx-auto w-full mt-8"
             >
               <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 mb-4 border border-slate-100">
                 🚀
@@ -65,7 +69,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           ) : (
             <motion.div
               variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-12"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
             >
               {projects.map((project) => (
                 <motion.div key={project.id} variants={fadeUp} className="h-full">
