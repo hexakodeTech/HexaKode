@@ -6,6 +6,7 @@ export const PROJECT_TYPES = [
   { value: "ui-ux-design", label: "UI/UX Design" },
   { value: "ecommerce-development", label: "E-commerce Development" },
   { value: "custom-software-development", label: "Custom Software Development" },
+  { value: "digital-marketing", label: "Digital Marketing" },
   { value: "other", label: "Other" },
 ];
 
