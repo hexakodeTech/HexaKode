@@ -1,21 +1,22 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/home/HeroSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
-import WhyChooseHexaKode from "@/components/home/WhyChooseHexaKode";
-import HomepageFAQ from "@/components/home/HomepageFAQ";
-import ProcessSection from "@/components/home/ProcessSection";
-import CTASection from "@/components/home/CTASection";
-import GoogleReviewCTA from "@/components/common/GoogleReviewCTA";
+import LatestInsights from "@/components/home/LatestInsights";
 import Footer from "@/components/layout/Footer";
 import { getPublishedProjects } from "@/modules/portfolio/services/portfolio.service";
 import { mapDbCategoryToPublic } from "@/modules/portfolio/types/portfolio";
 import { Project } from "@/types/home";
 
-import LatestInsights from "@/components/home/LatestInsights";
+const WhyChooseHexaKode = dynamic(() => import("@/components/home/WhyChooseHexaKode"));
+const HomepageFAQ = dynamic(() => import("@/components/home/HomepageFAQ"));
+const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"));
+const CTASection = dynamic(() => import("@/components/home/CTASection"));
+const GoogleReviewCTA = dynamic(() => import("@/components/common/GoogleReviewCTA"));
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function Home() {
   let mappedProjects: Project[] = [];

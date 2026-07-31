@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import { createPortal } from "react-dom";
 import Brand from "../../common/Brand";
-import MobileDrawer from "./MobileDrawer";
+
+const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
 
 interface MobileNavigationProps {
   pathname: string;
@@ -32,12 +34,11 @@ export default function MobileNavigation({ pathname }: MobileNavigationProps) {
       <Link href="/" className="flex items-center gap-3 group select-none shrink-0">
         <div className="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105 shrink-0">
           <Image
-            src="/logo-icon.png"
+            src="/logo-icon.webp"
             alt="HexaKode Logo"
             fill
             sizes="36px"
             className="object-contain"
-            priority
           />
         </div>
         <Brand variant="navbar" />
