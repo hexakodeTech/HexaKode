@@ -18,6 +18,7 @@ import {
   Info,
   Mail,
   Briefcase,
+  TrendingUp,
 } from "lucide-react";
 import Brand from "../../common/Brand";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -28,6 +29,7 @@ const SERVICES_ITEMS = [
   { label: "Website Development", href: "/services/web-development", icon: Globe },
   { label: "Mobile Apps", href: "/services/mobile-app-development", icon: Smartphone },
   { label: "UI/UX Design", href: "/services/ui-ux-design", icon: Palette },
+  { label: "Digital Marketing", href: "/services/digital-marketing", icon: TrendingUp },
   { label: "AI Solutions", href: "/services", icon: Brain, isFutureReady: true },
   { label: "Custom Software", href: "/services", icon: Code, isFutureReady: true },
 ];

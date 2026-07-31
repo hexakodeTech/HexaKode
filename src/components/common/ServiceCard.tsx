@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Monitor, Smartphone, Palette, Code2, ArrowRight, HelpCircle } from "lucide-react";
+import { Monitor, Smartphone, Palette, Code2, TrendingUp, ArrowRight, HelpCircle } from "lucide-react";
 import { Service } from "../../types/home";
 import { cn } from "../../lib/utils";
 
@@ -9,6 +9,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Smartphone,
   Palette,
   Code2,
+  TrendingUp,
 };
 
 interface ServiceCardProps {

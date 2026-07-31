@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Monitor, Smartphone, Palette, LucideIcon } from "lucide-react";
+import { Monitor, Smartphone, Palette, TrendingUp, LucideIcon } from "lucide-react";
 import Container from "../ui/Container";
 import Section from "../ui/Section";
 import SectionHeading from "../ui/SectionHeading";
@@ -60,6 +60,18 @@ const COMPETENCIES_DATA: CompetencyData[] = [
      href: "/services/ui-ux-design",
      imageSrc: "/service-design.png",
      imageAlt: "A creative designer workspace with wireframe templates on an iPad, color palettes, and sketches.",
+     featured: false,
+   },
+   {
+     id: "digital-marketing",
+     title: "Digital Marketing",
+     description:
+       "Data-driven marketing strategies that generate leads and elevate brand authority. From technical SEO to Google Ads and social campaigns.",
+     icon: TrendingUp,
+     tags: ["SEO", "Google Ads", "Social Media"],
+     href: "/services/digital-marketing",
+     imageSrc: "/hero-graphics.webp",
+     imageAlt: "Abstract technological analytics and growth dashboard graphic.",
      featured: false,
    },
  ];

@@ -50,6 +50,15 @@ export const SERVICES: Service[] = [
     iconName: "Palette",
   },
   {
+    id: "digital-marketing",
+    title: "Digital Marketing",
+    description: "Increase your online visibility with SEO, Google Ads, social media marketing, content strategy, local SEO, and performance-driven campaigns that generate qualified leads.",
+    tags: ["SEO & Local Search", "Google Ads & Social"],
+    highlighted: false,
+    href: "/services/digital-marketing",
+    iconName: "TrendingUp",
+  },
+  {
     id: "custom-software",
     title: "Custom Software",
     description: "Tailored enterprise solutions that automate workflows and solve complex business challenges.",

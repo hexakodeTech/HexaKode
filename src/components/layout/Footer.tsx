@@ -147,6 +147,11 @@ export default function Footer() {
                     UI/UX Design
                   </Link>
                 </li>
+                <li>
+                  <Link href="/services/digital-marketing" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    Digital Marketing
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -409,6 +414,11 @@ export default function Footer() {
               <li>
                 <Link href="/services/ui-ux-design" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
                   UI/UX Design
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/digital-marketing" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  Digital Marketing
                 </Link>
               </li>
             </ul>

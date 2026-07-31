@@ -10,6 +10,7 @@ import {
   Palette,
   Brain,
   Code,
+  TrendingUp,
   ArrowRight,
   Info,
   Mail,
@@ -38,6 +39,12 @@ const SERVICES_ITEMS = [
     href: "/services/ui-ux-design",
     description: "Conversion-optimized product design & design systems.",
     icon: Palette,
+  },
+  {
+    label: "Digital Marketing",
+    href: "/services/digital-marketing",
+    description: "SEO, Google Ads, local search & performance marketing.",
+    icon: TrendingUp,
   },
   {
     label: "AI Solutions",
