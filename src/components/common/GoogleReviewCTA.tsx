@@ -23,7 +23,7 @@ export default function GoogleReviewCTA({ variant, className }: GoogleReviewCTAP
         href={reviewUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-body-sm text-body-sm text-on-primary-container/50 hover:text-white transition-colors duration-300 flex items-center gap-1.5"
+        className="font-body-sm text-body-sm text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-1.5"
       >
         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
         <span>Review us on Google</span>

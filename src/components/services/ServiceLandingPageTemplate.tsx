@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight, CheckCircle, Globe, Gauge, TrendingDown, ShieldAlert, Smartphone, Activity, Layers, Users, Compass, ShoppingCart, LayoutGrid, EyeOff, Search, ClipboardList, Palette, Code, TestTube, Rocket, Wrench } from "lucide-react";
+import { ChevronDown, ArrowRight, CheckCircle, Globe, Gauge, TrendingDown, ShieldAlert, Smartphone, Activity, Layers, Users, Compass, ShoppingCart, LayoutGrid, EyeOff, Search, ClipboardList, Palette, Code, TestTube, Rocket, Wrench, TrendingUp, Target, Megaphone } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Section from "../common/Section";
@@ -44,6 +44,9 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   "test-tube": TestTube,
   rocket: Rocket,
   wrench: Wrench,
+  "trending-up": TrendingUp,
+  target: Target,
+  megaphone: Megaphone,
 };
 
 export interface Technology {
@@ -94,6 +97,11 @@ const SERVICE_INFOS = {
     desc: "High-performance web apps built with Next.js & React.",
     iconName: "globe",
   },
+  "/services/web-engineering": {
+    name: "Web Engineering",
+    desc: "High-performance web apps built with Next.js & React.",
+    iconName: "globe",
+  },
   "/services/mobile-app-development": {
     name: "Mobile App Development",
     desc: "Cross-platform Android & iOS apps powered by Flutter.",
@@ -104,12 +112,19 @@ const SERVICE_INFOS = {
     desc: "Intuitive research, wireframes, and design systems in Figma.",
     iconName: "compass",
   },
+  "/services/digital-marketing": {
+    name: "Digital Marketing",
+    desc: "SEO, Google Ads, local search & performance campaigns that generate qualified leads.",
+    iconName: "trending-up",
+  },
 };
 
 const SERVICE_PARAM_MAP: Record<string, string> = {
   "/services/web-development": "website-development",
+  "/services/web-engineering": "web-engineering",
   "/services/mobile-app-development": "mobile-app-development",
   "/services/ui-ux-design": "ui-ux-design",
+  "/services/digital-marketing": "digital-marketing",
 };
 
 const INDUSTRIES = [

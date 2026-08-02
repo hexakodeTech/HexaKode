@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "",
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
@@ -70,12 +72,22 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
     serverActions: {
       bodySizeLimit: "20mb",
     },
   },
   async headers() {
     return [
+      {
+        source: "/:path*.(png|jpg|jpeg|gif|webp|avif|ico|svg)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
       {
         source: "/(.*)",
         headers: [

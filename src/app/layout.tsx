@@ -26,7 +26,7 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -105,7 +105,7 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID && (
           <Script
             id="microsoft-clarity"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 (function(c,l,a,r,i,t,y){

@@ -10,6 +10,7 @@ import {
   Palette,
   Brain,
   Code,
+  TrendingUp,
   ArrowRight,
   Info,
   Mail,
@@ -38,6 +39,12 @@ const SERVICES_ITEMS = [
     href: "/services/ui-ux-design",
     description: "Conversion-optimized product design & design systems.",
     icon: Palette,
+  },
+  {
+    label: "Digital Marketing",
+    href: "/services/digital-marketing",
+    description: "SEO, Google Ads, local search & performance marketing.",
+    icon: TrendingUp,
   },
   {
     label: "AI Solutions",
@@ -137,12 +144,11 @@ export default function DesktopNavigation({ pathname }: DesktopNavigationProps) 
       <Link href="/" className="flex items-center gap-3 group select-none relative z-10 shrink-0">
         <div className="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105 shrink-0">
           <Image
-            src="/logo-icon.png"
+            src="/logo-icon.webp"
             alt="HexaKode Logo"
             fill
             sizes="36px"
             className="object-contain"
-            priority
           />
         </div>
         <Brand variant="navbar" />

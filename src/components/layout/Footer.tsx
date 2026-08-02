@@ -36,7 +36,7 @@ export default function Footer() {
               {/* Column 1: Logo mark */}
               <div className="relative w-12 h-12 shrink-0 self-center">
                 <Image
-                  src="/logo-icon.png"
+                  src="/logo-icon.webp"
                   alt="HexaKode Logo"
                   fill
                   sizes="48px"
@@ -147,6 +147,11 @@ export default function Footer() {
                     UI/UX Design
                   </Link>
                 </li>
+                <li>
+                  <Link href="/services/digital-marketing" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                    Digital Marketing
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -232,7 +237,7 @@ export default function Footer() {
 
           {/* Bottom copyright bar */}
           <div className="px-margin-mobile md:px-margin-desktop py-8 border-t border-outline-variant/10 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="font-body-sm text-body-sm text-on-primary-container/50">
+            <p className="font-body-sm text-body-sm text-slate-400">
               &copy; {currentYear} HexaKode Engineering. All rights reserved.
             </p>
             <GoogleReviewCTA variant="link" />
@@ -245,7 +250,7 @@ export default function Footer() {
           <div className="flex flex-col items-center text-center">
             <div className="relative w-12 h-12 mb-4">
               <Image
-                src="/logo-icon.png"
+                src="/logo-icon.webp"
                 alt="HexaKode Logo"
                 fill
                 sizes="48px"
@@ -411,6 +416,11 @@ export default function Footer() {
                   UI/UX Design
                 </Link>
               </li>
+              <li>
+                <Link href="/services/digital-marketing" className="text-on-primary-container/70 hover:text-white transition-colors duration-300">
+                  Digital Marketing
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -488,7 +498,7 @@ export default function Footer() {
           {/* SECTION 6 — COPYRIGHT */}
           <div className="flex flex-col items-center text-center pb-[calc(2rem+env(safe-area-inset-bottom,0px))] gap-3">
             <GoogleReviewCTA variant="link" />
-            <p className="font-body-sm text-body-sm text-on-primary-container/50 leading-relaxed">
+            <p className="font-body-sm text-body-sm text-slate-400 leading-relaxed">
               &copy; {currentYear} HexaKode Engineering.<br />All Rights Reserved.
             </p>
           </div>
