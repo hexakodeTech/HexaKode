@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "HexaKode Blog | Engineering & Product Design Insights",
   description:
     "Read the latest articles on web engineering, mobile apps, UI/UX design, technology consulting, and software development insights from the HexaKode team.",
-  alternates: { canonical: "https://www.hexakode.in/blog" },
+  alternates: { canonical: "/blog" },
 };
 
 interface PageProps {

@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   description:
     "Learn how HexaKode uses cookies and similar technologies to improve website functionality, performance, security, and user experience.",
   alternates: {
-    canonical: "https://www.hexakode.in/cookie-policy",
+    canonical: "/cookie-policy",
   },
   openGraph: {
     title: "Cookie Policy | HexaKode",
     description:
       "Learn how HexaKode uses cookies and similar technologies to improve website functionality, performance, security, and user experience.",
-    url: "https://www.hexakode.in/cookie-policy",
+    url: "/cookie-policy",
     siteName: "HexaKode",
     locale: "en_IN",
     type: "website",
@@ -41,13 +41,13 @@ const jsonLd = {
   name: "Cookie Policy — HexaKode",
   description:
     "Cookie Policy for HexaKode. Explains what cookies are, how they are used, and how to manage them.",
-  url: "https://www.hexakode.in/cookie-policy",
+  url: "/cookie-policy",
   publisher: {
     "@type": "Organization",
     name: "HexaKode",
     url: "https://www.hexakode.in",
     email: "contact@hexakode.in",
-    logo: { "@type": "ImageObject", url: "https://www.hexakode.in/logo-icon.png" },
+    logo: { "@type": "ImageObject", url: "/logo-icon.png" },
   },
   dateModified: "2026-06-01",
   inLanguage: "en",

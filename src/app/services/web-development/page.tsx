@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "Website Development Company in Palakkad"
   ],
   alternates: {
-    canonical: "https://www.hexakode.in/services/web-development",
+    canonical: "/services/web-development",
   }
 };
 

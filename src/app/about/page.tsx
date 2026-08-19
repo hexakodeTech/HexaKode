@@ -11,6 +11,9 @@ import FinalCTA from "../../components/about/FinalCTA";
 export const metadata = {
   title: "About Us | HexaKode Engineering",
   description: "We bridge the gap between complex engineering challenges and elegant digital solutions, delivering scalable excellence for global enterprises.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

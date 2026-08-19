@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   description:
     "Learn how HexaKode collects, uses, stores, and protects your personal information when you visit our website or use our services.",
   alternates: {
-    canonical: "https://www.hexakode.in/privacy-policy",
+    canonical: "/privacy-policy",
   },
   openGraph: {
     title: "Privacy Policy | HexaKode",
     description:
       "Learn how HexaKode collects, uses, stores, and protects your personal information when you visit our website or use our services.",
-    url: "https://www.hexakode.in/privacy-policy",
+    url: "/privacy-policy",
     siteName: "HexaKode",
     locale: "en_IN",
     type: "website",
@@ -41,13 +41,13 @@ const jsonLd = {
   name: "Privacy Policy — HexaKode",
   description:
     "Privacy Policy for HexaKode. Explains data collection, usage, storage, and your rights.",
-  url: "https://www.hexakode.in/privacy-policy",
+  url: "/privacy-policy",
   publisher: {
     "@type": "Organization",
     name: "HexaKode",
     url: "https://www.hexakode.in",
     email: "contact@hexakode.in",
-    logo: { "@type": "ImageObject", url: "https://www.hexakode.in/logo-icon.png" },
+    logo: { "@type": "ImageObject", url: "/logo-icon.png" },
   },
   dateModified: "2026-06-01",
   inLanguage: "en",

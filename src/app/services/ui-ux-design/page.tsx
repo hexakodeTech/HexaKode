@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "UI Design Services Kerala"
   ],
   alternates: {
-    canonical: "https://www.hexakode.in/services/ui-ux-design",
+    canonical: "/services/ui-ux-design",
   }
 };
 

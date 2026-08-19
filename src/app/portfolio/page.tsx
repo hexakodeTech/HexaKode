@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "Enterprise Solutions",
     "HexaKode Portfolio",
   ],
+  alternates: {
+    canonical: "/portfolio",
+  },
 };
 
 export default function PortfolioPage() {

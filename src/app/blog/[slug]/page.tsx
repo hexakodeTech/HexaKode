@@ -26,7 +26,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
   const title = post.seoTitle || `${post.title} | HexaKode Blog`;
   const description = post.metaDescription || post.excerpt || "";
-  const canonical = post.canonicalUrl || `https://www.hexakode.in/blog/${post.slug}`;
+  const canonical = post.canonicalUrl || `/blog/${post.slug}`;
   const ogImage = post.ogImage || post.featuredImage || undefined;
 
   return {
@@ -68,7 +68,7 @@ export default async function BlogDetailPage(props: PageProps) {
   incrementBlogViews(post.id).catch(() => {});
 
   const faqEntries = extractFaqEntries(post.content);
-  const pageUrl = `https://www.hexakode.in/blog/${post.slug}`;
+  const pageUrl = `/blog/${post.slug}`;
   const displayImage = post.featuredImage || "/images/blog-placeholder.svg";
 
   // Article JSON-LD
@@ -84,7 +84,7 @@ export default async function BlogDetailPage(props: PageProps) {
     publisher: {
       "@type": "Organization",
       name: "HexaKode",
-      logo: { "@type": "ImageObject", url: "https://www.hexakode.in/logo.svg" },
+      logo: { "@type": "ImageObject", url: "/logo.svg" },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
   };
@@ -95,7 +95,7 @@ export default async function BlogDetailPage(props: PageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://www.hexakode.in" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.hexakode.in/blog" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "/blog" },
       { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
     ],
   };

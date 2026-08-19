@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/home/HeroSection";
 import ServicesSection from "@/components/home/ServicesSection";
@@ -15,6 +16,15 @@ const HomepageFAQ = dynamic(() => import("@/components/home/HomepageFAQ"));
 const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"));
 const CTASection = dynamic(() => import("@/components/home/CTASection"));
 const GoogleReviewCTA = dynamic(() => import("@/components/common/GoogleReviewCTA"));
+
+export const metadata: Metadata = {
+  title: "HexaKode | Code that powers growth",
+  description:
+    "Custom software, web applications, mobile apps, and digital experiences built to help businesses scale with technical precision and market-leading innovation.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export const revalidate = 3600;
 

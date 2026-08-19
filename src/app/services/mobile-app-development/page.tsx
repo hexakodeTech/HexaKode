@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "React Native Developers",
   ],
   alternates: {
-    canonical: "https://www.hexakode.in/services/mobile-app-development",
+    canonical: "/services/mobile-app-development",
   }
 };
 

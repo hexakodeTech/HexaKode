@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Zen_Dots, Kalam, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
 // ─── Font configuration ──────────────────────────────────────────────────────
@@ -38,6 +37,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hexakode.in"),
   title: "HexaKode | Code that powers growth",
   description:
     "Custom software, web applications, mobile apps, and digital experiences built to help businesses scale with technical precision and market-leading innovation.",
@@ -57,9 +57,11 @@ export const metadata: Metadata = {
     description:
       "Custom software, web applications, mobile apps, and digital experiences built to help businesses scale with technical precision and market-leading innovation.",
     type: "website",
+    url: "https://hexakode.in",
     locale: "en_US",
   },
 };
+
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -69,7 +71,7 @@ export const viewport: Viewport = {
 
 import { DemoModalProvider } from "@/components/common/DemoModal";
 import { Toaster } from "sonner";
-import AnalyticsTracker from "@/components/common/AnalyticsTracker";
+import AnalyticsProvider from "@/components/common/AnalyticsProvider";
 
 export default function RootLayout({
   children,
@@ -88,10 +90,7 @@ export default function RootLayout({
           {children}
         </DemoModalProvider>
         <Toaster position="bottom-right" richColors />
-        <GoogleAnalytics
-          gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
-        />
-        <AnalyticsTracker />
+        <AnalyticsProvider />
         {/*
           Microsoft Clarity integration using Next.js's optimized <Script> component.
           - Why layout.tsx: Placed globally in the root layout to ensure the tracker loads
