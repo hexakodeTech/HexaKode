@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   description:
     "Read the Terms of Service governing the use of HexaKode's website, services, software solutions, and digital platforms.",
   alternates: {
-    canonical: "https://www.hexakode.in/terms-of-service",
+    canonical: "/terms-of-service",
   },
   openGraph: {
     title: "Terms of Service | HexaKode",
     description:
       "Read the Terms of Service governing the use of HexaKode's website, services, software solutions, and digital platforms.",
-    url: "https://www.hexakode.in/terms-of-service",
+    url: "/terms-of-service",
     siteName: "HexaKode",
     locale: "en_IN",
     type: "website",
@@ -41,13 +41,13 @@ const jsonLd = {
   name: "Terms of Service — HexaKode",
   description:
     "Terms of Service for HexaKode. Governs access to the website, products, services, and digital platforms.",
-  url: "https://www.hexakode.in/terms-of-service",
+  url: "/terms-of-service",
   publisher: {
     "@type": "Organization",
     name: "HexaKode",
     url: "https://www.hexakode.in",
     email: "contact@hexakode.in",
-    logo: { "@type": "ImageObject", url: "https://www.hexakode.in/logo-icon.png" },
+    logo: { "@type": "ImageObject", url: "/logo-icon.png" },
   },
   dateModified: "2026-06-01",
   inLanguage: "en",

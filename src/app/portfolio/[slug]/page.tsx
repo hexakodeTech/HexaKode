@@ -104,6 +104,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: `${project.title} | HexaKode Portfolio`,
     description: project.shortDescription,
+    alternates: {
+      canonical: `/portfolio/${project.slug}`,
+    },
   };
 }
 

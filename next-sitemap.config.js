@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-    siteUrl: "https://www.hexakode.in",
+    siteUrl: "https://hexakode.in",
     generateRobotsTxt: true,
     sitemapSize: 7000,
     changefreq: "weekly",
@@ -12,4 +12,14 @@ module.exports = {
         "/studio/*",
         "/api/*",
     ],
+    robotsTxtOptions: {
+        policies: [
+            {
+                userAgent: "*",
+                allow: "/",
+                disallow: ["/admin/", "/studio/", "/api/"],
+            },
+        ],
+        additionalSitemaps: [],
+    },
 };

@@ -9,6 +9,9 @@ import GoogleReviewCTA from "../../components/common/GoogleReviewCTA";
 export const metadata = {
   title: "Contact Us | HexaKode Engineering",
   description: "Ready to engineer excellence? Contact HexaKode to scope your project, hire a dedicated development team, or schedule a free consultation.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

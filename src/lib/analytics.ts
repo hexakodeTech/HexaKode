@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback } from "react";
+import { isAdminRoute } from "@/components/common/AnalyticsProvider";
 
 // TypeScript declarations for Google Analytics gtag function on window
 declare global {
@@ -19,6 +20,11 @@ declare global {
  */
 export function sendGAEvent(eventName: string, params?: Record<string, unknown>) {
   if (typeof window === "undefined") {
+    return;
+  }
+
+  // Defence-in-depth: never send GA events from admin routes.
+  if (isAdminRoute(window.location.pathname)) {
     return;
   }
 

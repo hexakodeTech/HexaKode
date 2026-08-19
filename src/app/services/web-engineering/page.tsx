@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     "Web Engineering Services Kerala",
   ],
   alternates: {
-    canonical: "https://www.hexakode.in/services/web-engineering",
+    canonical: "/services/web-engineering",
   },
   openGraph: {
     title: "Web Engineering Company in Kerala | HexaKode",
     description:
       "HexaKode delivers high-performance web engineering solutions designed for scale using React, Next.js, and headless CMS.",
-    url: "https://www.hexakode.in/services/web-engineering",
+    url: "/services/web-engineering",
     type: "website",
   },
   twitter: {

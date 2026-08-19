@@ -16,19 +16,19 @@ export const metadata: Metadata = {
   description:
     "Join HexaKode and help build world-class software products. Explore open roles in engineering, design, product, and technology.",
   alternates: {
-    canonical: "https://www.hexakode.in/careers",
+    canonical: "/careers",
   },
   openGraph: {
     title: "Careers | HexaKode",
     description:
       "Join HexaKode and help build world-class software products. Explore open roles in engineering, design, product, and technology.",
-    url: "https://www.hexakode.in/careers",
+    url: "/careers",
     siteName: "HexaKode",
     locale: "en_IN",
     type: "website",
     images: [
       {
-        url: "https://www.hexakode.in/careers-hero-bg.png",
+        url: "/careers-hero-bg.png",
         width: 1200,
         height: 630,
         alt: "Careers at HexaKode",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "Careers | HexaKode",
     description:
       "Build world-class software with HexaKode. Explore open roles in engineering, design, and product.",
-    images: ["https://www.hexakode.in/careers-hero-bg.png"],
+    images: ["/careers-hero-bg.png"],
   },
   robots: { index: true, follow: true },
 };
@@ -54,7 +54,7 @@ const jsonLd = {
       "@type": "Organization",
       name: "HexaKode",
       url: "https://www.hexakode.in",
-      logo: "https://www.hexakode.in/logo-icon.png",
+      logo: "/logo-icon.png",
       email: "contact@hexakode.in",
       description:
         "HexaKode is a software engineering company that builds custom web applications, mobile apps, SaaS platforms, and digital solutions.",
@@ -66,7 +66,7 @@ const jsonLd = {
     {
       "@type": "WebPage",
       name: "Careers — HexaKode",
-      url: "https://www.hexakode.in/careers",
+      url: "/careers",
       description:
         "Explore open engineering, design, and product roles at HexaKode.",
       publisher: {

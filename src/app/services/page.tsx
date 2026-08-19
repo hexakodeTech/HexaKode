@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "API Development",
     "HexaKode Services",
   ],
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export default function ServicesPage() {

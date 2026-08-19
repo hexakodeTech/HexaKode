@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     "Marketing Agency Kerala",
   ],
   alternates: {
-    canonical: "https://www.hexakode.in/services/digital-marketing",
+    canonical: "/services/digital-marketing",
   },
   openGraph: {
     title: "Digital Marketing Company in Kerala | SEO & Ads | HexaKode",
     description:
       "Drive qualified leads and accelerate revenue with data-driven SEO, Google Ads, local search, and performance marketing strategies in Kerala.",
-    url: "https://www.hexakode.in/services/digital-marketing",
+    url: "/services/digital-marketing",
     type: "website",
   },
   twitter: {
