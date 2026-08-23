@@ -90,13 +90,28 @@ export default async function BlogDetailPage(props: PageProps) {
   };
 
   // Breadcrumb JSON-LD
+  const SITE_URL = "https://www.hexakode.in";
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.hexakode.in" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: new URL("/", SITE_URL).toString(),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: new URL("/blog", SITE_URL).toString(),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+      },
     ],
   };
 
