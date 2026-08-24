@@ -12,7 +12,8 @@ export function isAdminRoute(pathname: string): boolean {
   return pathname === "/admin" || pathname.startsWith("/admin/");
 }
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const rawGaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-KF1P37M1E4";
+const GA_ID = rawGaId.replace(/['"]/g, "").trim();
 
 /**
  * AnalyticsProvider — renders GA4 script and the global click/event tracker
