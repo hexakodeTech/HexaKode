@@ -10,14 +10,32 @@ import GoogleReviewCTA from "../common/GoogleReviewCTA";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [recentPosts, setRecentPosts] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
+    let isMounted = true;
     fetch("/api/blog?limit=3&status=PUBLISHED")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.posts) setRecentPosts(data.posts);
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch recent posts");
+        return r.json();
       })
-      .catch(() => {});
+      .then((data) => {
+        if (isMounted) {
+          if (Array.isArray(data?.posts)) {
+            setRecentPosts(data.posts);
+          }
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
 
@@ -195,7 +213,9 @@ export default function Footer() {
                 Recent Posts
               </h5>
               <ul className="space-y-4 font-body-sm text-body-sm text-left">
-                {recentPosts.length > 0 ? (
+                {isLoading ? (
+                  <li className="text-on-primary-container/40 italic">Loading...</li>
+                ) : recentPosts.length > 0 ? (
                   recentPosts.map((post) => (
                     <li key={post.id || post._id}>
                       <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block line-clamp-2">
@@ -204,7 +224,7 @@ export default function Footer() {
                     </li>
                   ))
                 ) : (
-                  <li className="text-on-primary-container/40 italic">Loading...</li>
+                  <li className="text-on-primary-container/40 italic">No recent posts available.</li>
                 )}
               </ul>
             </div>
@@ -433,7 +453,9 @@ export default function Footer() {
               Recent Posts
             </h5>
             <ul className="flex flex-col items-center space-y-4 font-body-sm text-body-sm text-center px-4 w-full">
-              {recentPosts.length > 0 ? (
+              {isLoading ? (
+                <li className="text-on-primary-container/40 italic">Loading...</li>
+              ) : recentPosts.length > 0 ? (
                 recentPosts.map((post) => (
                   <li key={post.id || post._id} className="w-full truncate max-w-xs">
                     <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block truncate">
@@ -442,7 +464,7 @@ export default function Footer() {
                   </li>
                 ))
               ) : (
-                <li className="text-on-primary-container/40 italic">Loading...</li>
+                <li className="text-on-primary-container/40 italic">No recent posts available.</li>
               )}
             </ul>
           </div>

@@ -18,10 +18,10 @@ if (missingEnvVars.length > 0) {
 }
 
 const prismaClientSingleton = () => {
-  const connStr = process.env.DIRECT_URL || process.env.DATABASE_URL;
+  const connStr = process.env.DATABASE_URL || process.env.DIRECT_URL;
   const pool = new pg.Pool({
     connectionString: connStr,
-    max: 3,
+    max: 2,
     idleTimeoutMillis: 10000,
   });
   const adapter = new PrismaPg(pool);

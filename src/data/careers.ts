@@ -1,43 +1,102 @@
 import { CultureCard, CareerBenefit, FAQ } from "@/types/careers";
 
-// ─── Culture Cards ────────────────────────────────────────────────────────────
+// ─── Why Join HexaKode (Culture & Value Cards) ────────────────────────────────
 
 export const cultureCards: CultureCard[] = [
   {
-    id: "engineering-excellence",
-    title: "Engineering Excellence",
+    id: "real-world-projects",
+    title: "Real-World Projects",
     description:
-      "We prioritize clean architecture, scalable systems, and long-term maintainability over short-term shortcuts.",
+      "Work on production systems that solve actual business challenges across diverse industries, creating tangible impact from day one.",
+    icon: "Globe2",
+    accentBg: "bg-secondary/10",
+    accentText: "text-secondary",
+  },
+  {
+    id: "learning-and-growth",
+    title: "Learning & Growth",
+    description:
+      "Continuous skill elevation through code reviews, mentorship, and opportunities to experiment with modern engineering tools.",
+    icon: "TrendingUp",
+    accentBg: "bg-primary-fixed/60",
+    accentText: "text-on-primary-fixed-variant",
+  },
+  {
+    id: "collaborative-environment",
+    title: "Collaborative Culture",
+    description:
+      "A transparent, supportive team where every engineer and designer has a voice, and good ideas win regardless of seniority.",
+    icon: "Users",
+    accentBg: "bg-tertiary-fixed/60",
+    accentText: "text-on-tertiary-fixed-variant",
+  },
+  {
+    id: "modern-technologies",
+    title: "Modern Tech Stack",
+    description:
+      "Build with React, Next.js, TypeScript, React Native, Node.js, Prisma, and leading cloud platforms without being bogged down by legacy bloat.",
     icon: "Cpu",
     accentBg: "bg-secondary/10",
     accentText: "text-secondary",
   },
   {
-    id: "global-impact",
-    title: "Global Impact",
+    id: "ownership-and-responsibility",
+    title: "Ownership & Autonomy",
     description:
-      "Build products used by businesses and users across industries — engineering solutions that actually move the needle.",
-    icon: "Globe2",
+      "Take end-to-end ownership of features and architectural decisions with the trust and flexibility to do your best work.",
+    icon: "Zap",
     accentBg: "bg-primary-fixed/60",
     accentText: "text-on-primary-fixed-variant",
   },
   {
-    id: "continuous-growth",
-    title: "Continuous Growth",
+    id: "career-development",
+    title: "Career Development",
     description:
-      "Learning budgets, mentorship programs, and regular knowledge-sharing sessions keep the team at the frontier.",
-    icon: "TrendingUp",
+      "Clear advancement pathways that reward technical excellence, problem solving, client collaboration, and leadership.",
+    icon: "BarChart3",
     accentBg: "bg-tertiary-fixed/60",
     accentText: "text-on-tertiary-fixed-variant",
   },
+];
+
+// ─── How We Hire (Hiring Process Steps) ───────────────────────────────────────
+
+export interface HiringStep {
+  stepNumber: string;
+  title: string;
+  description: string;
+}
+
+export const hiringSteps: HiringStep[] = [
   {
-    id: "flexible-work",
-    title: "Flexible Work",
+    stepNumber: "01",
+    title: "Application",
     description:
-      "Remote-first collaboration focused on outcomes rather than hours. Work where you do your best thinking.",
-    icon: "Laptop2",
-    accentBg: "bg-secondary/10",
-    accentText: "text-secondary",
+      "Submit your resume, GitHub, or portfolio showcasing what you have built and your technical strengths.",
+  },
+  {
+    stepNumber: "02",
+    title: "Initial Review",
+    description:
+      "Our team reviews your experience, code samples, and alignment with our engineering standards.",
+  },
+  {
+    stepNumber: "03",
+    title: "Introductory Interview",
+    description:
+      "A 30-minute conversation to discuss your background, aspirations, work style, and what you are looking for.",
+  },
+  {
+    stepNumber: "04",
+    title: "Technical / Role Discussion",
+    description:
+      "A deep dive into your technical problem-solving, architectural thinking, or design craft with our core engineers.",
+  },
+  {
+    stepNumber: "05",
+    title: "Final Decision",
+    description:
+      "We value your time. You receive a prompt, transparent decision with comprehensive feedback and offer details.",
   },
 ];
 
@@ -48,28 +107,28 @@ export const benefits: CareerBenefit[] = [
     id: "health",
     title: "Health & Wellness",
     description:
-      "Comprehensive health support and wellness initiatives to keep you at your best.",
+      "Supportive wellness initiatives and flexible work-life balance to help you stay energized and focused.",
     icon: "HeartPulse",
   },
   {
     id: "learning",
-    title: "Learning Budget",
+    title: "Learning & Upskilling",
     description:
-      "Annual budget for courses, certifications, books, and international conferences.",
+      "Access to courses, developer tooling, and structured time dedicated to mastering emerging technologies.",
     icon: "BookOpen",
   },
   {
     id: "equipment",
-    title: "Latest Equipment",
+    title: "Modern Tooling",
     description:
-      "Modern hardware and software tools to help you do your best and most productive work.",
+      "Work with cutting-edge developer tools, modern cloud environments, and ergonomic hardware setups.",
     icon: "Monitor",
   },
   {
     id: "growth",
-    title: "Career Growth",
+    title: "Direct Client Collaboration",
     description:
-      "Clear growth paths, structured mentorship, and leadership opportunities at every level.",
+      "Direct exposure to client projects and technical leadership opportunities as our company continues to grow.",
     icon: "BarChart3",
   },
 ];
@@ -81,30 +140,30 @@ export const faqs: FAQ[] = [
     id: "remote",
     question: "Do you offer remote positions?",
     answer:
-      "Yes. Most of our roles are remote or remote/hybrid. We are an async-first company and believe in hiring the best talent regardless of geography. Specific location requirements, if any, are listed on each job card.",
+      "Yes. We support remote and hybrid work models with flexible scheduling focused on outcomes, ownership, and clear communication.",
   },
   {
     id: "tech-stack",
     question: "What technologies does HexaKode use?",
     answer:
-      "Our stack evolves with the industry. For web, we primarily use Next.js, TypeScript, Tailwind CSS, and Supabase. For mobile, React Native with Expo. For infrastructure, AWS and Terraform. For AI/ML, Python, FastAPI, and LLM integrations. The best tool for the job always wins.",
+      "Our primary tech stack includes Next.js, React, TypeScript, React Native, Node.js, Tailwind CSS, Prisma, PostgreSQL, Firebase, and Supabase. We select the best reliable tools for each project's architectural requirements.",
   },
   {
     id: "process",
     question: "What is the hiring process?",
     answer:
-      "Our process is designed to be transparent and respectful of your time. It typically involves: (1) Application review, (2) Introductory call with our team, (3) Technical assessment relevant to your role, (4) Final interview with engineering and leadership, (5) Offer. Most processes complete within 2–3 weeks.",
+      "Our process is transparent and structured in 5 simple steps: (1) Application, (2) Initial Review, (3) Introductory Interview, (4) Technical / Role Discussion, and (5) Final Decision.",
   },
   {
     id: "freshers",
     question: "Do you hire freshers and interns?",
     answer:
-      "We do run internship and junior hiring programs periodically. If you're an early-career engineer or designer, submit a general application with your portfolio and we will reach out when suitable opportunities arise. We value potential just as much as experience.",
+      "Yes. We periodically hire motivated early-career engineers and interns who demonstrate strong foundational fundamentals, problem-solving skills, and a genuine eagerness to build.",
   },
   {
     id: "general-application",
     question: "Can I submit a general application?",
     answer:
-      "Absolutely. If you don't see a role that fits your profile today, submit a general application via the link at the bottom of this page. We review every submission and keep profiles on file for 12 months.",
+      "Absolutely. Even when no active roles are listed, you can submit a general application with your profile and resume. We review every submission and reach out as new openings arise.",
   },
 ];
