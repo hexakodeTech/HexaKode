@@ -1,5 +1,6 @@
 import { Frame, Users, Zap } from "lucide-react";
 import { CoreValue, TeamMember, TrustMetric, TrustPoint } from "../types/about";
+import { COMPANY_STATS } from "./stats";
 
 export const CORE_VALUES: CoreValue[] = [
   {
@@ -82,22 +83,22 @@ export const TRUST_POINTS: TrustPoint[] = [
 export const TRUST_METRICS: TrustMetric[] = [
   {
     id: "tm1",
-    value: "3",
-    label: "Projects Delivered",
+    value: COMPANY_STATS.completedProjects.formatted,
+    label: COMPANY_STATS.completedProjects.label,
   },
   {
     id: "tm2",
-    value: "2",
-    label: "Trusted Client",
+    value: COMPANY_STATS.technologiesUsed.formatted,
+    label: COMPANY_STATS.technologiesUsed.label,
   },
   {
     id: "tm3",
-    value: "2026",
-    label: "Founded",
+    value: COMPANY_STATS.industriesServed.formatted,
+    label: COMPANY_STATS.industriesServed.label,
   },
   {
     id: "tm4",
-    value: "100%",
-    label: "Commitment to Quality",
+    value: COMPANY_STATS.clientSatisfaction.formatted,
+    label: COMPANY_STATS.clientSatisfaction.label,
   },
 ];

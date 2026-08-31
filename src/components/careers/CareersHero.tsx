@@ -16,6 +16,7 @@ import {
   MotionStyle,
 } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { COMPANY_STATS } from "@/constants/stats";
 
 // Count-up helper component for stats cards
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -170,9 +171,21 @@ export default function CareersHero() {
   };
 
   const stats = [
-    { value: 20, suffix: "+", label: "Projects Delivered" },
-    { value: 1, suffix: "", label: "Countries" },
-    { value: 100, suffix: "+", label: "Features Released" },
+    {
+      value: COMPANY_STATS.completedProjects.value,
+      suffix: COMPANY_STATS.completedProjects.suffix,
+      label: COMPANY_STATS.completedProjects.label,
+    },
+    {
+      value: COMPANY_STATS.technologiesUsed.value,
+      suffix: COMPANY_STATS.technologiesUsed.suffix,
+      label: COMPANY_STATS.technologiesUsed.label,
+    },
+    {
+      value: COMPANY_STATS.clientSatisfaction.value,
+      suffix: COMPANY_STATS.clientSatisfaction.suffix,
+      label: COMPANY_STATS.clientSatisfaction.label,
+    },
   ];
 
   return (
@@ -488,7 +501,7 @@ export default function CareersHero() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              of Code.
+              with HexaKode.
             </span>
           </motion.h1>
 
@@ -499,9 +512,8 @@ export default function CareersHero() {
             animate="visible"
             className="font-body-lg text-body-lg text-on-primary-container/70 mb-10 max-w-lg leading-relaxed"
           >
-            Join an engineering team where precision meets innovation. We&apos;re
-            looking for architects, builders, and visionaries who want to create
-            world-class digital products.
+            Join a modern engineering team where technical precision drives real business growth.
+            We build high-performance web applications, mobile apps, and scalable digital solutions.
           </motion.p>
 
           {/* CTAs */}
