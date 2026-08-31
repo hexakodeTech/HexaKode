@@ -7,34 +7,52 @@ import { SOCIAL_LINKS } from "@/constants/contact";
 import Brand from "../common/Brand";
 import GoogleReviewCTA from "../common/GoogleReviewCTA";
 
+interface RecentPostItem {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const [recentPosts, setRecentPosts] = React.useState<any[]>([]);
+  const [recentPosts, setRecentPosts] = React.useState<RecentPostItem[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
+    const controller = new AbortController();
     let isMounted = true;
-    fetch("/api/blog?limit=3&status=PUBLISHED")
+
+    setIsLoading(true);
+    setError(null);
+
+    fetch("/api/blog?limit=3&status=PUBLISHED", { signal: controller.signal })
       .then((r) => {
-        if (!r.ok) throw new Error("Failed to fetch recent posts");
+        if (!r.ok) throw new Error(`HTTP ${r.status}: Failed to fetch recent posts`);
         return r.json();
       })
       .then((data) => {
         if (isMounted) {
           if (Array.isArray(data?.posts)) {
             setRecentPosts(data.posts);
+          } else {
+            setRecentPosts([]);
           }
           setIsLoading(false);
         }
       })
-      .catch(() => {
+      .catch((err: any) => {
+        if (err.name === "AbortError") return;
         if (isMounted) {
+          console.error("[Footer Recent Posts]", err);
+          setError("Unable to load recent posts.");
           setIsLoading(false);
         }
       });
 
     return () => {
       isMounted = false;
+      controller.abort();
     };
   }, []);
 
@@ -215,9 +233,11 @@ export default function Footer() {
               <ul className="space-y-4 font-body-sm text-body-sm text-left">
                 {isLoading ? (
                   <li className="text-on-primary-container/40 italic">Loading...</li>
+                ) : error ? (
+                  <li className="text-on-primary-container/40 italic">Unable to load recent posts.</li>
                 ) : recentPosts.length > 0 ? (
                   recentPosts.map((post) => (
-                    <li key={post.id || post._id}>
+                    <li key={post.id}>
                       <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block line-clamp-2">
                         {post.title}
                       </Link>
@@ -455,9 +475,11 @@ export default function Footer() {
             <ul className="flex flex-col items-center space-y-4 font-body-sm text-body-sm text-center px-4 w-full">
               {isLoading ? (
                 <li className="text-on-primary-container/40 italic">Loading...</li>
+              ) : error ? (
+                <li className="text-on-primary-container/40 italic">Unable to load recent posts.</li>
               ) : recentPosts.length > 0 ? (
                 recentPosts.map((post) => (
-                  <li key={post.id || post._id} className="w-full truncate max-w-xs">
+                  <li key={post.id} className="w-full truncate max-w-xs">
                     <Link href={`/blog/${post.slug}`} className="text-on-primary-container/70 hover:text-white transition-colors duration-300 block truncate">
                       {post.title}
                     </Link>
