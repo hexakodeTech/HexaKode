@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import CareersHero from "@/components/careers/CareersHero";
 import WhyHexaKode from "@/components/careers/WhyHexaKode";
 import OpenRoles from "@/components/careers/OpenRoles";
+import HiringProcess from "@/components/careers/HiringProcess";
 import BenefitsSection from "@/components/careers/BenefitsSection";
 import GeneralApplicationCTA from "@/components/careers/GeneralApplicationCTA";
 import CareersFAQ from "@/components/careers/CareersFAQ";
@@ -100,13 +101,16 @@ export default function CareersPage() {
           {/* 3 · Open Roles — filterable job list */}
           <OpenRoles />
 
-          {/* 4 · Benefits */}
+          {/* 4 · How We Hire — hiring process steps */}
+          <HiringProcess />
+
+          {/* 5 · Benefits */}
           <BenefitsSection />
 
-          {/* 5 · General Application CTA */}
+          {/* 6 · General Application CTA */}
           <GeneralApplicationCTA />
 
-          {/* 6 · FAQ */}
+          {/* 7 · FAQ */}
           <CareersFAQ />
         </main>
 

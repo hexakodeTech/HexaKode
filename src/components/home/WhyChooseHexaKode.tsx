@@ -24,6 +24,8 @@ import SectionHeading from "../common/SectionHeading";
 import TechnologyChip from "../common/TechnologyChip";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
+import { COMPANY_STATS } from "@/constants/stats";
+
 // 1. Feature Cards Data (6 Cards)
 const FEATURES = [
   {
@@ -74,59 +76,37 @@ const FEATURES = [
 const METRICS = [
   {
     id: "projects",
-    targetNumber: 3,
-    suffix: "+",
-    label: "Completed Projects",
-    subtext: "Delivered on time & on scope",
-    tags: [
-      "Revopz",
-    ],
+    targetNumber: COMPANY_STATS.completedProjects.value,
+    suffix: COMPANY_STATS.completedProjects.suffix,
+    label: COMPANY_STATS.completedProjects.label,
+    subtext: COMPANY_STATS.completedProjects.subtext,
+    tags: [...COMPANY_STATS.completedProjects.tags],
     icon: CheckCircle2,
   },
   {
     id: "technologies",
-    targetNumber: 10,
-    suffix: "+",
-    label: "Technologies Used",
-    subtext: "Modern & reliable stack",
-    tags: [
-      "Next.js",
-      "React",
-      "React Native",
-      "Flutter",
-      "Firebase",
-      "Supabase",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "Sanity CMS",
-      "Prisma"
-    ],
+    targetNumber: COMPANY_STATS.technologiesUsed.value,
+    suffix: COMPANY_STATS.technologiesUsed.suffix,
+    label: COMPANY_STATS.technologiesUsed.label,
+    subtext: COMPANY_STATS.technologiesUsed.subtext,
+    tags: [...COMPANY_STATS.technologiesUsed.tags],
     icon: Layers,
   },
   {
     id: "industries",
-    targetNumber: 3,
-    suffix: "+",
-    label: "Industries Served",
-    subtext: "Diverse market experience",
-    tags: [
-      // "Healthcare",
-      "Manufacturing",
-      // "Retail",
-      // "Education",
-      // "Government",
-      "Publishing",
-      "Event"
-    ],
+    targetNumber: COMPANY_STATS.industriesServed.value,
+    suffix: COMPANY_STATS.industriesServed.suffix,
+    label: COMPANY_STATS.industriesServed.label,
+    subtext: COMPANY_STATS.industriesServed.subtext,
+    tags: [...COMPANY_STATS.industriesServed.tags],
     icon: Users,
   },
   {
     id: "satisfaction",
-    targetNumber: 100,
-    suffix: "%",
-    label: "Client Satisfaction",
-    subtext: "Growing every month with 5-star trust",
+    targetNumber: COMPANY_STATS.clientSatisfaction.value,
+    suffix: COMPANY_STATS.clientSatisfaction.suffix,
+    label: COMPANY_STATS.clientSatisfaction.label,
+    subtext: COMPANY_STATS.clientSatisfaction.subtext,
     icon: Award,
   },
 ];

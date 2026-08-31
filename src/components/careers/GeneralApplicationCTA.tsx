@@ -43,12 +43,11 @@ export default function GeneralApplicationCTA() {
         </span>
 
         <h2 className="font-headline-lg text-headline-lg md:text-display-lg text-white mb-6 tracking-tight">
-          Don&apos;t see your role?
+          Think you&apos;d be a great fit?
         </h2>
 
         <p className="font-body-lg text-body-lg text-on-primary-container/70 max-w-2xl mx-auto mb-10 leading-relaxed">
-          We&apos;re always interested in meeting talented people. Send us your
-          profile and we&apos;ll reach out when a suitable opportunity arises.
+          Even if you don&apos;t see an exact opening today, we&apos;re always excited to connect with talented engineers, designers, and problem solvers. Send us your profile and let&apos;s talk.
         </p>
 
         <button

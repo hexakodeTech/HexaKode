@@ -112,11 +112,9 @@ export default function OpenRoles() {
 
             {/* Description */}
             <p className="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto mb-8 leading-relaxed">
-              We are not actively hiring at the moment.
+              We don&apos;t have any open positions right now, but we&apos;re always interested in meeting talented people.
               <br className="hidden sm:inline" />
-              However, we&apos;re always interested in meeting talented engineers, designers, and innovators who are passionate about building exceptional digital products.
-              <br className="hidden sm:inline" />
-              Submit your profile and we&apos;ll keep it on file for future opportunities.
+              If you are passionate about software craftsmanship, modern engineering, and creating impactful products, share your profile with us.
             </p>
 
             {/* CTAs */}

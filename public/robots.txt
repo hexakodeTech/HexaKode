@@ -1,7 +1,12 @@
+# *
 User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /studio/
 Disallow: /api/
 
+# Host
+Host: https://hexakode.in
+
+# Sitemaps
 Sitemap: https://hexakode.in/sitemap.xml
